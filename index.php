@@ -1,1 +1,5 @@
-<h1>asd</h1>
+<?php
+require_once './helper/helpers.php';
+
+redirectIfAuthenticated();
+redirectIfNotAuthenticated('./login.php');

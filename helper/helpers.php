@@ -20,9 +20,9 @@ function redirectIfAuthenticated() {
   }
 }
 
-function redirectIfNotAuthenticated() {
+function redirectIfNotAuthenticated($url = null) {
   if (!isset($_SESSION['user'])) {
-    redirect('../login.php');
+    redirect($url ?? '../login.php');
   }
 }
 
