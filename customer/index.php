@@ -4,3 +4,4 @@ redirectIfNotAuthenticated();
 ?>
 
 <h1>Dashboard Customer</h1>
+<a href="../logout.php">Logout</a>
