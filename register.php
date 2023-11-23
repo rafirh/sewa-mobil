@@ -163,12 +163,7 @@
 
 <?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($_POST['email']) && 
-      !empty($_POST['password']) && 
-      !empty($_POST['name']) && 
-      !empty($_POST['confirm_password'] && 
-      !empty($_POST['role']))
-    ) {
+    if (checkRequiredFields(['name', 'email', 'password', 'confirm_password'])) {
       if ($_POST['password'] != $_POST['confirm_password']) {
         echo "<script>toastr('error', 'Gagal', 'Konfirmasi kata sandi tidak cocok!')</script>";
         exit;

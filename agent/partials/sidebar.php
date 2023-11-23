@@ -14,10 +14,10 @@
         <a class="nav-link d-flex lh-1 text-reset p-0 cursor-pointer" data-bs-toggle="dropdown"
           aria-label="Open user menu">
           <span class="avatar avatar-sm"
-            style="background-image: url(<?= $_SESSION['user']['foto'] ?? asset('images/user/default.jpg') ?>)"></span>
+            style="background-image: url(<?= asset($_SESSION['user']['foto'] ?? 'images/user/default.jpg') ?>)"></span>
         </a>
         <div class="text-muted dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <a href="../profile.php" class="dropdown-item">
+          <a href="profile.php" class="dropdown-item">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user me-1" width="24"
               height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
               stroke-linecap="round" stroke-linejoin="round">
@@ -27,7 +27,7 @@
             </svg>
             Profil
           </a>
-          <a href="../change-password.php" class="dropdown-item">
+          <a href="change-password.php" class="dropdown-item">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock me-1" width="24"
               height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
               stroke-linecap="round" stroke-linejoin="round">

@@ -139,7 +139,7 @@
 
 <?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($_POST['email']) && !empty($_POST['password'])) {
+    if (checkRequiredFields(['email', 'password'])) {
       $email = htmlspecialchars($_POST['email']);
       $password = htmlspecialchars($_POST['password']);
   

@@ -95,3 +95,38 @@ function add_title_tooltip($string, $limit = 20)
   echo '';
 }
 
+function storeImage($file, $folder) {
+  $path = "../assets/images/$folder/";
+  $filename = $file['name'];
+  $tmp = $file['tmp_name'];
+  $ext = explode('.', $filename);
+  $ext = strtolower(end($ext));
+  $new_filename = uniqid() . ".$ext";
+  $new_path = $path . $new_filename;
+
+  if (!file_exists($path)) {
+    mkdir($path, 777, true);
+  }
+
+  move_uploaded_file($tmp, $new_path);
+
+  return "images/$folder/$new_filename";
+}
+
+function deleteFile($path) {
+  if (file_exists("../$path")) {
+    unlink("../$path");
+  }
+}
+
+function checkRequiredFields($fields)
+{
+  foreach ($fields as $field) {
+    if (!isset($_POST[$field]) || empty($_POST[$field])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
