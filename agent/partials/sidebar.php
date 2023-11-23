@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="collapse navbar-collapse" id="sidebar-menu">
-      <ul class="navbar-nav pt-lg-3">
+      <ul class="navbar-nav">
         <li class="nav-item <?= $active == 'beranda' ? 'active' : '' ?>">
           <a class="nav-link" href="index.php">
             <span class="nav-link-icon d-lg-inline-block">

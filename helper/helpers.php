@@ -114,8 +114,8 @@ function storeImage($file, $folder) {
 }
 
 function deleteFile($path) {
-  if (file_exists("../$path")) {
-    unlink("../$path");
+  if (file_exists("../assets/$path")) {
+    unlink("../assets/$path");
   }
 }
 

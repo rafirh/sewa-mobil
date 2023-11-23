@@ -15,18 +15,12 @@
   <style>
     @import url('https://rsms.me/inter/inter.css');
 
-    :root {
-      --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      --tblr-primary: #F39915;
-      --tblr-primary-rgb: 243, 153, 21;
-    }
-
     body {
       font-feature-settings: "cv03", "cv04", "cv11";
     }
 
     .navbar-nav li.active {
-      background-color: rgba(243, 153, 21, 0.1);
+      background-color: rgba(0, 123, 255, 0.15);
       font-weight: 500;
     }
 
@@ -77,7 +71,7 @@
               </div>
             </a>
             <div class="text-muted dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <a href="../profile.php" class="dropdown-item">
+              <a href="profile.php" class="dropdown-item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                   <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
@@ -85,7 +79,7 @@
                 </svg>
                 Profil
               </a>
-              <a href="../change-password.php" class="dropdown-item">
+              <a href="change-password.php" class="dropdown-item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                   <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"></path>
