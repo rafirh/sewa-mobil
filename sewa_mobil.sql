@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2023 at 11:43 AM
+-- Generation Time: Nov 23, 2023 at 11:06 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -44,6 +44,25 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -55,7 +74,7 @@ CREATE TABLE `user` (
   `alamat` varchar(255) DEFAULT NULL,
   `no_hp` varchar(255) DEFAULT NULL,
   `foto` varchar(255) DEFAULT NULL,
-  `role` enum('administator','customer') NOT NULL DEFAULT 'customer'
+  `role` enum('administrator','agent','customer') NOT NULL DEFAULT 'customer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -63,9 +82,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`, `role`) VALUES
-(1, 'Administator', 'admin@gmail.com', '$2y$12$JtYyp9.bNs3k.cQ1gFAyA.HwemK.yPWk4wd9lLb852/LY.g0DJ486', 'Jl. Raya Cikarang', '081234567890', NULL, 'administator'),
-(2, 'Customer', 'customer@gmail.com', '$2y$12$MkGjZ6LP2w3c7UHrBsmdyOlzS18FViBjIlJWYqmmB3q9zMH3lu3se', 'Jl. Mawar', '08123456789', NULL, 'customer'),
-(4, 'Rafi Rahman', 'rafi@gmail.com', '$2y$10$XAb9QWclbkAB20KnWzRXE.o/./TFbXKUi8zt1IkkyKLlX/YVlsOHO', NULL, NULL, NULL, 'customer');
+(1, 'Administator', 'admin@gmail.com', '$2y$12$dRj0XkaCkJdM0ojJliQpr.puf85iAZExvqF3my9gW8wE6CWFinKEO', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
+(2, 'Agent Rental Mobil', 'agent@gmail.com', '$2y$12$.fvkAPEFnHjgwv5VBB8mmOC11EkDMZpVmDdpu2T5TcS05IPFaQCEm', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(3, 'John Doe', 'customer@gmail.com', '$2y$12$is6in/T.x895jZEzkJs7vuucPnxhKA1PzqW.622DS8.Bu9gdmyM3G', 'Jl. Mawar', '08123456789', NULL, 'customer');
 
 --
 -- Indexes for dumped tables
@@ -76,6 +95,14 @@ INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
 -- Indexes for table `user`
@@ -95,10 +122,16 @@ ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
