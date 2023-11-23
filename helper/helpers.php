@@ -15,7 +15,9 @@ function redirectJs($url)
 function redirectIfAuthenticated()
 {
   if (isset($_SESSION['user'])) {
-    if ($_SESSION['user']['role'] == 'agent') {
+    if ($_SESSION['user']['role'] == 'administrator') {
+      redirect('./admin/index.php');
+    } else if ($_SESSION['user']['role'] == 'agent') {
       redirect('./agent/index.php');
     } else {
       redirect('./customer/index.php');
