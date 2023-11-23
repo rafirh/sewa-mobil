@@ -1,7 +1,13 @@
 <?php
 require_once('../helper/helpers.php');
 redirectIfNotAuthenticated();
+
+$active = 'beranda';
+$title = 'Beranda';
 ?>
 
-<h1>Dashboard Agent</h1>
-<a href="../logout.php">Logout</a>
+<?php include('partials/header.php') ?>
+
+  
+
+<?php include('partials/footer.php') ?>

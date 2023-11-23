@@ -2,15 +2,18 @@
 
 session_start();
 
-function redirect($url) {
+function redirect($url)
+{
   header("Location: $url");
 }
 
-function redirectJs($url) {
+function redirectJs($url)
+{
   echo "<script>window.location.href = '$url'</script>";
 }
 
-function redirectIfAuthenticated() {
+function redirectIfAuthenticated()
+{
   if (isset($_SESSION['user'])) {
     if ($_SESSION['user']['role'] == 'agent') {
       redirect('./agent/index.php');
@@ -20,13 +23,15 @@ function redirectIfAuthenticated() {
   }
 }
 
-function redirectIfNotAuthenticated($url = null) {
+function redirectIfNotAuthenticated($url = null)
+{
   if (!isset($_SESSION['user'])) {
     redirect($url ?? '../login.php');
   }
 }
 
-function destroySession($key = null) {
+function destroySession($key = null)
+{
   if ($key) {
     unset($_SESSION[$key]);
   } else {
@@ -34,17 +39,20 @@ function destroySession($key = null) {
   }
 }
 
-function logout() {
+function logout()
+{
   session_start();
   session_destroy();
   redirect('./login.php');
 }
 
-function setFlashMessage($key, $value) {
+function setFlashMessage($key, $value)
+{
   $_SESSION['flash_message'][$key] = $value;
 }
 
-function getFlashMessage($key) {
+function getFlashMessage($key)
+{
   if (isset($_SESSION['flash_message'][$key])) {
     $value = $_SESSION['flash_message'][$key];
     unset($_SESSION['flash_message'][$key]);
@@ -54,7 +62,8 @@ function getFlashMessage($key) {
   return null;
 }
 
-function showToastIfExist() {
+function showToastIfExist()
+{
   $success = getFlashMessage('success');
   $error = getFlashMessage('error');
 
@@ -66,3 +75,21 @@ function showToastIfExist() {
     echo "<script>toastr('error', 'Gagal', '$error')</script>";
   }
 }
+
+function asset($path)
+{
+  $request_uri = $_SERVER['REQUEST_URI'];
+  $array = explode('/', $request_uri);
+  $app_url = $array[0] . '/' . $array[1];
+
+  return $app_url . '/assets/' . $path;
+}
+
+function add_title_tooltip($string, $limit = 20)
+{
+  if (strlen($string) > $limit) {
+    echo 'data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="' . $string . '"';
+  }
+  echo '';
+}
+
