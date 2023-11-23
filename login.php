@@ -40,7 +40,7 @@
       </div>
       <div class="card card-md">
         <div class="card-body">
-          <h2 class="text-center mb-4">Sewa Mobil Automotrive</h2>
+          <h2 class="text-center mb-4">Sewa Mobil Ikuzo</h2>
           <form action="login.php" method="POST">
             <div class="mb-3">
               <label class="form-label required">Email</label>
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="text-center text-muted mt-5">
-        © 2023 All rights reserved - 💙 Sewa Mobil
+        © 2023 All rights reserved - 💙 Ikuzo Rental
       </div>
     </div>
   </div>
@@ -151,8 +151,8 @@
   
         if (password_verify($password, $user['password'])) {
           $_SESSION['user'] = $user;
-          if ($user['role'] == 'administrator') {
-            redirectJs('./admin/index.php');
+          if ($user['role'] == 'agent') {
+            redirectJs('./agent/index.php');
           } else {
             redirectJs('./customer/index.php');
           }

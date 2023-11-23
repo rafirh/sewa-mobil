@@ -41,6 +41,13 @@
           <h2 class="text-center mb-4">Daftar</h2>
           <form action="register.php" method="POST">
             <div class="mb-3">
+              <label class="form-label required">Sebagai</label>
+              <select class="form-select" name="role">
+                <option value="customer">Pelanggan</option>
+                <option value="agent">Agen</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label class="form-label required">Nama Lengkap</label>
               <input type="text" name="name" class="form-control" placeholder="Masukkan nama anda">
             </div>
@@ -95,7 +102,7 @@
         </div>
       </div>
       <div class="text-center text-muted mt-5">
-        © 2023 All rights reserved - 💙 Sewa Mobil
+        © 2023 All rights reserved - 💙 Ikuzo Rental
       </div>
     </div>
   </div>
@@ -156,7 +163,12 @@
 
 <?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['name']) && !empty($_POST['confirm_password'])) {
+    if (!empty($_POST['email']) && 
+      !empty($_POST['password']) && 
+      !empty($_POST['name']) && 
+      !empty($_POST['confirm_password'] && 
+      !empty($_POST['role']))
+    ) {
       if ($_POST['password'] != $_POST['confirm_password']) {
         echo "<script>toastr('error', 'Gagal', 'Konfirmasi kata sandi tidak cocok!')</script>";
         exit;
@@ -166,7 +178,22 @@
       $email = htmlspecialchars($_POST['email']);
       $password = password_hash(htmlspecialchars($_POST['password']), PASSWORD_DEFAULT);
 
-      $query = "INSERT INTO user (nama, email, password, role) VALUES ('$name', '$email', '$password', 'customer')";
+      $query = "SELECT * FROM user WHERE email = '$email'";
+      $result = $conn->query($query);
+
+      if ($result->num_rows > 0) {
+        echo "<script>toastr('error', 'Gagal', 'Email sudah terdaftar!')</script>";
+        exit;
+      }
+
+      $allowedRole = ['customer', 'agent'];
+      $role = 'customer';
+      
+      if (in_array($_POST['role'], $allowedRole)) {
+        $role = $_POST['role'];
+      }
+
+      $query = "INSERT INTO user (nama, email, password, role) VALUES ('$name', '$email', '$password', '$role')";
       $result = $conn->query($query);
 
       if ($result) {
