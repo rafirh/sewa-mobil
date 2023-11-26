@@ -1,3 +1,13 @@
+<?php
+require_once('../db/conn.php');
+require_once('../helper/helpers.php');
+redirectIfNotAuthenticated();
+
+if (!checkAgentExist($_SESSION['user']['id'], $conn)) {
+  redirect('lengkapi-data-agen.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +36,12 @@
 
     li.nav-item:hover {
       font-weight: 500;
+    }
+
+    .btn-action-delete:hover {
+      background-color: #e74c3c;
+      color: #ffffff;
+      transition: 0.3s;
     }
   </style>
 </head>

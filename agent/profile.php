@@ -160,7 +160,9 @@ $title = 'Profil';
       $query = "UPDATE user SET nama = '$name', email = '$email', no_hp = '$no_hp', alamat = '$alamat' " . ($foto ? ", foto = '$foto'" : '') . " WHERE id = $id";
 
       if (mysqli_query($conn, $query)) {
+        $agent_id = $_SESSION['user']['agen_id'];
         $_SESSION['user'] = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $id"));
+        $_SESSION['user']['agen_id'] = $agent_id;
         setFlashMessage('success', 'Berhasil mengubah profil');
         redirectJs('./profile.php');
       } else {

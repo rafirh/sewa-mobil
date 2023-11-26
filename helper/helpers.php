@@ -105,7 +105,7 @@ function storeImage($file, $folder) {
   $new_path = $path . $new_filename;
 
   if (!file_exists($path)) {
-    mkdir($path, 777, true);
+    mkdir($path);
   }
 
   move_uploaded_file($tmp, $new_path);
@@ -130,3 +130,42 @@ function checkRequiredFields($fields)
   return true;
 }
 
+function format_rupiah($angka)
+{
+  $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
+  return $hasil_rupiah;
+}
+
+function isParamsExist($params)
+{
+    foreach ($params as $param) {
+      if (isset($_GET[$param]) && !empty($_GET[$param])) {
+        return true;
+      }
+    }
+}
+
+function checkAgentExist($userId, $conn)
+{
+  $query = "SELECT * FROM agen WHERE user_id = $userId";
+  $result = mysqli_query($conn, $query);
+  return mysqli_num_rows($result) > 0;
+}
+
+function getAll($conn, $table, $orderBy = 'id', $orderType = 'ASC')
+{
+  $query = "SELECT * FROM $table";
+  if ($orderBy) {
+    $query .= " ORDER BY $orderBy $orderType";
+  }
+  $result = mysqli_query($conn, $query);
+  return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function getValidOrder($order) {
+  if (strtolower($order) == 'desc') {
+    return 'DESC';
+  }
+
+  return 'ASC';
+}

@@ -152,6 +152,10 @@
         if (password_verify($password, $user['password'])) {
           $_SESSION['user'] = $user;
           if ($user['role'] == 'agent') {
+            $query = "SELECT * FROM agen WHERE user_id = " . $user['id'];
+            $result = $conn->query($query);
+            $_SESSION['user']['agen_id'] = $result->fetch_assoc()['id'];
+
             redirectJs('./agent/index.php');
           } else {
             redirectJs('./customer/index.php');
