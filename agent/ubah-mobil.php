@@ -8,6 +8,7 @@ $merk = getAll($conn, 'merk_mobil', 'id', 'ASC');
 $jenis = getAll($conn, 'jenis_mobil', 'id', 'ASC');
 $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
+$cc = getAll($conn, 'cc', 'id', 'ASC');
 
 if (!isParamsExist(['id'])) {
   redirect('mobil.php');
@@ -26,11 +27,12 @@ if ($mobil['agen_id'] != $_SESSION['user']['agen_id']) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (checkRequiredFields(['merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'nama', 'plat_nomor', 'tahun', 'harga', 'kapasitas'])) {
+  if (checkRequiredFields(['merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'nama', 'plat_nomor', 'tahun', 'harga', 'kapasitas', 'cc_id'])) {
     $merk_id = htmlspecialchars($_POST['merk_id']);
     $jenis_id = htmlspecialchars($_POST['jenis_id']);
     $transmisi_id = htmlspecialchars($_POST['transmisi_id']);
     $warna_id = htmlspecialchars($_POST['warna_id']);
+    $cc_id = htmlspecialchars($_POST['cc_id']);
     $nama = htmlspecialchars($_POST['nama']);
     $plat_nomor = htmlspecialchars($_POST['plat_nomor']);
     $tahun = htmlspecialchars($_POST['tahun']);
@@ -38,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kapasitas = htmlspecialchars($_POST['kapasitas']);
 
     deleteFile($mobil['foto']);
-    if (isset($_FILES['foto'])) {
+    if (isset($_FILES['foto']) && !empty($_FILES['foto']['name'])) {
       $foto = storeImage($_FILES['foto'], 'mobil');
     } else {
       $foto = null;
     }
     
-    $query = "UPDATE mobil SET merk_id = '$merk_id', jenis_id = '$jenis_id', transmisi_id = '$transmisi_id', warna_id = '$warna_id', nama = '$nama', plat_nomor = '$plat_nomor', tahun = '$tahun', harga = '$harga', kapasitas = '$kapasitas', foto = '$foto' WHERE id = $id";
+    $query = "UPDATE mobil SET merk_id = '$merk_id', jenis_id = '$jenis_id', transmisi_id = '$transmisi_id', warna_id = '$warna_id', cc_id = '$cc_id', nama = '$nama', plat_nomor = '$plat_nomor', tahun = '$tahun', harga = '$harga', kapasitas = '$kapasitas', foto = '$foto' WHERE id = $id";
 
     $result = mysqli_query($conn, $query);
 
@@ -133,6 +135,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <option value="" selected disabled>Pilih warna mobil</option>
                     <?php foreach ($warna as $item) : ?>
                       <option value="<?= $item['id'] ?>" <?= $item['id'] == $mobil['warna_id'] ? 'selected' : '' ?>>
+                        <?= $item['nama'] ?>
+                      </option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label class="col-md-4 col-12 col-form-label required">CC</label>
+                <div class="col">
+                  <select required class="form-select" name="cc_id">
+                    <option value="" selected disabled>Pilih cc mobil</option>
+                    <?php foreach ($cc as $item) : ?>
+                      <option value="<?= $item['id'] ?>" <?= $item['id'] == $mobil['cc_id'] ? 'selected' : '' ?>>
                         <?= $item['nama'] ?>
                       </option>
                     <?php endforeach ?>

@@ -1,6 +1,6 @@
 <?php
-$active = 'mobil';
-$title = 'Mobil';
+$active = 'pesan-mobil';
+$title = 'Pesan Mobil';
 
 include('partials/header.php');
 
@@ -23,7 +23,6 @@ $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
 
-$agent_id = $_SESSION['user']['agen_id'];
 $query = "
   SELECT
     mobil.*,
@@ -32,14 +31,16 @@ $query = "
     transmisi.nama AS transmisi,
     warna.nama AS warna,
     warna.kode AS kode_warna,
-    cc.nama AS cc
+    cc.nama AS cc,
+    agen.nama AS agen
   FROM mobil
   JOIN merk_mobil ON merk_mobil.id = mobil.merk_id
   JOIN jenis_mobil ON jenis_mobil.id = mobil.jenis_id
   JOIN transmisi ON transmisi.id = mobil.transmisi_id
   JOIN warna ON warna.id = mobil.warna_id
   JOIN cc ON cc.id = mobil.cc_id
-  WHERE mobil.agen_id = $agent_id
+  JOIN agen ON agen.id = mobil.agen_id
+  WHERE 1 = 1
 ";
 
 if (isParamsExist(['q'])) {
@@ -73,12 +74,7 @@ if (isParamsExist(['warna_id'])) {
 }
 
 if (isParamsExist(['sortby'])) {
-  if (!array_key_exists($_GET['sortby'], $sortables)) {
-    $_GET['sortby'] = 'id';
-  } else {
-    $sortby = $_GET['sortby'];
-  }
-
+  $sortby = htmlspecialchars($_GET['sortby']);
   $order = getValidOrder($_GET['order'] ?? 'ASC');
   $query .= " ORDER BY $sortby $order";
 }
@@ -86,7 +82,6 @@ if (isParamsExist(['sortby'])) {
 $result = $conn->query($query);
 $cars = $result->fetch_all(MYSQLI_ASSOC);
 ?>
-
 
 <style>
   .image-preview:hover {
@@ -105,27 +100,8 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Daftar Mobil
+          Pesan Mobil
         </h3>
-      </div>
-      <div class="col-auto ms-auto d-print-none mt-3">
-        <div class="btn-list d-flex">
-          <a href="tambah-mobil.php" class="btn btn-primary d-none d-sm-inline-block" id="btnAdd">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M12 5l0 14"></path>
-              <path d="M5 12l14 0"></path>
-            </svg>
-            Tambah Mobil
-          </a>
-          <a href="tambah-mobil.php" class="btn btn-primary d-sm-none btn-icon" data-bs-tooltip="Tambah Mobil" data-bs-placement="left">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M12 5l0 14"></path>
-              <path d="M5 12l14 0"></path>
-            </svg>
-          </a>
-        </div>
       </div>
     </div>
     <div class="row g-2 align-items-center">
@@ -147,9 +123,9 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
           </svg>
         </a>
       </div>
-      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'cc_id'])) : ?>
+      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id'])) : ?>
         <div class="col-auto mt-3">
-          <a href="mobil.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
+          <a href="pesan-mobil.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M4 7h16"></path>
@@ -167,151 +143,84 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
 <!-- Page body -->
 <div class="page-body">
   <div class="container-xl">
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <div class="table-responsive">
-            <table class="table card-table table-vcenter text-nowrap datatable">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Foto</th>
-                  <th>Nama</th>
-                  <th>Plat Nomor</th>
-                  <th>Harga</th>
-                  <th>Kapasitas</th>
-                  <th>Merk</th>
-                  <th>Transmisi</th>
-                  <th>Warna</th>
-                  <th>CC</th>
-                  <th>Jenis</th>
-                  <th>Tahun Keluaran</th>
-                  <th>Status</th>
-                  <th class="text-center">Opsi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($cars as $index => $car) : ?>
-                  <tr class="text-muted">
-                    <td>
-                      <?= $index + 1 ?>
-                    </td>
-                    <td>
-                      <a class="avatar me-2 image-preview cursor-pointer" data-fslightbox="image-<?= $index + 1 ?>" href="<?= asset($car['foto'] != '' ? $car['foto'] : 'images/default.png') ?>" style="background-image: url(<?= asset($car['foto'] != '' ? $car['foto'] : 'images/default.png') ?>)">
-                      </a>
-                    </td>
-                    <td>
-                      <span <?= add_title_tooltip($car['nama'], 24) ?>>
-                        <?= mb_strimwidth($car['nama'], 0, 24, '...') ?>
-                      </span>
-                    </td>
-                    <td>
-                      <span <?= add_title_tooltip($car['plat_nomor'], 24) ?>>
-                        <?= mb_strimwidth($car['plat_nomor'], 0, 24, '...') ?>
-                      </span>
-                    </td>
-                    <td>
-                      <?= format_rupiah($car['harga']) ?>
-                    </td>
-                    <td>
-                      <?= $car['kapasitas'] ?> Orang
-                    </td>
-                    <td>
-                      <?= $car['merk'] ?>
-                    </td>
-                    <td>
-                      <?= $car['transmisi'] ?>
-                    </td>
-                    <td>
-                      <span class="badge me-1" style="background-color: <?= $car['kode_warna'] ?>;"></span>
-                      <?= $car['warna'] ?>
-                    </td>
-                    <td>
-                      <?= $car['cc'] ?> CC
-                    </td>
-                    <td>
-                      <?= $car['jenis'] ?>
-                    </td>
-                    <td>
-                      <?= $car['tahun'] ?>
-                    </td>
-                    <td>
-                      <span class="badge badge-outline text-<?= $car['status'] == 'available' ? 'green' : 'pink' ?>">
-                        <?= $car['status'] == 'available' ? 'Tersedia' : 'Tidak Tersedia' ?>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="d-flex justify-content-center">
-                        <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <circle cx="12" cy="12" r="1">
-                            </circle>
-                            <circle cx="12" cy="19" r="1">
-                            </circle>
-                            <circle cx="12" cy="5" r="1">
-                            </circle>
-                          </svg>
-                        </button>
-                        <div class="text-muted dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item" href="ubah-mobil.php?id=<?= $car['id'] ?>">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                              </path>
-                              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                              </path>
-                              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                              </path>
-                              <path d="M16 5l3 3"></path>
-                            </svg>
-                            Ubah
-                          </a>
-                          <button class="dropdown-item btn-action-delete" data-id="<?= $car['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDelete">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                              <line x1="4" y1="7" x2="20" y2="7" />
-                              <line x1="10" y1="11" x2="10" y2="17" />
-                              <line x1="14" y1="11" x2="14" y2="17" />
-                              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                            </svg>
-                            Hapus
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                <?php endforeach ?>
-                <?php if (count($cars) == 0) : ?>
-                  <tr class="text-center">
-                    <td colspan="99">
-                      <div class="empty bg-transparent" style="height: 500px;">
-                        <div class="empty-img"><img src="<?= asset('images\error\undraw_quitting_time_dm8t.svg') ?>" height="128">
-                        </div>
-                        <p class="empty-title">Mobil tidak ditemukan</p>
-                        <p class="empty-subtitle text-muted">
-                          Coba sesuaikan pencarian atau filter untuk menemukan apa yang anda cari.
-                        </p>
-                        <div class="empty-action">
-                          <a href="mobil.php" class="btn btn-outline-danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                              </path>
-                              <path d="M4 7l16 0m-10 4l0 6m4 -6l0 6m-9 -10l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12m-10 0v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3">
-                              </path>
-                            </svg>
-                            Bersihkan filter pencarian
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                <?php endif ?>
-              </tbody>
-            </table>
+    <div class="row row-deck row-cards" style="overflow-y: auto;">
+      <?php foreach ($cars as $index => $car) : ?>
+        <div class="col-sm-4 col-md-4 col-xl-3">
+          <div class="card">
+            <a data-fslightbox="gallery<?= $index ?>" href="<?= asset($car['foto'] != '' ? $car['foto'] : 'images/default.png') ?>">
+              <div class="img-responsive card-img-top" style="background-image: url(<?= asset($car['foto'] != '' ? $car['foto'] : 'images/default.png') ?>)">
+              </div>
+            </a>
+            <a class="text-reset text-decoration-none" href="detail-mobil.php?id=<?= $car['id'] ?>">
+              <div class="card-body p-3">
+                <span class="badge badge-outline text-indigo fs-6"><?= $car['merk'] ?></span>
+                <h3 class="m-0 mb-1 mt-1">
+                  <?= $car['nama'] ?> <span class="text-muted fs-5">(<?= $car['cc'] ?> cc)</span>
+                </h3>
+                <div class="text-muted mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
+                    <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M17 10h2a2 2 0 0 1 2 2v1" />
+                    <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
+                  </svg>
+                  <?= $car['kapasitas'] ?> orang
+                </div>
+                <div class="text-muted mb-1">
+                  <?= format_rupiah($car['harga']) ?> / hari
+                </div>
+                <div class="text-muted mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-store" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 21l18 0" />
+                    <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+                    <path d="M5 21l0 -10.15" />
+                    <path d="M19 21l0 -10.15" />
+                    <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+                  </svg>
+                  <?= $car['agen'] ?>
+                </div>
+              </div>
+            </a>
+            <div class="card-footer" style="padding: 0.5rem 1rem;">
+              <a href="#" class="btn btn-outline-indigo w-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M17 17h-11v-14h-2" />
+                  <path d="M6 5l14 1l-1 7h-13" />
+                </svg>
+                Pesan
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      <?php endforeach ?>
+
+      <?php if (count($cars) == 0) : ?>
+        <div class="empty d-flex flex-column justify-content-center align-items-center" style="min-height: 30rem;">
+          <div class="empty-img"><img src="<?= asset('images\error\undraw_quitting_time_dm8t.svg') ?>" height="128"></div>
+          <p class="empty-title">Mobil tidak ditemukan</p>
+          <p class="empty-subtitle text-muted">
+            Sesuaikan kata kunci pencarian atau filter yang digunakan.
+          </p>
+          <div class="empty-action">
+            <a href="pesan-pesan-mobil.php" class="btn btn-outline-danger">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                </path>
+                <path d="M4 7l16 0m-10 4l0 6m4 -6l0 6m-9 -10l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12m-10 0v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3">
+                </path>
+              </svg>
+              Bersihkan filter pencarian
+            </a>
+          </div>
+        </div>
+      <?php endif ?>
     </div>
   </div>
 </div>
@@ -453,43 +362,6 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
   </div>
 </div>
 
-<!-- Modal Delete -->
-<div class="modal modal-blur fade" id="modalDelete" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      <div class="modal-status bg-danger"></div>
-      <div class="modal-body text-center py-4">
-        <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M12 9v2m0 4v.01" />
-          <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-        </svg>
-        <h3>Apakah anda yakin?</h3>
-        <div class="text-muted">Data yang dihapus tidak dapat dipulihkan.</div>
-      </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                Batal
-              </a></div>
-            <div class="col">
-              <form method="post" id="formDelete" action="hapus-mobil.php">
-                <input type="hidden" name="id" value="" id="inputDeleteId">
-                <button type="submit" class="btn btn-danger w-100" id="btnDelete">
-                  Ya, hapus
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="<?= asset('plugins/tabler/dist/libs/fslightbox/index.js') ?>" defer></script>
 
 <script>
@@ -513,13 +385,6 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
     q.value = inputSearch.value;
     formOption.submit();
   }
-
-  const modalDelete = document.getElementById('modalDelete');
-
-  modalDelete.addEventListener('show.bs.modal', function(event) {
-    const inputDeleteId = document.getElementById('inputDeleteId');
-    inputDeleteId.value = event.relatedTarget.dataset.id;
-  });
 </script>
 
 <?php include('partials/footer.php') ?>

@@ -169,3 +169,21 @@ function getValidOrder($order) {
 
   return 'ASC';
 }
+
+function checkRole($role, $loginPath = null) {
+  if (!isset($_SESSION['user'])) {
+    redirect($loginPath ?? '../login.php');
+  }
+
+  if ($_SESSION['user']['role'] == $role) {
+    return;
+  }
+
+  if ($_SESSION['user']['role'] == 'administrator') {
+    redirect('../admin/index.php');
+  } else if ($_SESSION['user']['role'] == 'agent') {
+    redirect('../agent/index.php');
+  } else {
+    redirect('../customer/index.php');
+  }
+}

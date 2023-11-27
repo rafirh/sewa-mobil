@@ -2,6 +2,7 @@
 require_once('../db/conn.php');
 require_once('../helper/helpers.php');
 redirectIfNotAuthenticated();
+checkRole('agent');
 
 if (!checkAgentExist($_SESSION['user']['id'], $conn)) {
   redirect('lengkapi-data-agen.php');

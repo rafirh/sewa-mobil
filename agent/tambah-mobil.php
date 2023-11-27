@@ -8,6 +8,7 @@ $merk = getAll($conn, 'merk_mobil', 'id', 'ASC');
 $jenis = getAll($conn, 'jenis_mobil', 'id', 'ASC');
 $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
+$cc = getAll($conn, 'cc', 'id', 'ASC');
 ?>
 
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
@@ -73,6 +74,17 @@ $warna = getAll($conn, 'warna', 'id', 'ASC');
                   <select required class="form-select" name="warna_id">
                     <option value="" selected disabled>Pilih warna mobil</option>
                     <?php foreach ($warna as $item) : ?>
+                      <option value="<?= $item['id'] ?>"><?= $item['nama'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label class="col-md-4 col-12 col-form-label required">CC</label>
+                <div class="col">
+                  <select required class="form-select" name="cc_id">
+                    <option value="" selected disabled>Pilih cc mobil</option>
+                    <?php foreach ($cc as $item) : ?>
                       <option value="<?= $item['id'] ?>"><?= $item['nama'] ?></option>
                     <?php endforeach ?>
                   </select>
@@ -148,11 +160,12 @@ $warna = getAll($conn, 'warna', 'id', 'ASC');
 
 <?php 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (checkRequiredFields(['merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'nama', 'plat_nomor', 'tahun', 'harga', 'kapasitas'])) {
+    if (checkRequiredFields(['merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'cc_id', 'nama', 'plat_nomor', 'tahun', 'harga', 'kapasitas'])) {
       $merk_id = htmlspecialchars($_POST['merk_id']);
       $jenis_id = htmlspecialchars($_POST['jenis_id']);
       $transmisi_id = htmlspecialchars($_POST['transmisi_id']);
       $warna_id = htmlspecialchars($_POST['warna_id']);
+      $cc_id = htmlspecialchars($_POST['cc_id']);
       $nama = htmlspecialchars($_POST['nama']);
       $plat_nomor = htmlspecialchars($_POST['plat_nomor']);
       $tahun = htmlspecialchars($_POST['tahun']);
@@ -160,14 +173,14 @@ $warna = getAll($conn, 'warna', 'id', 'ASC');
       $kapasitas = htmlspecialchars($_POST['kapasitas']);
       $agen_id = $_SESSION['user']['agen_id'];
 
-      if (isset($_FILES['foto'])) {
+      if (isset($_FILES['foto']) && !empty($_FILES['foto']['name'])) {
         $foto = storeImage($_FILES['foto'], 'mobil');
       } else {
         $foto = null;
       }
 
       
-      $query = "INSERT INTO mobil (merk_id, jenis_id, transmisi_id, warna_id, nama, plat_nomor, tahun, harga, kapasitas, agen_id, foto) VALUES ('$merk_id', '$jenis_id', '$transmisi_id', '$warna_id', '$nama', '$plat_nomor', '$tahun', '$harga', '$kapasitas', '$agen_id'" . ($foto ? ", '$foto'" : ", null") . ")";
+      $query = "INSERT INTO mobil (merk_id, jenis_id, transmisi_id, warna_id, cc_id, nama, plat_nomor, tahun, harga, kapasitas, agen_id, foto) VALUES ('$merk_id', '$jenis_id', '$transmisi_id', '$warna_id', '$cc_id', '$nama', '$plat_nomor', '$tahun', '$harga', '$kapasitas', '$agen_id', '$foto')";
       $result = mysqli_query($conn, $query);
 
       if ($result) {
