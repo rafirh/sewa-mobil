@@ -5,7 +5,7 @@ $title = 'Detail Mobil';
 include('partials/header.php');
 
 if (!isParamsExist(['id'])) {
-  redirect('pesan-mobil.php');
+  redirect('mobil.php');
 }
 
 $id = $_GET['id'];
@@ -33,8 +33,13 @@ $qeury = "
 $result = mysqli_query($conn, $qeury);
 $car = mysqli_fetch_assoc($result);
 
+
 if (!$car) {
-  redirect('pesan-mobil.php');
+  redirect('mobil.php');
+}
+
+if ($car['agen_id'] != $_SESSION['user']['agen_id']) {
+  redirect('mobil.php');
 }
 ?>
 
@@ -51,7 +56,7 @@ if (!$car) {
           </div>
           <div class="col-auto ms-auto d-print-none">
             <div class="btn-list d-flex">
-              <a href="pesan-mobil.php" class="btn btn-outline-primary d-none d-sm-inline-block">
+              <a href="mobil.php" class="btn btn-outline-primary d-none d-sm-inline-block">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                   <path d="M5 12l14 0"></path>
@@ -60,7 +65,7 @@ if (!$car) {
                 </svg>
                 Kembali
               </a>
-              <a href="pesan-mobil.php" class="btn btn-outline-primary d-sm-none btn-icon" aria-label="Kembali">
+              <a href="mobil.php" class="btn btn-outline-primary d-sm-none btn-icon" aria-label="Kembali">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                   <path d="M5 12l14 0"></path>
@@ -85,15 +90,17 @@ if (!$car) {
           <div class="card-header">
             <h3 class="card-title"><?= $car['nama'] ?></h3>
             <div class="card-actions">
-              <a href="#" class="btn btn-outline-primary w-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                  <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                  <path d="M17 17h-11v-14h-2" />
-                  <path d="M6 5l14 1l-1 7h-13" />
+              <a class="btn btn-outline-primary w-100" href="ubah-mobil.php?id=<?= $car['id'] ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                  </path>
+                  <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                  </path>
+                  <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                  </path>
+                  <path d="M16 5l3 3"></path>
                 </svg>
-                Pesan
+                Ubah
               </a>
             </div>
           </div>

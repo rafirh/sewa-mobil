@@ -186,7 +186,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
               </div>
             </a>
             <div class="card-footer" style="padding: 0.5rem 1rem;">
-              <a href="#" class="btn btn-outline-indigo w-100">
+              <a href="#" class="btn btn-outline-primary w-100">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />

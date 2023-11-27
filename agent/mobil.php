@@ -183,9 +183,6 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                   <th>Merk</th>
                   <th>Transmisi</th>
                   <th>Warna</th>
-                  <th>CC</th>
-                  <th>Jenis</th>
-                  <th>Tahun Keluaran</th>
                   <th>Status</th>
                   <th class="text-center">Opsi</th>
                 </tr>
@@ -227,15 +224,6 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                       <?= $car['warna'] ?>
                     </td>
                     <td>
-                      <?= $car['cc'] ?> CC
-                    </td>
-                    <td>
-                      <?= $car['jenis'] ?>
-                    </td>
-                    <td>
-                      <?= $car['tahun'] ?>
-                    </td>
-                    <td>
                       <span class="badge badge-outline text-<?= $car['status'] == 'available' ? 'green' : 'pink' ?>">
                         <?= $car['status'] == 'available' ? 'Tersedia' : 'Tidak Tersedia' ?>
                       </span>
@@ -254,6 +242,16 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                           </svg>
                         </button>
                         <div class="text-muted dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item" href="detail-mobil.php?id=<?= $car['id'] ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                              <path d="M9 17h6" />
+                              <path d="M9 13h6" />
+                            </svg>
+                            Detail
+                          </a>
                           <a class="dropdown-item" href="ubah-mobil.php?id=<?= $car['id'] ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                               <path stroke="none" d="M0 0h24v24H0z" fill="none">
@@ -411,37 +409,37 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                 <?php endforeach ?>
               </select>
             </div>
-          <div class="col-md-6 mb-3">
-            <div class="form-label">Urutan</div>
-            <div class="form-selectgroup">
-              <label class="form-selectgroup-item">
-                <input type="radio" name="order" value="asc" class="form-selectgroup-input" <?= ($_GET['order'] ?? '') == 'asc' ? 'checked' : '' ?>>
-                <span class="form-selectgroup-label">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sort-ascending-letters me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4"></path>
-                    <path d="M19 21h-4l4 -7h-4"></path>
-                    <path d="M4 15l3 3l3 -3"></path>
-                    <path d="M7 6v12"></path>
-                  </svg>
-                  Ascending
-                </span>
-              </label>
-              <label class="form-selectgroup-item">
-                <input type="radio" name="order" value="desc" class="form-selectgroup-input" <?= ($_GET['order'] ?? '') == 'desc' ? 'checked' : '' ?>>
-                <span class="form-selectgroup-label">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sort-descending-letters me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M15 21v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4"></path>
-                    <path d="M19 10h-4l4 -7h-4"></path>
-                    <path d="M4 15l3 3l3 -3"></path>
-                    <path d="M7 6v12"></path>
-                  </svg>
-                  Descending
-                </span>
-              </label>
+            <div class="col-md-6 mb-3">
+              <div class="form-label">Urutan</div>
+              <div class="form-selectgroup">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="order" value="asc" class="form-selectgroup-input" <?= ($_GET['order'] ?? '') == 'asc' ? 'checked' : '' ?>>
+                  <span class="form-selectgroup-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sort-ascending-letters me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4"></path>
+                      <path d="M19 21h-4l4 -7h-4"></path>
+                      <path d="M4 15l3 3l3 -3"></path>
+                      <path d="M7 6v12"></path>
+                    </svg>
+                    Ascending
+                  </span>
+                </label>
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="order" value="desc" class="form-selectgroup-input" <?= ($_GET['order'] ?? '') == 'desc' ? 'checked' : '' ?>>
+                  <span class="form-selectgroup-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sort-descending-letters me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M15 21v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4"></path>
+                      <path d="M19 10h-4l4 -7h-4"></path>
+                      <path d="M4 15l3 3l3 -3"></path>
+                      <path d="M7 6v12"></path>
+                    </svg>
+                    Descending
+                  </span>
+                </label>
+              </div>
             </div>
-          </div>
           </div>
         </div>
         <div class="modal-footer">
