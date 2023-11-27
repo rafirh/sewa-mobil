@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 26, 2023 at 01:39 PM
+-- Generation Time: Nov 27, 2023 at 09:28 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -44,6 +44,62 @@ CREATE TABLE `agen` (
 
 INSERT INTO `agen` (`id`, `user_id`, `nama`, `alamat`, `telepon`, `no_rekening`, `bank`, `atas_nama`) VALUES
 (1, 2, 'Sumber Rejeki', 'Jalan MT. Haryono No.3 Malang', '08885477865', '00829123242', 'BRI', 'Agus Mulyanto');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cc`
+--
+
+CREATE TABLE `cc` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cc`
+--
+
+INSERT INTO `cc` (`id`, `nama`) VALUES
+(1, '800'),
+(2, '1000'),
+(3, '1200'),
+(4, '1300'),
+(5, '1400'),
+(6, '1500'),
+(7, '1600'),
+(8, '1800'),
+(9, '2000'),
+(10, '2200'),
+(11, '2400'),
+(12, '2500'),
+(13, '3000'),
+(14, '3500'),
+(15, '4000'),
+(16, '4500'),
+(17, '5000'),
+(18, '5500'),
+(19, '6000'),
+(20, '6500'),
+(21, '7000'),
+(22, '7500'),
+(23, '8000'),
+(24, '8500'),
+(25, '9000'),
+(26, '9500'),
+(27, '10000'),
+(28, '10500'),
+(29, '11000'),
+(30, '11500'),
+(31, '12000'),
+(32, '12500'),
+(33, '13000'),
+(34, '13500'),
+(35, '14000'),
+(36, '14500'),
+(37, '15000'),
+(38, '15500'),
+(39, '16000');
 
 -- --------------------------------------------------------
 
@@ -163,12 +219,13 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(3, '2023_11_23_145803_agen', 1),
-(4, '2023_11_23_150759_warna', 1),
-(5, '2023_11_23_151055_transmisi', 1),
-(6, '2023_11_23_151832_jenis__mobil', 1),
-(7, '2023_11_23_152134_merk_mobil', 1),
-(8, '2023_11_23_152650_mobil', 1);
+(3, '2023_11_23_053535_cc', 1),
+(4, '2023_11_23_145803_agen', 1),
+(5, '2023_11_23_150759_warna', 1),
+(6, '2023_11_23_151055_transmisi', 1),
+(7, '2023_11_23_151832_jenis__mobil', 1),
+(8, '2023_11_23_152134_merk_mobil', 1),
+(9, '2023_11_23_152650_mobil', 1);
 
 -- --------------------------------------------------------
 
@@ -183,6 +240,7 @@ CREATE TABLE `mobil` (
   `jenis_id` bigint(20) UNSIGNED NOT NULL,
   `transmisi_id` bigint(20) UNSIGNED NOT NULL,
   `warna_id` bigint(20) UNSIGNED NOT NULL,
+  `cc_id` bigint(20) UNSIGNED NOT NULL,
   `nama` varchar(255) NOT NULL,
   `plat_nomor` varchar(255) NOT NULL,
   `tahun` varchar(255) DEFAULT NULL,
@@ -191,6 +249,14 @@ CREATE TABLE `mobil` (
   `foto` varchar(255) DEFAULT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `mobil`
+--
+
+INSERT INTO `mobil` (`id`, `agen_id`, `merk_id`, `jenis_id`, `transmisi_id`, `warna_id`, `cc_id`, `nama`, `plat_nomor`, `tahun`, `harga`, `kapasitas`, `foto`, `status`) VALUES
+(1, 1, 1, 1, 2, 1, 6, 'Toyota Expander', 'N 1234 AG', '2022', 150000, 6, '', 'available'),
+(2, 1, 2, 4, 3, 2, 2, 'Brio', 'B 8287 KL', '2013', 80000, 4, '', 'available');
 
 -- --------------------------------------------------------
 
@@ -256,9 +322,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`, `role`) VALUES
-(1, 'Administator', 'admin@gmail.com', '$2y$12$fPxST.WtIVa3JSv3vxhYUerB64bbbS50EhAuZbJ7BYGFECm5DPetS', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
-(2, 'Agent Rental Mobil', 'agent@gmail.com', '$2y$12$dB52aZINCt8o5ymFQNuWyueIeBgCB7eRMZ9mBCSd39HVfqskLNmPi', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(3, 'John Doe', 'customer@gmail.com', '$2y$12$sxabSKdKCyglhZ0Ja.7xC.QZ8Zm6TqF6FBb1YvwjvRB6cIWp3M.My', 'Jl. Mawar', '08123456789', NULL, 'customer');
+(1, 'Administator', 'admin@gmail.com', '$2y$12$H4qeeBsytKINTgZr5i8UP.78aQQbojRdVSKQbpMMUmkZq.Mcu3wHq', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
+(2, 'Agent Rental Mobil', 'agent@gmail.com', '$2y$12$UtDDpLT4CNqXm4DP0VPoMeFtIc4r7OArw32UJndSQiKR6eWT74n3O', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(3, 'John Doe', 'customer@gmail.com', '$2y$12$10hLDZnRPux9E34F7hzHCO78F8B4u74IZy3ugIK1b9XIZsSUPxj8a', 'Jl. Mawar', '08123456789', NULL, 'customer');
 
 -- --------------------------------------------------------
 
@@ -313,6 +379,12 @@ ALTER TABLE `agen`
   ADD KEY `agen_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `cc`
+--
+ALTER TABLE `cc`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `jenis_mobil`
 --
 ALTER TABLE `jenis_mobil`
@@ -339,7 +411,8 @@ ALTER TABLE `mobil`
   ADD KEY `mobil_merk_id_foreign` (`merk_id`),
   ADD KEY `mobil_jenis_id_foreign` (`jenis_id`),
   ADD KEY `mobil_transmisi_id_foreign` (`transmisi_id`),
-  ADD KEY `mobil_warna_id_foreign` (`warna_id`);
+  ADD KEY `mobil_warna_id_foreign` (`warna_id`),
+  ADD KEY `mobil_cc_id_foreign` (`cc_id`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -379,6 +452,12 @@ ALTER TABLE `agen`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `cc`
+--
+ALTER TABLE `cc`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
 -- AUTO_INCREMENT for table `jenis_mobil`
 --
 ALTER TABLE `jenis_mobil`
@@ -394,13 +473,13 @@ ALTER TABLE `merk_mobil`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `mobil`
 --
 ALTER TABLE `mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -441,6 +520,7 @@ ALTER TABLE `agen`
 --
 ALTER TABLE `mobil`
   ADD CONSTRAINT `mobil_agen_id_foreign` FOREIGN KEY (`agen_id`) REFERENCES `agen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mobil_cc_id_foreign` FOREIGN KEY (`cc_id`) REFERENCES `cc` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_jenis_id_foreign` FOREIGN KEY (`jenis_id`) REFERENCES `jenis_mobil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_merk_id_foreign` FOREIGN KEY (`merk_id`) REFERENCES `merk_mobil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_transmisi_id_foreign` FOREIGN KEY (`transmisi_id`) REFERENCES `transmisi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
