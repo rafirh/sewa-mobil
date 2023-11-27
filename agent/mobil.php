@@ -369,7 +369,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
               <div class="form-label">Transmisi</div>
               <select class="form-select" name="transmisi_id">
                 <option value="" disabled selected>Pilih</option>
-                <?php foreach ($warna as $item) : ?>
+                <?php foreach ($transmisi as $item) : ?>
                   <option value="<?= $item['id'] ?>" <?= ($_GET['transmisi_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
                     <?= $item['nama'] ?>
                   </option>

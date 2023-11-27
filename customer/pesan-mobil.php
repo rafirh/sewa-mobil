@@ -93,6 +93,12 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
   .image-preview {
     background-color: transparent;
   }
+
+  .car-detail:hover {
+    background-color: #f5f5f5;
+    transition: 0.3s;
+    cursor: pointer;
+  }
 </style>
 
 <div class="page-header d-print-none mt-2">
@@ -152,7 +158,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
               </div>
             </a>
             <a class="text-reset text-decoration-none" href="detail-mobil.php?id=<?= $car['id'] ?>">
-              <div class="card-body p-3">
+              <div class="card-body p-3 car-detail">
                 <span class="badge badge-outline text-indigo fs-6"><?= $car['merk'] ?></span>
                 <h3 class="m-0 mb-1 mt-1">
                   <?= $car['nama'] ?> <span class="text-muted fs-5">(<?= $car['cc'] ?> cc)</span>
@@ -280,7 +286,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
               <div class="form-label">Transmisi</div>
               <select class="form-select" name="transmisi_id">
                 <option value="" disabled selected>Pilih</option>
-                <?php foreach ($warna as $item) : ?>
+                <?php foreach ($transmisi as $item) : ?>
                   <option value="<?= $item['id'] ?>" <?= ($_GET['transmisi_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
                     <?= $item['nama'] ?>
                   </option>
