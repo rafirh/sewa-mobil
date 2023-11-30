@@ -49,18 +49,18 @@
             </div>
             <div class="mb-3">
               <label class="form-label required">Nama Lengkap</label>
-              <input type="text" name="name" class="form-control" placeholder="Masukkan nama anda">
+              <input required type="text" name="name" class="form-control" placeholder="Masukkan nama anda">
             </div>
             <div class="mb-3">
               <label class="form-label required">Email</label>
-              <input type="text" name="email" class="form-control" placeholder="Masukkan email" id="email">
+              <input required type="text" name="email" class="form-control" placeholder="Masukkan email" id="email">
             </div>
             <div class="mb-3">
               <label class="form-label required">
                 Kata Sandi
               </label>
               <div class="input-group input-group-flat">
-                <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi">
+                <input required type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi">
                 <span class="input-group-text">
                   <a class="link-secondary" data-bs-toggle="tooltip" id="btnShowPassword" title="Tampilakn kata sandi" onclick="event.preventDefault();">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -77,7 +77,7 @@
                 Konfirmasi Kata Sandi
               </label>
               <div class="input-group input-group-flat">
-                <input type="password" id="confirmPassword" name="confirm_password" class="form-control" placeholder="Masukkan konfirmasi kata sandi">
+                <input required type="password" id="confirmPassword" name="confirm_password" class="form-control" placeholder="Masukkan konfirmasi kata sandi">
                 <span class="input-group-text">
                   <a class="link-secondary" data-bs-toggle="tooltip" id="btnShowPasswordConfirm" title="Tampilakn kata sandi" onclick="event.preventDefault();">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -88,6 +88,14 @@
                   </a>
                 </span>
               </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label required">No. Telepon</label>
+              <input required type="text" name="no_hp" class="form-control" placeholder="Masukkan nomor telepon">
+            </div>
+            <div class="mb-3">
+              <label class="form-label required">Alamat</label>
+              <input required type="text" name="alamat" class="form-control" placeholder="Masukkan alamat">
             </div>
             <div class="form-footer">
               <button type="submit" class="btn btn-primary w-100">Daftar</button>
@@ -163,7 +171,7 @@
 
 <?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (checkRequiredFields(['name', 'email', 'password', 'confirm_password'])) {
+    if (checkRequiredFields(['name', 'email', 'password', 'confirm_password', 'role', 'no_hp', 'alamat'])) {
       if ($_POST['password'] != $_POST['confirm_password']) {
         echo "<script>toastr('error', 'Gagal', 'Konfirmasi kata sandi tidak cocok!')</script>";
         exit;
@@ -172,6 +180,8 @@
       $name = htmlspecialchars($_POST['name']);
       $email = htmlspecialchars($_POST['email']);
       $password = password_hash(htmlspecialchars($_POST['password']), PASSWORD_DEFAULT);
+      $no_hp = htmlspecialchars($_POST['no_hp']);
+      $alamat = htmlspecialchars($_POST['alamat']);
 
       $query = "SELECT * FROM user WHERE email = '$email'";
       $result = $conn->query($query);
@@ -188,7 +198,7 @@
         $role = $_POST['role'];
       }
 
-      $query = "INSERT INTO user (nama, email, password, role) VALUES ('$name', '$email', '$password', '$role')";
+      $query = "INSERT INTO user (nama, email, password, role, alamat, no_hp) VALUES ('$name', '$email', '$password', '$role', '$alamat', '$no_hp')";
       $result = $conn->query($query);
 
       if ($result) {
