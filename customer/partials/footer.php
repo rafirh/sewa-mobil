@@ -15,6 +15,7 @@
   </div>
 
   <script src="<?= asset('plugins/tabler/dist/js/tabler.min.js') ?>" defer></script>
+  <script src="<?= asset('plugins/tabler/dist/js/demo-theme.min.js') ?>" defer></script>
 
   <script>
     const changeDateTime = () => {
