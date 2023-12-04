@@ -40,7 +40,7 @@ $query = "
   JOIN warna ON warna.id = mobil.warna_id
   JOIN cc ON cc.id = mobil.cc_id
   JOIN agen ON agen.id = mobil.agen_id
-  WHERE 1 = 1
+  WHERE status = 'available'
 ";
 
 if (isParamsExist(['q'])) {
