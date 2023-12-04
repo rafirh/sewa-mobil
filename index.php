@@ -65,6 +65,13 @@ $cars = mysqli_fetch_all($result, MYSQLI_ASSOC);
         color: white;
         transition: 0.3s;
       }
+
+
+      @media screen and (min-width: 768px) {
+        .hero-text {
+          width: 50%;
+        }
+      }
     </style>
   </head>
 
@@ -129,10 +136,10 @@ $cars = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             <div class="hero-content">
               <h2 class="h1 hero-title" style="font-weight: 900;">
-                Platform sewa mobil dengan mudah dan cepat
+                Platform sewa mobil mudah dan cepat
               </h2>
 
-              <p class="hero-text" style="width: 50%;">
+              <p class="hero-text">
                 Ikuzo Rental adalah platform penyedia layanan sewa mobil yang menyediakan berbagai macam mobil dengan harga yang terjangkau.
               </p>
             </div>
