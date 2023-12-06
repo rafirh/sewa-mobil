@@ -22,6 +22,8 @@ $jenis = getAll($conn, 'jenis_mobil', 'id', 'ASC');
 $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
+$agen = getAll($conn, 'agen', 'id', 'ASC');
+$tipe = getAll($conn, 'tipe_mobil', 'id', 'ASC');
 
 $query = "
   SELECT
@@ -71,6 +73,21 @@ if (isParamsExist(['transmisi_id'])) {
 if (isParamsExist(['warna_id'])) {
   $warna_id = htmlspecialchars($_GET['warna_id']);
   $query .= " AND mobil.warna_id = $warna_id";
+}
+
+if (isParamsExist(['cc_id'])) {
+  $cc_id = htmlspecialchars($_GET['cc_id']);
+  $query .= " AND mobil.cc_id = $cc_id";
+}
+
+if (isParamsExist(['tipe_id'])) {
+  $tipe_id = htmlspecialchars($_GET['tipe_id']);
+  $query .= " AND mobil.tipe_id = $tipe_id";
+}
+
+if (isParamsExist(['agen_id'])) {
+  $agen_id = htmlspecialchars($_GET['agen_id']);
+  $query .= " AND mobil.agen_id = $agen_id";
 }
 
 if (isParamsExist(['sortby'])) {
@@ -129,7 +146,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
           </svg>
         </a>
       </div>
-      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id'])) : ?>
+      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'cc_id', 'tipe_id', 'agen_id'])) : ?>
         <div class="col-auto mt-3">
           <a href="pesan-mobil.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -244,21 +261,15 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6 mb-3">
-              <div class="form-label">Status</div>
-              <div class="form-selectgroup">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="status" value="available" class="form-selectgroup-input" <?= ($_GET['status'] ?? '') == 'available' ? 'checked' : '' ?>>
-                  <span class="form-selectgroup-label">
-                    Tersedia
-                  </span>
-                </label>
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="status" value="unavailable" class="form-selectgroup-input" <?= ($_GET['status'] ?? '') == 'unavailable' ? 'checked' : '' ?>>
-                  <span class="form-selectgroup-label">
-                    Tidak Tersedia
-                  </span>
-                </label>
-              </div>
+              <div class="form-label">Agen</div>
+              <select class="form-select" name="agen_id">
+                <option value="" disabled selected>Pilih</option>
+                <?php foreach ($agen as $item) : ?>
+                  <option value="<?= $item['id'] ?>" <?= ($_GET['agen_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
+                    <?= $item['nama'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-label">Merk</div>
@@ -310,6 +321,17 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                 <option value="" disabled selected>Pilih</option>
                 <?php foreach ($cc as $item) : ?>
                   <option value="<?= $item['id'] ?>" <?= ($_GET['cc_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
+                    <?= $item['nama'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-label">Tipe</div>
+              <select class="form-select" name="tipe_id">
+                <option value="" disabled selected>Pilih</option>
+                <?php foreach ($tipe as $item) : ?>
+                  <option value="<?= $item['id'] ?>" <?= ($_GET['tipe_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
                     <?= $item['nama'] ?>
                   </option>
                 <?php endforeach ?>
