@@ -91,6 +91,8 @@ if (isParamsExist(['sortby'])) {
 
   $order = getValidOrder($_GET['order'] ?? 'ASC');
   $query .= " ORDER BY $sortby $order";
+} else {
+  $query .= " ORDER BY id DESC";
 }
 
 $result = $conn->query($query);
