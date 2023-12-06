@@ -15,6 +15,7 @@ $sortables = [
   'transmisi_id' => 'Transmisi',
   'warna_id' => 'Warna',
   'cc_id' => 'CC',
+  'tipe_id' => 'Tipe',
 ];
 
 $merk = getAll($conn, 'merk_mobil', 'id', 'ASC');
@@ -22,6 +23,7 @@ $jenis = getAll($conn, 'jenis_mobil', 'id', 'ASC');
 $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
+$tipe = getAll($conn, 'tipe_mobil', 'id', 'ASC');
 
 $agent_id = $_SESSION['user']['agen_id'];
 $query = "
@@ -31,14 +33,12 @@ $query = "
     jenis_mobil.nama AS jenis,
     transmisi.nama AS transmisi,
     warna.nama AS warna,
-    warna.kode AS kode_warna,
-    cc.nama AS cc
+    warna.kode AS kode_warna
   FROM mobil
   JOIN merk_mobil ON merk_mobil.id = mobil.merk_id
   JOIN jenis_mobil ON jenis_mobil.id = mobil.jenis_id
   JOIN transmisi ON transmisi.id = mobil.transmisi_id
   JOIN warna ON warna.id = mobil.warna_id
-  JOIN cc ON cc.id = mobil.cc_id
   WHERE mobil.agen_id = $agent_id
 ";
 
@@ -70,6 +70,16 @@ if (isParamsExist(['transmisi_id'])) {
 if (isParamsExist(['warna_id'])) {
   $warna_id = htmlspecialchars($_GET['warna_id']);
   $query .= " AND mobil.warna_id = $warna_id";
+}
+
+if (isParamsExist(['cc_id'])) {
+  $cc_id = htmlspecialchars($_GET['cc_id']);
+  $query .= " AND mobil.cc_id = $cc_id";
+}
+
+if (isParamsExist(['tipe_id'])) {
+  $tipe_id = htmlspecialchars($_GET['tipe_id']);
+  $query .= " AND mobil.tipe_id = $tipe_id";
 }
 
 if (isParamsExist(['sortby'])) {
@@ -147,7 +157,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
           </svg>
         </a>
       </div>
-      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'cc_id'])) : ?>
+      <?php if (isParamsExist(['q', 'sortby', 'order', 'status', 'merk_id', 'jenis_id', 'transmisi_id', 'warna_id', 'cc_id', 'tipe_id'])) : ?>
         <div class="col-auto mt-3">
           <a href="mobil.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -393,6 +403,17 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                 <option value="" disabled selected>Pilih</option>
                 <?php foreach ($cc as $item) : ?>
                   <option value="<?= $item['id'] ?>" <?= ($_GET['cc_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
+                    <?= $item['nama'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-label">Tipe</div>
+              <select class="form-select" name="tipe_id">
+                <option value="" disabled selected>Pilih</option>
+                <?php foreach ($tipe as $item) : ?>
+                  <option value="<?= $item['id'] ?>" <?= ($_GET['tipe_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
                     <?= $item['nama'] ?>
                   </option>
                 <?php endforeach ?>

@@ -19,7 +19,8 @@ $qeury = "
     warna.nama AS warna,
     warna.kode AS kode_warna,
     cc.nama AS cc,
-    agen.nama AS agen
+    agen.nama AS agen,
+    tipe_mobil.nama AS tipe
   FROM mobil
   JOIN merk_mobil ON merk_mobil.id = mobil.merk_id
   JOIN jenis_mobil ON jenis_mobil.id = mobil.jenis_id
@@ -27,12 +28,12 @@ $qeury = "
   JOIN warna ON warna.id = mobil.warna_id
   JOIN cc ON cc.id = mobil.cc_id
   JOIN agen ON agen.id = mobil.agen_id
+  JOIN tipe_mobil ON tipe_mobil.id = mobil.tipe_id
   WHERE mobil.id = $id
 ";
 
 $result = mysqli_query($conn, $qeury);
 $car = mysqli_fetch_assoc($result);
-
 
 if (!$car) {
   redirect('mobil.php');
@@ -161,6 +162,16 @@ if ($car['agen_id'] != $_SESSION['user']['agen_id']) {
               </div>
               <div class="col-md-4 col-6">
                 <div class="mb-3">
+                  <label class="form-label">Plat Nomor</label>
+                  <div class="form-control-plaintext">
+                    <div class="text-muted mb-1">
+                      <?= $car['plat_nomor'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-6">
+                <div class="mb-3">
                   <label class="form-label">Merk</label>
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
@@ -216,6 +227,28 @@ if ($car['agen_id'] != $_SESSION['user']['agen_id']) {
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
                       <?= $car['tahun'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-6">
+                <div class="mb-3">
+                  <label class="form-label">Tipe</label>
+                  <div class="form-control-plaintext">
+                    <div class="text-muted mb-1">
+                      <?= $car['tipe'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-6">
+                <div class="mb-3">
+                  <label class="form-label">Status</label>
+                  <div class="form-control-plaintext">
+                    <div class="text-muted mb-1">
+                      <span class="badge badge-outline text-<?= $car['status'] == 'available' ? 'green' : 'pink' ?>">
+                        <?= $car['status'] == 'available' ? 'Tersedia' : 'Tidak Tersedia' ?>
+                      </span>
                     </div>
                   </div>
                 </div>

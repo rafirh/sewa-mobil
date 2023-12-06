@@ -9,6 +9,7 @@ $jenis = getAll($conn, 'jenis_mobil', 'id', 'ASC');
 $transmisi = getAll($conn, 'transmisi', 'id', 'ASC');
 $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
+$tipe = getAll($conn, 'tipe_mobil', 'id', 'ASC');
 ?>
 
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
@@ -91,6 +92,17 @@ $cc = getAll($conn, 'cc', 'id', 'ASC');
                 </div>
               </div>
               <div class="mb-3 row">
+                <label class="col-md-4 col-12 col-form-label required">Tipe</label>
+                <div class="col">
+                  <select required class="form-select" name="tipe_id">
+                    <option value="" selected disabled>Pilih tipe mobill</option>
+                    <?php foreach ($tipe as $item) : ?>
+                      <option value="<?= $item['id'] ?>"><?= $item['nama'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3 row">
                 <label class="col-md-4 col-12 col-form-label required">Nama</label>
                 <div class="col">
                   <input required type="text" class="form-control" placeholder="Masukkan nama mobil" name="nama">
@@ -166,6 +178,7 @@ $cc = getAll($conn, 'cc', 'id', 'ASC');
       $transmisi_id = htmlspecialchars($_POST['transmisi_id']);
       $warna_id = htmlspecialchars($_POST['warna_id']);
       $cc_id = htmlspecialchars($_POST['cc_id']);
+      $tipe_id = htmlspecialchars($_POST['tipe_id']);
       $nama = htmlspecialchars($_POST['nama']);
       $plat_nomor = htmlspecialchars($_POST['plat_nomor']);
       $tahun = htmlspecialchars($_POST['tahun']);
@@ -180,7 +193,7 @@ $cc = getAll($conn, 'cc', 'id', 'ASC');
       }
 
       
-      $query = "INSERT INTO mobil (merk_id, jenis_id, transmisi_id, warna_id, cc_id, nama, plat_nomor, tahun, harga, kapasitas, agen_id, foto) VALUES ('$merk_id', '$jenis_id', '$transmisi_id', '$warna_id', '$cc_id', '$nama', '$plat_nomor', '$tahun', '$harga', '$kapasitas', '$agen_id', '$foto')";
+      $query = "INSERT INTO mobil (merk_id, jenis_id, transmisi_id, warna_id, cc_id, tipe_id, nama, plat_nomor, tahun, harga, kapasitas, agen_id, foto) VALUES ('$merk_id', '$jenis_id', '$transmisi_id', '$warna_id', '$cc_id', '$tipe_id', '$nama', '$plat_nomor', '$tahun', '$harga', '$kapasitas', '$agen_id', '$foto')";
       $result = mysqli_query($conn, $query);
 
       if ($result) {
