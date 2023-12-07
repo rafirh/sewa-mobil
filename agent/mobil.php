@@ -110,6 +110,12 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
   .image-preview {
     background-color: transparent;
   }
+
+  .btn-action-delete:hover {
+    background-color: #e74c3c;
+    color: #ffffff;
+    transition: 0.3s;
+  }
 </style>
 
 <div class="page-header d-print-none mt-2">

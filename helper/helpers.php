@@ -162,6 +162,13 @@ function getAll($conn, $table, $orderBy = 'id', $orderType = 'ASC')
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+function getById($conn, $table, $id)
+{
+  $query = "SELECT * FROM $table WHERE id = $id";
+  $result = mysqli_query($conn, $query);
+  return mysqli_fetch_assoc($result);
+}
+
 function getValidOrder($order) {
   if (strtolower($order) == 'desc') {
     return 'DESC';

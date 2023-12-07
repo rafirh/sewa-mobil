@@ -24,6 +24,7 @@ $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
 $agen = getAll($conn, 'agen', 'id', 'ASC');
 $tipe = getAll($conn, 'tipe_mobil', 'id', 'ASC');
+$jasa_kirim = getAll($conn, 'jasa_kirim', 'id', 'ASC');
 
 $query = "
   SELECT
@@ -209,7 +210,8 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
               </div>
             </a>
             <div class="card-footer" style="padding: 0.5rem 1rem;">
-              <a href="#" class="btn btn-outline-primary w-100">
+              <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal" 
+                data-bs-target="#modal-order" data-id="<?= $car['id'] ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -232,7 +234,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
             Sesuaikan kata kunci pencarian atau filter yang digunakan.
           </p>
           <div class="empty-action">
-            <a href="pesan-pesan-mobil.php" class="btn btn-outline-danger">
+            <a href="pesan-mobil.php" class="btn btn-outline-danger">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none">
                 </path>
@@ -390,6 +392,87 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
   </div>
 </div>
 
+<!-- Modal Order -->
+<div class="modal modal-blur fade" id="modal-order" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Form Pemesanan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" id="formOrder">
+        <input type="hidden" name="mobil_id" id="mobil_id">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Nama Penerima</div>
+              <input type="text" class="form-control" name="nama_penerima" required value="<?= $_SESSION['user']['nama'] ?? '' ?>">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">No. Hp Penerima</div>
+              <input type="text" class="form-control" name="alamat_penerima" required value="<?= $_SESSION['user']['alamat'] ?? '' ?>">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Alamat Penerima</div>
+              <input type="text" class="form-control" name="no_hp_penerima" required value="<?= $_SESSION['user']['no_hp'] ?? '' ?>">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Tanggal Sewa</div>
+              <input type="date" class="form-control" name="tanggal_sewa" required min="<?= date('Y-m-d') ?>">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Lama Sewa</div>
+              <div class="input-group input-group-flat">
+                <input type="number" class="form-control" name="jumlah_hari" required placeholder="Masukkan lama sewa">
+                <span class="input-group-text">
+                  Hari
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Jasa Kirim</div>
+              <select class="form-select" name="jasa_kirim_id" required>
+                <option value="" disabled selected>Pilih</option>
+                <?php foreach ($jasa_kirim as $item) : ?>
+                  <option value="<?= $item['id'] ?>">
+                    <?= $item['nama'] ?> (<?= format_rupiah($item['harga']) ?>)
+                  </option>
+                <?php endforeach ?>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <div class="form-label">Jumlah DP</div>
+              <select class="form-select" name="jumlah_dp" required>
+                <option value="" disabled selected>Pilih</option>
+                <option value="25">25%</option>
+                <option value="50">50%</option>
+                <option value="75">75%</option>
+                <option value="100">100%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn me-auto" data-bs-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Pesan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script src="<?= asset('plugins/tabler/dist/libs/fslightbox/index.js') ?>" defer></script>
 
 <script>
@@ -413,6 +496,96 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
     q.value = inputSearch.value;
     formOption.submit();
   }
+
+  const modalOrder = document.getElementById('modal-order');
+  const mobil_id = document.getElementById('mobil_id');
+
+  modalOrder.addEventListener('show.bs.modal', function(event) {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-id');
+
+    mobil_id.value = id;
+  });
 </script>
 
 <?php include('partials/footer.php') ?>
+
+<?php 
+  showToastIfExist();
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $mobii_id = $_POST['mobil_id'];
+    $nama_penerima = $_POST['nama_penerima'];
+    $alamat_penerima = $_POST['alamat_penerima'];
+    $no_hp_penerima = $_POST['no_hp_penerima'];
+    $tanggal_sewa = $_POST['tanggal_sewa'];
+    $jumlah_hari = $_POST['jumlah_hari'];
+    $jasa_kirim_id = $_POST['jasa_kirim_id'];
+    $persentase_dp = $_POST['jumlah_dp'];
+
+    $mobil = getById($conn, 'mobil', $mobii_id);
+    $jasa_kirim = getById($conn, 'jasa_kirim', $jasa_kirim_id);
+
+    $total_harga = $mobil['harga'] * $jumlah_hari + $jasa_kirim['harga'];
+    $jumlah_dp = $total_harga * $persentase_dp / 100;
+    $status_pembayaran_id = 1;
+    $status_pengiriman_id = 1;
+    $status_pengembalian_id = 1;
+    $jasa_kirim_id = $jasa_kirim['id'];
+    $user_id = $_SESSION['user']['id'];
+    $agen_id = $mobil['agen_id'];
+    $mobil_id = $mobil['id'];
+    $tanggal_pemesanan = date('Y-m-d H:i:s');
+    $kode_transaksi = "TRX" . date('mdHis') . rand(100, 999);
+
+    $query = "
+      INSERT INTO transaksi (
+        mobil_id,
+        user_id,
+        agen_id,
+        status_pembayaran_id,
+        status_pengiriman_id,
+        status_pengembalian_id,
+        jasa_kirim_id,
+        nama_penerima,
+        alamat_penerima,
+        no_hp_penerima,
+        tanggal_sewa,
+        tanggal_pemesanan,
+        jumlah_hari,
+        total_harga,
+        persentase_dp,
+        jumlah_dp,
+        kode_transaksi
+      ) VALUES (
+        $mobil_id,
+        $user_id,
+        $agen_id,
+        $status_pembayaran_id,
+        $status_pengiriman_id,
+        $status_pengembalian_id,
+        $jasa_kirim_id,
+        '$nama_penerima',
+        '$alamat_penerima',
+        '$no_hp_penerima',
+        '$tanggal_sewa',
+        '$tanggal_pemesanan',
+        $jumlah_hari,
+        $total_harga,
+        $persentase_dp,
+        $jumlah_dp,
+        '$kode_transaksi'
+      )
+    ";
+
+    $result = $conn->query($query);
+
+    if ($result) {
+      setFlashMessage('success', 'Berhasil melakukan pemesanan');
+      redirectJs('belum-bayar.php');
+    } else {
+      setFlashMessage('error', 'Gagal melakukan pemesanan');
+      redirectJs('belum-bayar.php');
+    }
+  }
+?>
