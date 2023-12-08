@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 27, 2023 at 09:28 AM
+-- Generation Time: Dec 08, 2023 at 01:23 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -43,7 +43,9 @@ CREATE TABLE `agen` (
 --
 
 INSERT INTO `agen` (`id`, `user_id`, `nama`, `alamat`, `telepon`, `no_rekening`, `bank`, `atas_nama`) VALUES
-(1, 2, 'Sumber Rejeki', 'Jalan MT. Haryono No.3 Malang', '08885477865', '00829123242', 'BRI', 'Agus Mulyanto');
+(1, 3, 'Agent Sumber Jaya', 'Jl. MT Haryono No. 1 Kota Jakarta', '0812345678', '001234567890', 'BCA', 'Sumber Jaya'),
+(2, 4, 'Agen Joyo Makmur', 'Jl. Soekarno Hatta No. 2 Kota Jakarta', '0812345678', '001234567890', 'BRI', 'Joyo Makmur'),
+(3, 5, 'Agen Sumber Rejeki', 'Jl. Menteng No. 3 Kota Jakarta', '0812345678', '001234567890', 'BNI', 'Sumber Rejeki');
 
 -- --------------------------------------------------------
 
@@ -100,6 +102,46 @@ INSERT INTO `cc` (`id`, `nama`) VALUES
 (37, '15000'),
 (38, '15500'),
 (39, '16000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `denda`
+--
+
+CREATE TABLE `denda` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `tarif` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `denda`
+--
+
+INSERT INTO `denda` (`id`, `nama`, `tarif`) VALUES
+(1, 'Keterlambatan', 100000),
+(2, 'Kerusakan', 500000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jasa_kirim`
+--
+
+CREATE TABLE `jasa_kirim` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `harga` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jasa_kirim`
+--
+
+INSERT INTO `jasa_kirim` (`id`, `nama`, `harga`) VALUES
+(1, 'Ambil di Agen', 0),
+(2, 'Supir Agen', 30000);
 
 -- --------------------------------------------------------
 
@@ -203,6 +245,25 @@ INSERT INTO `merk_mobil` (`id`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `metode_pembayaran`
+--
+
+CREATE TABLE `metode_pembayaran` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `metode_pembayaran`
+--
+
+INSERT INTO `metode_pembayaran` (`id`, `nama`) VALUES
+(1, 'Transfer Bank'),
+(2, 'COD');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -219,13 +280,21 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(3, '2023_11_23_053535_cc', 1),
-(4, '2023_11_23_145803_agen', 1),
-(5, '2023_11_23_150759_warna', 1),
-(6, '2023_11_23_151055_transmisi', 1),
-(7, '2023_11_23_151832_jenis__mobil', 1),
-(8, '2023_11_23_152134_merk_mobil', 1),
-(9, '2023_11_23_152650_mobil', 1);
+(3, '2023_11_22_062725_tipe_mobi', 1),
+(4, '2023_11_23_053535_cc', 1),
+(5, '2023_11_23_145803_agen', 1),
+(6, '2023_11_23_150759_warna', 1),
+(7, '2023_11_23_151055_transmisi', 1),
+(8, '2023_11_23_151832_jenis__mobil', 1),
+(9, '2023_11_23_152134_merk_mobil', 1),
+(10, '2023_11_23_152650_mobil', 1),
+(11, '2023_11_30_045924_status_pembayaran', 1),
+(12, '2023_11_30_053815_status_pengembalian', 1),
+(13, '2023_11_30_054015_jasa_kirim', 1),
+(14, '2023_11_30_054423_status_pengiriman', 1),
+(15, '2023_11_30_055138_metode_pembayaran', 1),
+(16, '2023_11_30_055444_denda', 1),
+(17, '2023_11_30_060007_transaksi', 1);
 
 -- --------------------------------------------------------
 
@@ -241,6 +310,7 @@ CREATE TABLE `mobil` (
   `transmisi_id` bigint(20) UNSIGNED NOT NULL,
   `warna_id` bigint(20) UNSIGNED NOT NULL,
   `cc_id` bigint(20) UNSIGNED NOT NULL,
+  `tipe_id` bigint(20) UNSIGNED NOT NULL,
   `nama` varchar(255) NOT NULL,
   `plat_nomor` varchar(255) NOT NULL,
   `tahun` varchar(255) DEFAULT NULL,
@@ -254,9 +324,21 @@ CREATE TABLE `mobil` (
 -- Dumping data for table `mobil`
 --
 
-INSERT INTO `mobil` (`id`, `agen_id`, `merk_id`, `jenis_id`, `transmisi_id`, `warna_id`, `cc_id`, `nama`, `plat_nomor`, `tahun`, `harga`, `kapasitas`, `foto`, `status`) VALUES
-(1, 1, 1, 1, 2, 1, 6, 'Toyota Expander', 'N 1234 AG', '2022', 150000, 6, '', 'available'),
-(2, 1, 2, 4, 3, 2, 2, 'Brio', 'B 8287 KL', '2013', 80000, 4, '', 'available');
+INSERT INTO `mobil` (`id`, `agen_id`, `merk_id`, `jenis_id`, `transmisi_id`, `warna_id`, `cc_id`, `tipe_id`, `nama`, `plat_nomor`, `tahun`, `harga`, `kapasitas`, `foto`, `status`) VALUES
+(1, 1, 1, 1, 1, 1, 1, 2, 'Avanza', 'B 1234 ABC', '2019', 50000, 8, NULL, 'available'),
+(2, 1, 2, 2, 2, 2, 2, 2, 'Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
+(3, 1, 3, 1, 2, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
+(4, 1, 4, 2, 1, 4, 4, 1, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
+(5, 1, 5, 1, 2, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available'),
+(6, 2, 6, 2, 1, 6, 6, 1, 'Livina', 'L 7454 AB', '2022', 100000, 6, NULL, 'available'),
+(7, 2, 7, 1, 2, 7, 7, 2, 'Mobilio', 'B 1255 ABC', '2019', 80000, 8, NULL, 'available'),
+(8, 2, 8, 2, 1, 8, 8, 2, 'BRV', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
+(9, 2, 9, 1, 2, 9, 9, 2, 'Rush', 'L 2132 AB', '2022', 100000, 6, NULL, 'available'),
+(10, 3, 1, 2, 1, 1, 1, 1, 'Grand Livina', 'B 1212 BG', '2019', 50000, 8, NULL, 'available'),
+(11, 3, 2, 1, 2, 2, 2, 1, 'Grand Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
+(12, 3, 3, 2, 1, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
+(13, 3, 4, 1, 2, 4, 4, 2, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
+(14, 3, 5, 2, 1, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available');
 
 -- --------------------------------------------------------
 
@@ -276,6 +358,130 @@ CREATE TABLE `personal_access_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status_pembayaran`
+--
+
+CREATE TABLE `status_pembayaran` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `status_pembayaran` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `status_pembayaran`
+--
+
+INSERT INTO `status_pembayaran` (`id`, `status_pembayaran`) VALUES
+(1, 'Belum Bayar'),
+(2, 'Sedang Dikonfirmasi'),
+(3, 'Ditolak'),
+(4, 'Belum Lunas'),
+(5, 'Lunas');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status_pengembalian`
+--
+
+CREATE TABLE `status_pengembalian` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `status_pengembalian` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `status_pengembalian`
+--
+
+INSERT INTO `status_pengembalian` (`id`, `status_pengembalian`) VALUES
+(1, 'Belum Dikembalikan'),
+(2, 'Sudah Dikembalikan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status_pengiriman`
+--
+
+CREATE TABLE `status_pengiriman` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `status_pengiriman` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `status_pengiriman`
+--
+
+INSERT INTO `status_pengiriman` (`id`, `status_pengiriman`) VALUES
+(1, 'Belum Dikirim'),
+(2, 'Sedang Dikirim'),
+(3, 'Sudah Dikirim');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tipe_mobil`
+--
+
+CREATE TABLE `tipe_mobil` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tipe_mobil`
+--
+
+INSERT INTO `tipe_mobil` (`id`, `nama`) VALUES
+(1, 'Tinggi'),
+(2, 'Sedang'),
+(3, 'Rendah');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaksi`
+--
+
+CREATE TABLE `transaksi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `mobil_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `agen_id` bigint(20) UNSIGNED NOT NULL,
+  `metode_pembayaran_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status_pembayaran_id` bigint(20) UNSIGNED NOT NULL,
+  `status_pengiriman_id` bigint(20) UNSIGNED NOT NULL,
+  `status_pengembalian_id` bigint(20) UNSIGNED NOT NULL,
+  `jasa_kirim_id` bigint(20) UNSIGNED NOT NULL,
+  `denda_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `kode_transaksi` varchar(255) NOT NULL,
+  `nama_penerima` varchar(255) NOT NULL,
+  `alamat_penerima` varchar(255) NOT NULL,
+  `no_hp_penerima` varchar(255) NOT NULL,
+  `tanggal_sewa` datetime NOT NULL,
+  `tanggal_pemesanan` datetime NOT NULL,
+  `tanggal_pengembalian` datetime DEFAULT NULL,
+  `jumlah_hari` int(11) NOT NULL,
+  `total_harga` int(11) NOT NULL,
+  `diskon` int(11) DEFAULT NULL,
+  `persentase_dp` int(11) DEFAULT NULL,
+  `jumlah_dp` int(11) DEFAULT NULL,
+  `bukti_dp` varchar(255) DEFAULT NULL,
+  `tanggal_dp` datetime DEFAULT NULL,
+  `jumlah_bayar_lunas` int(11) DEFAULT NULL,
+  `bukti_bayar_lunas` varchar(255) DEFAULT NULL,
+  `tanggal_bayar_lunas` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id`, `mobil_id`, `user_id`, `agen_id`, `metode_pembayaran_id`, `status_pembayaran_id`, `status_pengiriman_id`, `status_pengembalian_id`, `jasa_kirim_id`, `denda_id`, `kode_transaksi`, `nama_penerima`, `alamat_penerima`, `no_hp_penerima`, `tanggal_sewa`, `tanggal_pemesanan`, `tanggal_pengembalian`, `jumlah_hari`, `total_harga`, `diskon`, `persentase_dp`, `jumlah_dp`, `bukti_dp`, `tanggal_dp`, `jumlah_bayar_lunas`, `bukti_bayar_lunas`, `tanggal_bayar_lunas`) VALUES
+(1, 2, 2, 1, 1, 2, 1, 1, 2, NULL, 'TRX1207154054596', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-09 00:00:00', '2023-12-07 15:40:54', NULL, 2, 170000, NULL, 50, 85000, 'images/bukti/6571e30da5283.jpg', '2023-12-07 16:21:49', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -322,9 +528,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`, `role`) VALUES
-(1, 'Administator', 'admin@gmail.com', '$2y$12$H4qeeBsytKINTgZr5i8UP.78aQQbojRdVSKQbpMMUmkZq.Mcu3wHq', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
-(2, 'Agent Rental Mobil', 'agent@gmail.com', '$2y$12$UtDDpLT4CNqXm4DP0VPoMeFtIc4r7OArw32UJndSQiKR6eWT74n3O', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(3, 'John Doe', 'customer@gmail.com', '$2y$12$10hLDZnRPux9E34F7hzHCO78F8B4u74IZy3ugIK1b9XIZsSUPxj8a', 'Jl. Mawar', '08123456789', NULL, 'customer');
+(1, 'Administator', 'admin@gmail.com', '$2y$12$l1n1qGlGhnZ66Bi8e.pG1OSSdy44rkKY4m.v1oTwvniL3HqY4d7K6', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
+(2, 'John Doe', 'customer@gmail.com', '$2y$12$7YvXZXH7sEvVoes.knWH3eNWmW783GQZpFpuq6EzkZMTFDWjfTq4y', 'Jl. Mawar', '08123456789', NULL, 'customer'),
+(3, 'Agent Sumber Jaya', 'sumberjaya@gmail.com', '$2y$12$OdEXTKn1d3QOPfBglFPveOawkyr2b1LZU58gXYJx6JA2tlVD181Ry', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(4, 'Agen Joyo Makmur', 'joyomakmur@gmail.com', '$2y$12$d34JUpNKuKtV6RQA.yEdJeAXIHR.eCD3k169iJZI0jXWn85fOvByS', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(5, 'Agen Sumber Rejeki', 'sumberrejeki@gmail.com', '$2y$12$CEmUSNcGfax2eB47Fl1RRO3q3bZjTCpQDXnGMzphfevnZbxgouIJy', 'Jl. Melati', '0812345678', NULL, 'agent');
 
 -- --------------------------------------------------------
 
@@ -385,6 +593,18 @@ ALTER TABLE `cc`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `denda`
+--
+ALTER TABLE `denda`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jasa_kirim`
+--
+ALTER TABLE `jasa_kirim`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `jenis_mobil`
 --
 ALTER TABLE `jenis_mobil`
@@ -394,6 +614,12 @@ ALTER TABLE `jenis_mobil`
 -- Indexes for table `merk_mobil`
 --
 ALTER TABLE `merk_mobil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `metode_pembayaran`
+--
+ALTER TABLE `metode_pembayaran`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -412,7 +638,8 @@ ALTER TABLE `mobil`
   ADD KEY `mobil_jenis_id_foreign` (`jenis_id`),
   ADD KEY `mobil_transmisi_id_foreign` (`transmisi_id`),
   ADD KEY `mobil_warna_id_foreign` (`warna_id`),
-  ADD KEY `mobil_cc_id_foreign` (`cc_id`);
+  ADD KEY `mobil_cc_id_foreign` (`cc_id`),
+  ADD KEY `mobil_tipe_id_foreign` (`tipe_id`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -421,6 +648,45 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `status_pembayaran`
+--
+ALTER TABLE `status_pembayaran`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `status_pengembalian`
+--
+ALTER TABLE `status_pengembalian`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `status_pengiriman`
+--
+ALTER TABLE `status_pengiriman`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tipe_mobil`
+--
+ALTER TABLE `tipe_mobil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transaksi`
+--
+ALTER TABLE `transaksi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `transaksi_mobil_id_foreign` (`mobil_id`),
+  ADD KEY `transaksi_user_id_foreign` (`user_id`),
+  ADD KEY `transaksi_agen_id_foreign` (`agen_id`),
+  ADD KEY `transaksi_metode_pembayaran_id_foreign` (`metode_pembayaran_id`),
+  ADD KEY `transaksi_status_pembayaran_id_foreign` (`status_pembayaran_id`),
+  ADD KEY `transaksi_status_pengiriman_id_foreign` (`status_pengiriman_id`),
+  ADD KEY `transaksi_status_pengembalian_id_foreign` (`status_pengembalian_id`),
+  ADD KEY `transaksi_jasa_kirim_id_foreign` (`jasa_kirim_id`),
+  ADD KEY `transaksi_denda_id_foreign` (`denda_id`);
 
 --
 -- Indexes for table `transmisi`
@@ -449,13 +715,25 @@ ALTER TABLE `warna`
 -- AUTO_INCREMENT for table `agen`
 --
 ALTER TABLE `agen`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cc`
 --
 ALTER TABLE `cc`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT for table `denda`
+--
+ALTER TABLE `denda`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `jasa_kirim`
+--
+ALTER TABLE `jasa_kirim`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `jenis_mobil`
@@ -470,22 +748,58 @@ ALTER TABLE `merk_mobil`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
+-- AUTO_INCREMENT for table `metode_pembayaran`
+--
+ALTER TABLE `metode_pembayaran`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `mobil`
 --
 ALTER TABLE `mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `status_pembayaran`
+--
+ALTER TABLE `status_pembayaran`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `status_pengembalian`
+--
+ALTER TABLE `status_pengembalian`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `status_pengiriman`
+--
+ALTER TABLE `status_pengiriman`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tipe_mobil`
+--
+ALTER TABLE `tipe_mobil`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `transaksi`
+--
+ALTER TABLE `transaksi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transmisi`
@@ -497,7 +811,7 @@ ALTER TABLE `transmisi`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `warna`
@@ -523,8 +837,23 @@ ALTER TABLE `mobil`
   ADD CONSTRAINT `mobil_cc_id_foreign` FOREIGN KEY (`cc_id`) REFERENCES `cc` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_jenis_id_foreign` FOREIGN KEY (`jenis_id`) REFERENCES `jenis_mobil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_merk_id_foreign` FOREIGN KEY (`merk_id`) REFERENCES `merk_mobil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mobil_tipe_id_foreign` FOREIGN KEY (`tipe_id`) REFERENCES `tipe_mobil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_transmisi_id_foreign` FOREIGN KEY (`transmisi_id`) REFERENCES `transmisi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mobil_warna_id_foreign` FOREIGN KEY (`warna_id`) REFERENCES `warna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transaksi`
+--
+ALTER TABLE `transaksi`
+  ADD CONSTRAINT `transaksi_agen_id_foreign` FOREIGN KEY (`agen_id`) REFERENCES `agen` (`id`),
+  ADD CONSTRAINT `transaksi_denda_id_foreign` FOREIGN KEY (`denda_id`) REFERENCES `denda` (`id`),
+  ADD CONSTRAINT `transaksi_jasa_kirim_id_foreign` FOREIGN KEY (`jasa_kirim_id`) REFERENCES `jasa_kirim` (`id`),
+  ADD CONSTRAINT `transaksi_metode_pembayaran_id_foreign` FOREIGN KEY (`metode_pembayaran_id`) REFERENCES `metode_pembayaran` (`id`),
+  ADD CONSTRAINT `transaksi_mobil_id_foreign` FOREIGN KEY (`mobil_id`) REFERENCES `mobil` (`id`),
+  ADD CONSTRAINT `transaksi_status_pembayaran_id_foreign` FOREIGN KEY (`status_pembayaran_id`) REFERENCES `status_pembayaran` (`id`),
+  ADD CONSTRAINT `transaksi_status_pengembalian_id_foreign` FOREIGN KEY (`status_pengembalian_id`) REFERENCES `status_pengembalian` (`id`),
+  ADD CONSTRAINT `transaksi_status_pengiriman_id_foreign` FOREIGN KEY (`status_pengiriman_id`) REFERENCES `status_pengiriman` (`id`),
+  ADD CONSTRAINT `transaksi_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
