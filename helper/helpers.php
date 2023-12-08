@@ -190,7 +190,9 @@ function checkRole($role, $loginPath = null) {
     redirect('../admin/index.php');
   } else if ($_SESSION['user']['role'] == 'agent') {
     redirect('../agent/index.php');
-  } else {
+  } else if ($_SESSION['user']['role'] == 'customer') {
     redirect('../customer/index.php');
+  } else {
+    redirect('../login.php');
   }
 }

@@ -99,6 +99,8 @@ if (isParamsExist(['sortby'])) {
 
 $result = $conn->query($query);
 $cars = $result->fetch_all(MYSQLI_ASSOC);
+
+$order_id = $_GET['order_id'] ?? null;
 ?>
 
 <style>
@@ -502,10 +504,30 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
 
   modalOrder.addEventListener('show.bs.modal', function(event) {
     const button = event.relatedTarget;
-    const id = button.getAttribute('data-id');
+    let id;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const order_id = urlParams.get('order_id');
+
+    if (order_id) {
+      id = order_id;
+    } else {
+      id = button.getAttribute('data-id');
+    }
 
     mobil_id.value = id;
   });
+
+  <?php if ($order_id): ?>
+    $(document).ready(function() {
+      mobil_id.value = <?= $order_id ?>;
+      $('#modal-order').modal('show');
+    })
+
+    $('#modal-order').on('hidden.bs.modal', function() {
+      window.history.replaceState({}, document.title, "pesan-mobil.php");
+    })
+  <?php endif ?>
 </script>
 
 <?php include('partials/footer.php') ?>
