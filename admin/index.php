@@ -1,7 +1,4 @@
 <?php
-require_once('../helper/helpers.php');
-redirectIfNotAuthenticated();
-
 $active = 'beranda';
 $title = 'Beranda';
 ?>

@@ -1,3 +1,10 @@
+<?php
+require_once('../db/conn.php');
+require_once('../helper/helpers.php');
+redirectIfNotAuthenticated();
+checkRole('administrator');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
