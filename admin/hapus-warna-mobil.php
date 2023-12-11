@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $merk = mysqli_fetch_assoc($result);
 
   if (!$merk) {
-    setFlashMessage('error', 'Merk mobil tidak ditemukan');
+    setFlashMessage('error', 'Warna mobil tidak ditemukan');
     redirectJs('warna-mobil.php');
   }
 
@@ -19,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $result = mysqli_query($conn, $query);
 
   if ($result) {
-    setFlashMessage('success', 'Merk mobil berhasil dihapus!');
+    setFlashMessage('success', 'Warna mobil berhasil dihapus!');
     redirectJs('warna-mobil.php');
     exit;
   } else {
-    setFlashMessage('error', 'Merk mobil gagal dihapus!');
+    setFlashMessage('error', 'Warna mobil gagal dihapus!');
     redirectJs('warna-mobil.php');
     exit;
   }
