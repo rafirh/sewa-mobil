@@ -219,7 +219,7 @@ $merk = $result->fetch_all(MYSQLI_ASSOC);
 
 <!-- Modal Option -->
 <div class="modal modal-blur fade" id="modal-option" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Filter Pencarian</h5>
@@ -229,90 +229,7 @@ $merk = $result->fetch_all(MYSQLI_ASSOC);
         <input type="hidden" name="q" id="q">
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Status</div>
-              <div class="form-selectgroup">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="status" value="available" class="form-selectgroup-input" <?= ($_GET['status'] ?? '') == 'available' ? 'checked' : '' ?>>
-                  <span class="form-selectgroup-label">
-                    Tersedia
-                  </span>
-                </label>
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="status" value="unavailable" class="form-selectgroup-input" <?= ($_GET['status'] ?? '') == 'unavailable' ? 'checked' : '' ?>>
-                  <span class="form-selectgroup-label">
-                    Tidak Tersedia
-                  </span>
-                </label>
-              </div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Merk</div>
-              <select class="form-select" name="merk_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($merk as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['merk_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Jenis</div>
-              <select class="form-select" name="jenis_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($jenis as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['jenis_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Transmisi</div>
-              <select class="form-select" name="transmisi_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($transmisi as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['transmisi_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Warna</div>
-              <select class="form-select" name="warna_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($warna as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['warna_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">CC</div>
-              <select class="form-select" name="cc_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($cc as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['cc_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-label">Tipe</div>
-              <select class="form-select" name="tipe_id">
-                <option value="" disabled selected>Pilih</option>
-                <?php foreach ($tipe as $item) : ?>
-                  <option value="<?= $item['id'] ?>" <?= ($_GET['tipe_id'] ?? '') == $item['id'] ? 'selected' : '' ?>>
-                    <?= $item['nama'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-12 mb-3">
               <div class="form-label">Urutkan Berdasarkan</div>
               <select class="form-select" name="sortby">
                 <option value="" disabled selected>Pilih</option>
@@ -323,7 +240,7 @@ $merk = $result->fetch_all(MYSQLI_ASSOC);
                 <?php endforeach ?>
               </select>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-12 mb-3">
               <div class="form-label">Urutan</div>
               <div class="form-selectgroup">
                 <label class="form-selectgroup-item">
