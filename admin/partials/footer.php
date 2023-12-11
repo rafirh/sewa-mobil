@@ -54,6 +54,8 @@
       })
     }
   </script>
+
+  <?php showToastIfExist() ?>
 </body>
 
 </html>
