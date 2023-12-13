@@ -7,23 +7,23 @@ redirectIfNotAuthenticated();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $id = $_POST['id'];
 
-  $result = mysqli_query($conn, "SELECT * FROM jasa_kirim WHERE id = $id");
-  $jasa_kirim = mysqli_fetch_assoc($result);
+  $result = mysqli_query($conn, "SELECT * FROM denda WHERE id = $id");
+  $denda = mysqli_fetch_assoc($result);
 
-  if (!$jasa_kirim) {
-    setFlashMessage('error', 'Jasa kirim tidak ditemukan');
+  if (!$denda) {
+    setFlashMessage('error', 'Denda tidak ditemukan');
     redirectJs('jasa-kirim.php');
   }
 
-  $query = "DELETE FROM jasa_kirim WHERE id = $id";
+  $query = "DELETE FROM denda WHERE id = $id";
   $result = mysqli_query($conn, $query);
 
   if ($result) {
-    setFlashMessage('success', 'Jasa kirim berhasil dihapus!');
+    setFlashMessage('success', 'Denda berhasil dihapus!');
     redirectJs('jasa-kirim.php');
     exit;
   } else {
-    setFlashMessage('error', 'Jasa kirim gagal dihapus!');
+    setFlashMessage('error', 'Denda gagal dihapus!');
     redirectJs('jasa-kirim.php');
     exit;
   }
