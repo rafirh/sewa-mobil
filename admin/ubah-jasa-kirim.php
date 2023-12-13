@@ -1,19 +1,19 @@
 <?php
-$active = 'merk-mobil';
-$title = 'Ubah Merk Mobil';
+$active = 'jasa-kirim';
+$title = 'Ubah Jasa Kirim';
 
 include('partials/header.php');
 
 if (!isParamsExist(['id'])) {
-  redirectJs('merk-mobil.php');
+  redirectJs('jasa-kirim.php');
 }
 
 $id = htmlspecialchars($_GET['id']);
-$result = mysqli_query($conn, "SELECT * FROM merk_mobil WHERE id = $id");
+$result = mysqli_query($conn, "SELECT * FROM jasa_kirim WHERE id = $id");
 $mobil = mysqli_fetch_assoc($result);
 
 if (!$mobil) {
-  redirectJs('merk-mobil.php');
+  redirectJs('jasa-kirim.php');
 }
 ?>
 
@@ -23,7 +23,7 @@ if (!$mobil) {
     <div class="row g-2 align-items-center justify-content-center">
       <div class="col-12 col-md-10">
         <h2 class="page-title">
-          Ubah Merk Mobil
+          Ubah Jasa Kirim
         </h2>
       </div>
     </div>
@@ -44,9 +44,15 @@ if (!$mobil) {
                   <input required type="text" class="form-control" placeholder="Masukkan nama merk mobil" name="nama" value="<?= $mobil['nama'] ?>">
                 </div>
               </div>
+              <div class="mb-3 row">
+                <label class="col-md-4 col-12 col-form-label required">Harga</label>
+                <div class="col">
+                  <input required type="number" class="form-control" placeholder="Masukkan harga jasa kirim" name="harga" value="<?= $mobil['harga'] ?>">
+                </div>
+              </div>
             </div>
             <div class="card-footer d-flex">
-              <a href="merk-mobil.php" type="button" class="btn me-auto">Kembali</a>
+              <a href="jasa-kirim.php" type="button" class="btn me-auto">Kembali</a>
               <button type="submit" class="btn btn-primary ms-auto">Simpan</button>
             </div>
           </div>
@@ -62,17 +68,18 @@ if (!$mobil) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (checkRequiredFields(['nama'])) {
     $nama = htmlspecialchars($_POST['nama']);
+    $harga = htmlspecialchars($_POST['harga']);
     
-    $query = "UPDATE merk_mobil SET nama = '$nama' WHERE id = $id";
+    $query = "UPDATE jasa_kirim SET nama = '$nama', harga = '$harga' WHERE id = $id";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-      setFlashMessage('success', 'Merk mobil berhasil diubah!');
-      redirectJs('merk-mobil.php');
+      setFlashMessage('success', 'Jasa kirim berhasil diubah!');
+      redirectJs('jasa-kirim.php');
       exit;
     } else {
-      setFlashMessage('error', 'Merk mobil gagal diubah!');
-      redirectJs("ubah-merk-mobil.php?id=$id");
+      setFlashMessage('error', 'Jasa kirim gagal diubah!');
+      redirectJs("ubah-jasa-kirim.php?id=$id");
       exit;
     }
   } else {
