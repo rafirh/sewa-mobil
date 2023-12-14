@@ -8,14 +8,17 @@ $query = "
   SELECT transaksi.*,
   mobil.nama AS nama_mobil,
   mobil.foto AS foto_mobil,
+  mobil.plat_nomor AS plat_nomor_mobil,
   agen.nama AS nama_agen,
   agen.no_rekening AS no_rekening_agen,
   agen.atas_nama AS atas_nama_agen,
   agen.bank AS bank_agen,
-  agen.telepon AS telepon_agen
+  agen.telepon AS telepon_agen,
+  metode_pembayaran.nama AS nama_metode_pembayaran
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN agen ON transaksi.agen_id = agen.id
+  JOIN metode_pembayaran ON transaksi.metode_pembayaran_id = metode_pembayaran.id
   WHERE transaksi.user_id = {$_SESSION['user']['id']} AND transaksi.status_pembayaran_id = 2
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
@@ -74,6 +77,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                   <th>Agen</th>
                   <th>Total Harga</th>
                   <th>DP</th>
+                  <th>Metode Pembayaran</th>
                   <th>Opsi</th>
                 </tr>
               </thead>
@@ -91,12 +95,14 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                       <?= $item['kode_transaksi'] ?>
                     </td>
                     <td>
-                      <?= date('d F Y H:i', strtotime($item['tanggal_dp'])) ?>
+                      <?= date('d M Y H:i', strtotime($item['tanggal_dp'])) ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['nama_mobil'], 24) ?>>
                         <?= mb_strimwidth($item['nama_mobil'], 0, 24, '...') ?>
                       </span>
+                      <br>
+                      <?= $item['plat_nomor_mobil'] ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['nama_agen'], 24) ?>>
@@ -110,6 +116,9 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </td>
                     <td>
                       <?= format_rupiah($item['jumlah_dp']) ?>
+                    </td>
+                    <td>
+                      <?= $item['nama_metode_pembayaran'] ?>
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">

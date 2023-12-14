@@ -8,6 +8,7 @@ $query = "
   SELECT transaksi.*,
   mobil.nama AS nama_mobil,
   mobil.foto AS foto_mobil,
+  mobil.plat_nomor AS plat_nomor_mobil,
   agen.nama AS nama_agen,
   agen.no_rekening AS no_rekening_agen,
   agen.atas_nama AS atas_nama_agen,
@@ -99,6 +100,8 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
                       <span <?= add_title_tooltip($item['nama_mobil'], 24) ?>>
                         <?= mb_strimwidth($item['nama_mobil'], 0, 24, '...') ?>
                       </span>
+                      <br>
+                      <?= $item['plat_nomor_mobil'] ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['nama_agen'], 24) ?>>
@@ -113,7 +116,7 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
                       <?= $item['atas_nama_agen'] ?>
                     </td>
                     <td>
-                      <?= date('d F Y', strtotime($item['tanggal_sewa'])) ?>
+                      <?= date('d M Y', strtotime($item['tanggal_sewa'])) ?>
                     </td>
                     <td>
                       <?= $item['jumlah_hari'] ?> hari
