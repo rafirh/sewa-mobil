@@ -110,7 +110,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                       <?= date('d F Y', strtotime($item['tanggal_sewa'])) ?>
                     </td>
                     <td>
-                      <?= $item['lama_sewa'] ?> hari
+                      <?= $item['jumlah_hari'] ?> hari
                     </td>
                     <td>
                       <?= format_rupiah($item['total_harga']) ?>
@@ -122,17 +122,13 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
-                        <button class="btn btn-icon btn-pill bg-success-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalAccept">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="btn btn-icon btn-pill bg-primary-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeliverr">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M5 12l5 5l10 -10" />
-                          </svg>
-                        </button>
-                        <button class="btn btn-icon btn-pill bg-danger-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalReject">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M18 6l-12 12" />
-                            <path d="M6 6l12 12" />
+                            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+                            <path d="M3 9l4 0" />
                           </svg>
                         </button>
                         <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
@@ -185,8 +181,8 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
   </div>
 </div>
 
-<!-- Modal Accept -->
-<div class="modal modal-blur fade" id="modalAccept" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Modal Deliver -->
+<div class="modal modal-blur fade" id="modalDeliver" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -223,57 +219,13 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
   </div>
 </div>
 
-<!-- Modal Reject -->
-<div class="modal modal-blur fade" id="modalReject" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      <div class="modal-status bg-danger"></div>
-      <div class="modal-body text-center py-4">
-        <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M12 9v2m0 4v.01" />
-          <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-        </svg>
-        <h3>Apakah anda yakin ingin menolak pembayaran ini?</h3>
-        <div class="text-muted">Pembayaran yang ditolak tidak dapat dikembalikan.</div>
-      </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                Batal
-              </a></div>
-            <div class="col">
-              <form method="post" id="formReject" action="validasi-pembayaran.php">
-                <input type="hidden" name="id" value="" id="inputRejectId">
-                <input type="hidden" name="is_valid" value="0">
-                <button type="submit" class="btn btn-danger w-100">
-                  Ya, tolak
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="<?= asset('plugins/tabler/dist/libs/fslightbox/index.js') ?>" defer></script>
 
 <script>
-  const modalAccept = document.getElementById('modalAccept');
-  modalAccept.addEventListener('show.bs.modal', function(event) {
+  const modalDeliver = document.getElementById('modalDeliver');
+  modalDeliver.addEventListener('show.bs.modal', function(event) {
     const inputAcceptId = document.getElementById('inputAcceptId');
     inputAcceptId.value = event.relatedTarget.dataset.id;
-  });
-
-  const modalReject = document.getElementById('modalReject');
-  modalReject.addEventListener('show.bs.modal', function(event) {
-    const inputRejectId = document.getElementById('inputRejectId');
-    inputRejectId.value = event.relatedTarget.dataset.id;
   });
 </script>
 
