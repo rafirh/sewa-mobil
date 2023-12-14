@@ -43,7 +43,7 @@ $transaksi = mysqli_fetch_assoc($result);
 
 if (!$transaksi || $transaksi['user_id'] != $_SESSION['user']['id']) {
   setFlashMessage('error', 'Transaksi tidak ditemukan');
-  redirect('belum-bayar.php');
+  redirectJs('belum-bayar.php');
 }
 ?>
 
