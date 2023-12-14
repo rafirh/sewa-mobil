@@ -169,6 +169,16 @@ function getById($conn, $table, $id)
   return mysqli_fetch_assoc($result);
 }
 
+function countAll($conn, $table, $field = null, $value = null)
+{
+  $query = "SELECT COUNT(*) AS total FROM $table";
+  if ($field && $value) {
+    $query .= " WHERE $field = '$value'";
+  }
+  $result = mysqli_query($conn, $query);
+  return mysqli_fetch_assoc($result)['total'];
+}
+
 function getValidOrder($order) {
   if (strtolower($order) == 'desc') {
     return 'DESC';
