@@ -74,6 +74,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                   <th>Agen</th>
                   <th>Total Harga</th>
                   <th>DP</th>
+                  <th>Opsi</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,6 +110,33 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </td>
                     <td>
                       <?= format_rupiah($item['jumlah_dp']) ?>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="1">
+                            </circle>
+                            <circle cx="12" cy="19" r="1">
+                            </circle>
+                            <circle cx="12" cy="5" r="1">
+                            </circle>
+                          </svg>
+                        </button>
+                        <div class="text-muted dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item" href="faktur.php?id=<?= $item['id'] ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                              <path d="M9 17h6" />
+                              <path d="M9 13h6" />
+                            </svg>
+                            Faktur
+                          </a>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 <?php endforeach ?>

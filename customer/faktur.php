@@ -10,6 +10,11 @@ if (!isset($_GET['id'])) {
 
 $id = $_GET['id'];
 
+$prev = $_SERVER['HTTP_REFERER'] ?? 'belum-bayar.php';
+if (str_contains($prev, 'faktur.php')) {
+  $prev = 'belum-bayar.php';
+}
+
 $query = "
   SELECT transaksi.*,
     mobil.nama AS nama_mobil,
@@ -62,7 +67,7 @@ if (!$transaksi || $transaksi['user_id'] != $_SESSION['user']['id']) {
           </svg>
           Cetak Faktur
         </button>
-        <a href="belum-bayar.php" class="btn btn-outline-primary d-none d-sm-inline-block ms-2">
+        <a href="<?= $prev ?>" class="btn btn-outline-primary d-none d-sm-inline-block ms-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M5 12l14 0"></path>
