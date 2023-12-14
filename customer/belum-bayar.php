@@ -16,7 +16,7 @@ $query = "
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN agen ON transaksi.agen_id = agen.id
-  WHERE transaksi.user_id = {$_SESSION['user']['id']} AND transaksi.status_pembayaran_id = 1
+  WHERE transaksi.user_id = {$_SESSION['user']['id']} AND (transaksi.status_pembayaran_id = 1 OR transaksi.status_pembayaran_id = 3)
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
@@ -78,6 +78,7 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
                   <th>Lama Sewa</th>
                   <th>Total Harga</th>
                   <th>DP</th>
+                  <th>Status</th>
                   <th class="text-center">Opsi</th>
                 </tr>
               </thead>
@@ -122,6 +123,13 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
                     </td>
                     <td>
                       <?= format_rupiah($item['jumlah_dp']) ?>
+                    </td>
+                    <td>
+                      <?php if ($item['status_pembayaran_id'] == 1) : ?>
+                        <span class="badge bg-yellow-lt">Belum dibayar</span>
+                      <?php elseif ($item['status_pembayaran_id'] == 3) : ?>
+                        <span class="badge bg-danger-lt">Pembayaran Ditolak</span>
+                      <?php endif ?>
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
@@ -346,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if ($result) {
       setFlashMessage('success', 'Bukti pembayaran berhasil dikirim!');
-      redirectJs('belum-bayar.php');
+      redirectJs('pembayaran-diverifikasi.php');
       exit;
     } else {
       setFlashMessage('error', 'Bukti pembayaran gagal dikirim!');
