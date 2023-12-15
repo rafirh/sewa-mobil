@@ -116,7 +116,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                       <?= format_rupiah($item['total_harga']) ?>
                     </td>
                     <td>
-                      <span <?= add_title_tooltip($item['nama_jasa_kirim'], 24) ?>>
+                      <πspan <?= add_title_tooltip($item['nama_jasa_kirim'], 24) ?>>
                         <?= mb_strimwidth($item['nama_jasa_kirim'], 0, 24, '...') ?>
                       </span>
                     </td>

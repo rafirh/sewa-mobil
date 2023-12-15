@@ -169,14 +169,18 @@ function getById($conn, $table, $id)
   return mysqli_fetch_assoc($result);
 }
 
-function countAll($conn, $table, $field = null, $value = null)
+function countAll($conn, $table, $field = null, $value = null, $field2 = null, $value2 = null, $operator = 'AND')
 {
   $query = "SELECT COUNT(*) AS total FROM $table";
   if ($field && $value) {
     $query .= " WHERE $field = '$value'";
   }
+  if ($field2 && $value2) {
+    $query .= " $operator $field2 = '$value2'";
+  }
   $result = mysqli_query($conn, $query);
-  return mysqli_fetch_assoc($result)['total'];
+  $row = mysqli_fetch_assoc($result);
+  return $row['total'];
 }
 
 function getValidOrder($order) {
