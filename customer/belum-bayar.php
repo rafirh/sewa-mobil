@@ -155,13 +155,20 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
                             </svg>
                             Bayar
                           </a>
-                          <a class="dropdown-item" href="faktur.php?id=<?= $item['id'] ?>">
+                          <a class="dropdown-item" href="detail-transaksi.php?id=<?= $item['id'] ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                               <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                               <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
                               <path d="M9 17h6" />
                               <path d="M9 13h6" />
+                            </svg>
+                            Detail
+                          </a>
+                          <a class="dropdown-item" href="faktur.php?id=<?= $item['id'] ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2" />
                             </svg>
                             Faktur
                           </a>

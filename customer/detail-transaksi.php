@@ -6,7 +6,7 @@ include('partials/header.php');
 
 $prevPage = $_SERVER['HTTP_REFERER'];
 if (str_contains($prevPage, 'detail-transaksi.php')) {
-  $prevPage = 'menunggu-pengiriman.php';
+  $prevPage = 'belum-bayar.php';
 }
 
 if (!isParamsExist(['id'])) {
@@ -38,14 +38,14 @@ $qeury = "
     denda.tarif AS tarif_denda
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
+  LEFT JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN agen ON transaksi.agen_id = agen.id
   LEFT JOIN metode_pembayaran ON transaksi.metode_pembayaran_id = metode_pembayaran.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
   JOIN status_pengiriman ON transaksi.status_pengiriman_id = status_pengiriman.id
   JOIN status_pengembalian ON transaksi.status_pengembalian_id = status_pengembalian.id
   LEFT JOIN denda ON transaksi.denda_id = denda.id
-  WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']} AND transaksi.id = $id
+  WHERE transaksi.user_id = {$_SESSION['user']['id']} AND transaksi.id = $id
 ";
 
 $result = mysqli_query($conn, $qeury);
@@ -56,7 +56,7 @@ if (!$transaksi) {
   redirectJs($prevPage);
 }
 
-if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
+if ($transaksi['user_id'] != $_SESSION['user']['id']) {
   redirectJs($prevPage);
 }
 ?>
