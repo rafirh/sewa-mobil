@@ -138,8 +138,8 @@
             </span>
           </a>
         </li>
-        <li class="nav-item <?= $active == 'diterima' ? 'active' : '' ?>">
-          <a class="nav-link" href="diterima.php">
+        <li class="nav-item <?= $active == 'pesanan-diterima' ? 'active' : '' ?>">
+          <a class="nav-link" href="pesanan-diterima.php">
             <span class="nav-link-icon d-lg-inline-block">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -149,6 +149,35 @@
             </span>
             <span class="nav-link-title">
               Pesanan Diterima
+            </span>
+          </a>
+        </li>
+        <li class="nav-item <?= $active == 'belum-lunas' ? 'active' : '' ?>">
+          <a class="nav-link" href="belum-lunas.php">
+            <span class="nav-link-icon d-lg-inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wallet" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
+                <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
+              </svg>
+            </span>
+            <span class="nav-link-title">
+              Belum Lunas
+            </span>
+          </a>
+        </li>
+        <li class="nav-item <?= $active == 'pelunasan-diverifikasi' ? 'active' : '' ?>">
+          <a class="nav-link" href="pelunasan-diverifikasi.php">
+            <span class="nav-link-icon d-lg-inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
+              </svg>
+            </span>
+            <span class="nav-link-title">
+              Pelunasan Diverifikasi
             </span>
           </a>
         </li>

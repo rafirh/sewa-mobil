@@ -365,6 +365,10 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
                         <span class="badge badge-outline text-danger">
                           <?= $transaksi['nama_status_pembayaran'] ?>
                         </span>
+                      <?php elseif ($transaksi['status_pembayaran_id'] == 4 && $transaksi['bukti_bayar_lunas'] != null): ?>
+                        <span class="badge badge-outline text-orange">
+                          Pelunasan Sedang Diverifikasi
+                        </span>
                       <?php elseif ($transaksi['status_pembayaran_id'] == 4): ?>
                         <span class="badge badge-outline text-primary">
                           <?= $transaksi['nama_status_pembayaran'] ?>

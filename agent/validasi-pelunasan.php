@@ -17,21 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if (!$transaksi || $transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
     setFlashMessage('error', 'Transaksi tidak ditemukan');
-    redirectJs('verifikasi-pembayaran.php');
+    redirectJs('verifikasi-pelunasan.php');
   }
 
-  $status_pembayaran_id = $is_valid ? 4 : 3;
-  $status_pengiriman_id = 1;
+  $status_pembayaran_id = $is_valid ? 5 : 4;
 
-  if ($is_valid && $transaksi['jumlah_dp'] == $transaksi['total_harga']) {
-    $status_pembayaran_id = 5;
-  }
-
-  $query = "UPDATE transaksi SET status_pembayaran_id = $status_pembayaran_id, status_pengiriman_id = $status_pengiriman_id";
+  $query = "UPDATE transaksi SET status_pembayaran_id = $status_pembayaran_id";
 
   if (!$is_valid) {
-    deleteFile($transaksi['bukti_dp']);
-    $query .= ", bukti_dp = NULL";
+    deleteFile($transaksi['bukti_bayar_lunas']);
+    $query .= ", bukti_bayar_lunas = NULL, jumlah_bayar_lunas = NULL, tanggal_bayar_lunas = NULL";
   }
 
   $query .= " WHERE id = $id";
@@ -39,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($result) {
     setFlashMessage('success', 'Data transaksi berhasil diperbarui!');
-    redirectJs('verifikasi-pembayaran.php');
+    redirectJs('verifikasi-pelunasan.php');
     exit;
   } else {
     setFlashMessage('error', 'Data transaksi gagal diperbarui!');
-    redirectJs('verifikasi-pembayaran.php');
+    redirectJs('verifikasi-pelunasan.php');
     exit;
   }
 }

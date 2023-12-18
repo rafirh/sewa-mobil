@@ -358,12 +358,16 @@ if ($transaksi['user_id'] != $_SESSION['user']['id']) {
                           <?= $transaksi['nama_status_pembayaran'] ?>
                         </span>
                       <?php elseif ($transaksi['status_pembayaran_id'] == 2): ?>
-                        <span class="badge badge-outline text-teal">
+                        <span class="badge badge-outline text-orange">
                           <?= $transaksi['nama_status_pembayaran'] ?>
                         </span>
                       <?php elseif ($transaksi['status_pembayaran_id'] == 3): ?>
                         <span class="badge badge-outline text-danger">
                           <?= $transaksi['nama_status_pembayaran'] ?>
+                        </span>
+                      <?php elseif ($transaksi['status_pembayaran_id'] == 4 && $transaksi['bukti_bayar_lunas'] != null): ?>
+                        <span class="badge badge-outline text-orange">
+                          Pelunasan Sedang Diverifikasi
                         </span>
                       <?php elseif ($transaksi['status_pembayaran_id'] == 4): ?>
                         <span class="badge badge-outline text-primary">

@@ -8,58 +8,21 @@ $query = "
   SELECT transaksi.*,
   mobil.nama AS nama_mobil,
   mobil.plat_nomor AS plat_nomor,
-  user.nama AS nama_customer,
-  user.no_hp AS telepon_customer,
-  user.alamat AS alamat_customer, 
-  jasa_kirim.nama AS nama_jasa_kirim
+  jasa_kirim.nama AS nama_jasa_kirim,
+  agen.nama AS nama_agen,
+  agen.alamat AS alamat_agen,
+  agen.telepon AS telepon_agen
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
-  JOIN user ON transaksi.user_id = user.id
+  JOIN agen ON transaksi.agen_id = agen.id
   JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
-  WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']}
+  WHERE transaksi.user_id = {$_SESSION['user']['id']}
     AND (transaksi.status_pembayaran_id = 4 OR transaksi.status_pembayaran_id = 5)
     AND transaksi.status_pengiriman_id = 1
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
 $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $id = $_POST['id'];
-  $status_pengiriman_id = 2;
-
-  $query = "SELECT * FROM transaksi WHERE id = $id";
-  $transaksi = mysqli_fetch_assoc(mysqli_query($conn, $query));
-
-  if (!$transaksi || $transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
-    setFlashMessage('error', 'Pesanan tidak ditemukan');
-    redirectJs('menunggu-pengiriman.php');
-  }
-
-  $query = "SELECT * FROM mobil WHERE id = {$transaksi['mobil_id']}";
-  $mobil = mysqli_fetch_assoc(mysqli_query($conn, $query));
-
-  if (!$mobil || $mobil['status'] == 'unavailable') {
-    setFlashMessage('error', 'Mobil tidak tersedia');
-    redirectJs('menunggu-pengiriman.php');
-  }
-
-  $query = "UPDATE mobil SET status = 'unavailable' WHERE id = {$transaksi['mobil_id']}";
-  $result = mysqli_query($conn, $query);
-
-  $query = "UPDATE transaksi SET status_pengiriman_id = $status_pengiriman_id WHERE id = $id";
-  $result = mysqli_query($conn, $query);
-
-  if ($result) {
-    setFlashMessage('success', 'Pesanan berhasil diperbarui!');
-    redirectJs('menunggu-pengiriman.php');
-    exit;
-  } else {
-    setFlashMessage('error', 'Pesanan gagal diperbarui!');
-    redirectJs('menunggu-pengiriman.php');
-    exit;
-  }
-}
 ?>
 
 <style>
@@ -108,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <th>No.</th>
                   <th>Kode Transaksi</th>
                   <th>Mobil</th>
-                  <th>Pelanggan</th>
-                  <th>Alamat</th>
+                  <th>Agen</th>
+                  <th>Alamat Agen</th>
                   <th>Tanggal Sewa</th>
                   <th>Lama Sewa</th>
                   <th>Jasa Kirim</th>
@@ -134,15 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                       <?= $item['plat_nomor'] ?>
                     </td>
                     <td>
-                      <span <?= add_title_tooltip($item['nama_customer'], 24) ?>>
-                        <?= mb_strimwidth($item['nama_customer'], 0, 24, '...') ?>
+                      <span <?= add_title_tooltip($item['nama_agen'], 24) ?>>
+                        <?= mb_strimwidth($item['nama_agen'], 0, 24, '...') ?>
                       </span>
                       <br>
-                      <?= $item['telepon_customer'] ?>
+                      <?= $item['telepon_agen'] ?>
                     </td>
                     <td>
-                      <span <?= add_title_tooltip($item['alamat_customer'], 35) ?>>
-                        <?= mb_strimwidth($item['alamat_customer'], 0, 35, '...') ?>
+                      <span <?= add_title_tooltip($item['alamat_agen'], 35) ?>>
+                        <?= mb_strimwidth($item['alamat_agen'], 0, 35, '...') ?>
                       </span>
                     </td>
                     <td>
@@ -161,15 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
-                        <button class="btn btn-icon btn-pill bg-primary-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeliver">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                            <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
-                            <path d="M3 9l4 0" />
-                          </svg>
-                        </button>
                         <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -227,52 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 </div>
 
-<!-- Modal Deliver -->
-<div class="modal modal-blur fade" id="modalDeliver" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      <div class="modal-status bg-primary"></div>
-      <div class="modal-body text-center py-4">
-        <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-primary icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M12 9v2m0 4v.01" />
-          <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-        </svg>
-        <h3>Apakah anda yakin pesanan ini sedang dikirim?</h3>
-        <div class="text-muted">Pesanan yang sudah dikirim tidak dapat dibatalkan.</div>
-      </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                Batal
-              </a></div>
-            <div class="col">
-              <form method="post" id="formAccept">
-                <input type="hidden" name="id" value="" id="inputAcceptId">
-                <button type="submit" class="btn btn-primary w-100">
-                  Ya, saya yakin
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="<?= asset('plugins/tabler/dist/libs/fslightbox/index.js') ?>" defer></script>
-
-<script>
-  const modalDeliver = document.getElementById('modalDeliver');
-  modalDeliver.addEventListener('show.bs.modal', function(event) {
-    const inputAcceptId = document.getElementById('inputAcceptId');
-    inputAcceptId.value = event.relatedTarget.dataset.id;
-  });
-</script>
 
 <?php include('partials/footer.php') ?>
 

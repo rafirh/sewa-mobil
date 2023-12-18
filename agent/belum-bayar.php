@@ -315,35 +315,4 @@ $metode_pembayaran = getAll($conn, 'metode_pembayaran');
 
 <?php
 showToastIfExist();
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-  if (checkRequiredFields(['transaksi_id', 'metode_pembayaran_id'])) {
-    $transaksi_id = htmlspecialchars($_POST['transaksi_id']);
-    $metode_pembayaran_id = htmlspecialchars($_POST['metode_pembayaran_id']);
-
-    if (isset($_FILES['bukti']) && !empty($_FILES['bukti']['name'])) {
-      $bukti_dp = storeImage($_FILES['bukti'], 'bukti');
-    } else {
-      $bukti_dp = null;
-    }
-
-    $status_pembayaran_id = 2;
-    $tanggal_dp = date('Y-m-d H:i:s');
-
-    $query = "UPDATE transaksi SET metode_pembayaran_id = $metode_pembayaran_id, bukti_dp = '$bukti_dp', status_pembayaran_id = $status_pembayaran_id, tanggal_dp = '$tanggal_dp' WHERE id = $transaksi_id";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-      setFlashMessage('success', 'Bukti pembayaran berhasil dikirim!');
-      redirectJs('belum-bayar.php');
-      exit;
-    } else {
-      setFlashMessage('error', 'Bukti pembayaran gagal dikirim!');
-      redirectJs('belum-bayar.php');
-      exit;
-    }
-  } else {
-    setFlashMessage('error', 'Semua data harus diisi!');
-  }
-}
 ?>
