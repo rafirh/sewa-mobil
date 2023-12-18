@@ -4,14 +4,47 @@ $title = 'Beranda';
 
 include('partials/header.php');
 
-$jumlah_pelanggan = countAll($conn, 'user', 'role', 'customer');
-$jumlah_agen = countAll($conn, 'user', 'role', 'agent');
-$jumlah_mobil = countAll($conn, 'mobil', 'agen_id', $_SESSION['user']['agen_id']);
-$jumlah_mobil_tersedia = countAll($conn, 'mobil', 'status', 'available', 'agen_id', $_SESSION['user']['agen_id']);
-$jumlah_mobil_disewa = countAll($conn, 'mobil', 'status', 'unavailable', 'agen_id', $_SESSION['user']['agen_id']);
-$jumlah_transaksi = countAll($conn, 'transaksi', 'agen_id', $_SESSION['user']['agen_id']);
-$belum_dibayar = countAll($conn, 'transaksi', 'status_pembayaran_id', 1, 'agen_id', $_SESSION['user']['agen_id']);
-$belum_diverifikasi = countAll($conn, 'transaksi', 'status_pembayaran_id', 2, 'agen_id', $_SESSION['user']['agen_id']);
+
+$pendapatan_lunas = sumAll($conn, "transaksi", "total_harga", "status_pembayaran_id = 5 AND agen_id = {$_SESSION['user']['agen_id']}");
+$pendapatan_dp = sumAll($conn, "transaksi", "jumlah_dp", "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']}");
+$total_pendapatan = $pendapatan_lunas + $pendapatan_dp;
+
+$jumlah_mobil = countAll($conn, "mobil", "agen_id = {$_SESSION['user']['agen_id']}");
+$jumlah_mobil_tersedia = countAll($conn, "mobil", "status = 'available' AND agen_id = {$_SESSION['user']['agen_id']}");
+$jumlah_mobil_disewa = countAll($conn, "mobil", "status = 'unavailable' AND agen_id = {$_SESSION['user']['agen_id']}");
+$jumlah_transaksi = countAll($conn, "transaksi", "agen_id = {$_SESSION['user']['agen_id']}");
+$belum_dibayar = countAll($conn, "transaksi", "(status_pembayaran_id = 1 OR status_pembayaran_id = 3) AND agen_id = {$_SESSION['user']['agen_id']}");
+$belum_diverifikasi = countAll($conn, "transaksi", "status_pembayaran_id = 2 AND agen_id = {$_SESSION['user']['agen_id']}");
+$menunggu_pengiriman = countAll(
+  $conn, 
+  "transaksi", 
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 1"
+);
+$sedang_dikirim = countAll(
+  $conn, 
+  "transaksi", 
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 2"
+);
+$pesanan_terkirim = countAll(
+  $conn, 
+  "transaksi", 
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 1"
+);
+$belum_lunas = countAll(
+  $conn, 
+  "transaksi", 
+  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NULL"
+);
+$pelunasan_belum_diverifikasi = countAll(
+  $conn, 
+  "transaksi", 
+  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NOT NULL"
+);
+$pesanan_selesai = countAll(
+  $conn, 
+  "transaksi", 
+  "status_pembayaran_id = 5 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2"
+);
 ?>
 
 <div class="page-header d-print-none mt-2">
@@ -29,6 +62,27 @@ $belum_diverifikasi = countAll($conn, 'transaksi', 'status_pembayaran_id', 2, 'a
 <div class="page-body">
   <div class="container-xl">
     <div class="row">
+    <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-lime text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" /><path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= format_rupiah($total_pendapatan) ?>
+                </div>
+                <div class="text-muted">
+                  total pendapatan
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-sm-6 col-xl-4 mb-3">
         <div class="card card-sm">
           <div class="card-body">
@@ -125,7 +179,7 @@ $belum_diverifikasi = countAll($conn, 'transaksi', 'status_pembayaran_id', 2, 'a
                   <?= $jumlah_transaksi ?>
                 </div>
                 <div class="text-muted">
-                  total transaksi
+                  total pesanan
                 </div>
               </div>
             </div>
@@ -179,6 +233,157 @@ $belum_diverifikasi = countAll($conn, 'transaksi', 'status_pembayaran_id', 2, 'a
                 </div>
                 <div class="text-muted">
                   pembayaran belum diverifikasi
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-cyan text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-pause" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M20.942 13.018a9 9 0 1 0 -7.909 7.922" />
+                    <path d="M12 7v5l2 2" />
+                    <path d="M17 17v5" />
+                    <path d="M21 17v5" />
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $menunggu_pengiriman ?>
+                </div>
+                <div class="text-muted">
+                  menunggu pengiriman
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-teal text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+                  <path d="M3 9l4 0" />
+                </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $sedang_dikirim ?>
+                </div>
+                <div class="text-muted">
+                  sedang dikirim
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-success text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                    <path d="M9 12l2 2l4 -4" />
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $pesanan_terkirim ?>
+                </div>
+                <div class="text-muted">
+                  terkirim / belum dikembalikan
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-red text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wallet" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
+                    <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $belum_lunas ?>
+                </div>
+                <div class="text-muted">
+                  pesanan belum lunas
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-orange text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                    <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $pelunasan_belum_diverifikasi ?>
+                </div>
+                <div class="text-muted">
+                  pelunasan belum diverifikasi
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-success text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 15l2 2l4 -4" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= $pesanan_selesai ?>
+                </div>
+                <div class="text-muted">
+                  pesanan selesai
                 </div>
               </div>
             </div>

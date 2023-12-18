@@ -22,6 +22,7 @@ $query = "
     AND transaksi.status_pembayaran_id = 4
     AND transaksi.status_pengiriman_id = 3
     AND transaksi.status_pengembalian_id = 2
+    AND transaksi.bukti_bayar_lunas IS NULL
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);

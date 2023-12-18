@@ -406,7 +406,7 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
               </div>
               <div class="col-md-4 col-6">
                 <div class="mb-3">
-                  <label class="form-label">Status Pengiriman</label>
+                  <label class="form-label">Status Pengembalian</label>
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
                       <?php if ($transaksi['status_pengiriman_id'] == 3): ?>
