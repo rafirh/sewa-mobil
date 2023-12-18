@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 08, 2023 at 01:23 AM
+-- Generation Time: Dec 18, 2023 at 02:50 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -325,20 +325,19 @@ CREATE TABLE `mobil` (
 --
 
 INSERT INTO `mobil` (`id`, `agen_id`, `merk_id`, `jenis_id`, `transmisi_id`, `warna_id`, `cc_id`, `tipe_id`, `nama`, `plat_nomor`, `tahun`, `harga`, `kapasitas`, `foto`, `status`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 2, 'Avanza', 'B 1234 ABC', '2019', 50000, 8, NULL, 'available'),
-(2, 1, 2, 2, 2, 2, 2, 2, 'Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
-(3, 1, 3, 1, 2, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
-(4, 1, 4, 2, 1, 4, 4, 1, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
-(5, 1, 5, 1, 2, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available'),
-(6, 2, 6, 2, 1, 6, 6, 1, 'Livina', 'L 7454 AB', '2022', 100000, 6, NULL, 'available'),
-(7, 2, 7, 1, 2, 7, 7, 2, 'Mobilio', 'B 1255 ABC', '2019', 80000, 8, NULL, 'available'),
-(8, 2, 8, 2, 1, 8, 8, 2, 'BRV', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
-(9, 2, 9, 1, 2, 9, 9, 2, 'Rush', 'L 2132 AB', '2022', 100000, 6, NULL, 'available'),
+(1, 1, 1, 1, 1, 1, 1, 2, 'Avanza', 'N 2234 ABC', '2019', 50000, 8, NULL, 'available'),
+(2, 1, 2, 2, 2, 2, 2, 2, 'Xenia', 'B 1321 AG', '2018', 70000, 8, NULL, 'available'),
+(3, 1, 3, 1, 2, 3, 3, 2, 'Terios', 'L 543 AB', '2022', 100000, 6, NULL, 'available'),
+(4, 1, 4, 2, 1, 4, 4, 1, 'Ertiga', 'B 134 ABC', '2019', 60000, 8, NULL, 'available'),
+(5, 1, 5, 1, 2, 5, 5, 1, 'Xpander', 'B 234 AG', '2018', 120000, 8, NULL, 'available'),
+(6, 2, 6, 2, 1, 6, 6, 1, 'Livina', 'A 7454 AB', '2022', 100000, 6, NULL, 'available'),
+(8, 2, 8, 2, 1, 8, 8, 2, 'BRV', 'AG 2411 AG', '2018', 70000, 8, NULL, 'available'),
+(9, 2, 9, 1, 2, 9, 9, 2, 'Rush', 'B 2344 AB', '2022', 100000, 6, NULL, 'available'),
 (10, 3, 1, 2, 1, 1, 1, 1, 'Grand Livina', 'B 1212 BG', '2019', 50000, 8, NULL, 'available'),
 (11, 3, 2, 1, 2, 2, 2, 1, 'Grand Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
 (12, 3, 3, 2, 1, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
 (13, 3, 4, 1, 2, 4, 4, 2, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
-(14, 3, 5, 2, 1, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available');
+(14, 3, 5, 2, 1, 3, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, '', 'available');
 
 -- --------------------------------------------------------
 
@@ -481,7 +480,12 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id`, `mobil_id`, `user_id`, `agen_id`, `metode_pembayaran_id`, `status_pembayaran_id`, `status_pengiriman_id`, `status_pengembalian_id`, `jasa_kirim_id`, `denda_id`, `kode_transaksi`, `nama_penerima`, `alamat_penerima`, `no_hp_penerima`, `tanggal_sewa`, `tanggal_pemesanan`, `tanggal_pengembalian`, `jumlah_hari`, `total_harga`, `diskon`, `persentase_dp`, `jumlah_dp`, `bukti_dp`, `tanggal_dp`, `jumlah_bayar_lunas`, `bukti_bayar_lunas`, `tanggal_bayar_lunas`) VALUES
-(1, 2, 2, 1, 1, 2, 1, 1, 2, NULL, 'TRX1207154054596', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-09 00:00:00', '2023-12-07 15:40:54', NULL, 2, 170000, NULL, 50, 85000, 'images/bukti/6571e30da5283.jpg', '2023-12-07 16:21:49', NULL, NULL, NULL);
+(5, 1, 2, 1, 1, 5, 3, 2, 2, NULL, 'TRX1217114846135', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:48:46', '2023-12-17 12:03:55', 3, 180000, NULL, 100, 180000, 'images/bukti/657ed25427ec8.jpg', '2023-12-17 11:49:56', NULL, NULL, NULL),
+(6, 6, 2, 2, 1, 4, 3, 2, 1, NULL, 'TRX1217115335379', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:53:35', '2023-12-18 10:07:34', 5, 500000, NULL, 50, 250000, 'images/bukti/657ed3774e71d.jpg', '2023-12-17 11:54:47', 250000, 'images/bukti/65800c0fa3ddf.jpg', '2023-12-18 10:08:31'),
+(7, 12, 2, 3, 1, 2, 1, 1, 1, NULL, 'TRX1217115357995', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-30 00:00:00', '2023-12-17 11:53:57', NULL, 3, 300000, NULL, 75, 225000, 'images/bukti/657ed367bf14b.jpg', '2023-12-17 11:54:31', NULL, NULL, NULL),
+(8, 3, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217153516755', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-31 00:00:00', '2023-12-17 15:35:16', '2023-12-17 16:11:24', 2, 200000, NULL, 50, 100000, 'images/bukti/657f074d05f18.jpg', '2023-12-17 15:35:57', 100000, 'images/bukti/657ff9b9acbcb.jpg', '2023-12-18 08:50:17'),
+(9, 1, 2, 1, 1, 4, 3, 2, 2, NULL, 'TRX1217165850181', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-18 00:00:00', '2023-12-17 16:58:50', '2023-12-18 09:28:57', 2, 130000, NULL, 25, 32500, 'images/bukti/657ff185d39f5.jpg', '2023-12-18 08:15:17', 97500, 'images/bukti/65800c08530a6.jpg', '2023-12-18 10:08:24'),
+(11, 5, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217170009505', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-27 00:00:00', '2023-12-17 17:00:09', '2023-12-18 08:17:10', 1, 120000, NULL, 50, 60000, 'images/bukti/657ff13d7f5a7.jpg', '2023-12-18 08:14:05', 60000, 'images/bukti/658000a61a087.jpg', '2023-12-18 09:19:50');
 
 -- --------------------------------------------------------
 
@@ -532,7 +536,8 @@ INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`
 (2, 'John Doe', 'customer@gmail.com', '$2y$12$7YvXZXH7sEvVoes.knWH3eNWmW783GQZpFpuq6EzkZMTFDWjfTq4y', 'Jl. Mawar', '08123456789', NULL, 'customer'),
 (3, 'Agent Sumber Jaya', 'sumberjaya@gmail.com', '$2y$12$OdEXTKn1d3QOPfBglFPveOawkyr2b1LZU58gXYJx6JA2tlVD181Ry', 'Jl. Melati', '0812345678', NULL, 'agent'),
 (4, 'Agen Joyo Makmur', 'joyomakmur@gmail.com', '$2y$12$d34JUpNKuKtV6RQA.yEdJeAXIHR.eCD3k169iJZI0jXWn85fOvByS', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(5, 'Agen Sumber Rejeki', 'sumberrejeki@gmail.com', '$2y$12$CEmUSNcGfax2eB47Fl1RRO3q3bZjTCpQDXnGMzphfevnZbxgouIJy', 'Jl. Melati', '0812345678', NULL, 'agent');
+(5, 'Agen Sumber Rejeki', 'sumberrejeki@gmail.com', '$2y$12$CEmUSNcGfax2eB47Fl1RRO3q3bZjTCpQDXnGMzphfevnZbxgouIJy', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(10, 'Admin 2', 'admin2@gmail.com', '$2y$10$4FYmgEv54sCmtQnZWVEMMeE0KHhkvHrpcJWXzTE9h5QRsukzGrvoi', 'Jalan Soekarno Hatta No. 1 Kota Denpasar', '08885477865', 'images/user/657a818e450cd.jpeg', 'administrator');
 
 -- --------------------------------------------------------
 
@@ -557,7 +562,6 @@ INSERT INTO `warna` (`id`, `nama`, `kode`) VALUES
 (4, 'Biru', '#0000ff'),
 (5, 'Hijau', '#00ff00'),
 (6, 'Kuning', '#ffff00'),
-(7, 'Abu-abu', '#808080'),
 (8, 'Coklat', '#a52a2a'),
 (9, 'Navy', '#000080'),
 (10, 'Olive', '#808000'),
@@ -721,31 +725,31 @@ ALTER TABLE `agen`
 -- AUTO_INCREMENT for table `cc`
 --
 ALTER TABLE `cc`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `denda`
 --
 ALTER TABLE `denda`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jasa_kirim`
 --
 ALTER TABLE `jasa_kirim`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jenis_mobil`
 --
 ALTER TABLE `jenis_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `merk_mobil`
 --
 ALTER TABLE `merk_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `metode_pembayaran`
@@ -763,7 +767,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `mobil`
 --
 ALTER TABLE `mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -793,31 +797,31 @@ ALTER TABLE `status_pengiriman`
 -- AUTO_INCREMENT for table `tipe_mobil`
 --
 ALTER TABLE `tipe_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `transmisi`
 --
 ALTER TABLE `transmisi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `warna`
 --
 ALTER TABLE `warna`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables
