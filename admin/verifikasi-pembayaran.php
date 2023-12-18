@@ -11,11 +11,14 @@ $query = "
   mobil.plat_nomor AS plat_nomor,
   user.nama AS nama_customer,
   user.no_hp AS telepon_customer,
-  user.alamat AS alamat_customer
+  user.alamat AS alamat_customer,
+  agen.nama AS nama_agen,
+  agen.telepon AS telepon_agen
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN user ON transaksi.user_id = user.id
-  WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pembayaran_id = 2
+  JOIN agen ON transaksi.agen_id = agen.id
+  WHERE transaksi.status_pembayaran_id = 2
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
@@ -71,6 +74,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                   <th>Waktu DP</th>
                   <th>Mobil</th>
                   <th>Pelanggan</th>
+                  <th>Agen</th>
                   <th>Alamat</th>
                   <th>Total Harga</th>
                   <th>DP</th>
@@ -106,6 +110,13 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                       </span>
                       <br>
                       <?= $item['telepon_customer'] ?>
+                    </td>
+                    <td>
+                      <span <?= add_title_tooltip($item['nama_agen'], 24) ?>>
+                        <?= mb_strimwidth($item['nama_agen'], 0, 24, '...') ?>
+                      </span>
+                      <br>
+                      <?= $item['telepon_agen'] ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['alamat_customer'], 35) ?>>
