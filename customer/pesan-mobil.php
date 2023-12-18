@@ -5,6 +5,7 @@ $title = 'Pesan Mobil';
 include('partials/header.php');
 
 $sortables = [
+  'total_dipesan' => 'Total Dipesan',
   'nama' => 'Nama',
   'harga' => 'Harga',
   'kapasitas' => 'Kapasitas',
@@ -35,7 +36,8 @@ $query = "
     warna.nama AS warna,
     warna.kode AS kode_warna,
     cc.nama AS cc,
-    agen.nama AS agen
+    agen.nama AS agen,
+    IFNULL(COUNT(transaksi.id), 0) AS total_dipesan
   FROM mobil
   JOIN merk_mobil ON merk_mobil.id = mobil.merk_id
   JOIN jenis_mobil ON jenis_mobil.id = mobil.jenis_id
@@ -43,6 +45,7 @@ $query = "
   JOIN warna ON warna.id = mobil.warna_id
   JOIN cc ON cc.id = mobil.cc_id
   JOIN agen ON agen.id = mobil.agen_id
+  LEFT JOIN transaksi ON transaksi.mobil_id = mobil.id
   WHERE status = 'available'
 ";
 
@@ -90,6 +93,8 @@ if (isParamsExist(['agen_id'])) {
   $agen_id = htmlspecialchars($_GET['agen_id']);
   $query .= " AND mobil.agen_id = $agen_id";
 }
+
+$query .= " GROUP BY mobil.id";
 
 if (isParamsExist(['sortby'])) {
   $sortby = htmlspecialchars($_GET['sortby']);
@@ -198,7 +203,7 @@ $order_id = $_GET['order_id'] ?? null;
                 <div class="text-muted mb-1">
                   <?= format_rupiah($car['harga']) ?> / hari
                 </div>
-                <div class="text-muted mb-1">
+                <div class="text-muted mb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-store" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M3 21l18 0" />
@@ -208,6 +213,9 @@ $order_id = $_GET['order_id'] ?? null;
                     <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
                   </svg>
                   <?= $car['agen'] ?>
+                </div>
+                <div class="text-muted mb-1">
+                  <?= $car['total_dipesan'] ?> kali dipesan
                 </div>
               </div>
             </a>

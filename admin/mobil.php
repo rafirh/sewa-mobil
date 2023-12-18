@@ -5,6 +5,7 @@ $title = 'Mobil';
 include('partials/header.php');
 
 $sortables = [
+  'total_dipesan' => 'Total Dipesan',
   'nama' => 'Nama',
   'harga' => 'Harga',
   'kapasitas' => 'Kapasitas',
@@ -32,12 +33,14 @@ $query = "
     jenis_mobil.nama AS jenis,
     transmisi.nama AS transmisi,
     warna.nama AS warna,
-    warna.kode AS kode_warna
+    warna.kode AS kode_warna,
+    IFNULL(COUNT(transaksi.id), 0) AS total_dipesan
   FROM mobil
   JOIN merk_mobil ON merk_mobil.id = mobil.merk_id
   JOIN jenis_mobil ON jenis_mobil.id = mobil.jenis_id
   JOIN transmisi ON transmisi.id = mobil.transmisi_id
   JOIN warna ON warna.id = mobil.warna_id
+  LEFT JOIN transaksi ON transaksi.mobil_id = mobil.id
   WHERE 1
 ";
 
@@ -80,6 +83,8 @@ if (isParamsExist(['tipe_id'])) {
   $tipe_id = htmlspecialchars($_GET['tipe_id']);
   $query .= " AND mobil.tipe_id = $tipe_id";
 }
+
+$query .= " GROUP BY mobil.id";
 
 if (isParamsExist(['sortby'])) {
   if (!array_key_exists($_GET['sortby'], $sortables)) {
@@ -200,6 +205,7 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                   <th>Merk</th>
                   <th>Transmisi</th>
                   <th>Warna</th>
+                  <th>Total Dipesan</th>
                   <th>Status</th>
                   <th class="text-center">Opsi</th>
                 </tr>
@@ -239,6 +245,9 @@ $cars = $result->fetch_all(MYSQLI_ASSOC);
                     <td>
                       <span class="badge me-1" style="background-color: <?= $car['kode_warna'] ?>;"></span>
                       <?= $car['warna'] ?>
+                    </td>
+                    <td>
+                      <?= $car['total_dipesan'] ?> kali
                     </td>
                     <td>
                       <span class="badge badge-outline text-<?= $car['status'] == 'available' ? 'green' : 'pink' ?>">
