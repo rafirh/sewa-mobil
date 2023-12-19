@@ -2,7 +2,7 @@
 require_once('../db/conn.php');
 require_once('../helper/helpers.php');
 redirectIfNotAuthenticated();
-checkRole('agent');
+checkRole('customer');
 
 $prevPage = $_SERVER['HTTP_REFERER'] ?? 'menunggu-pengiriman.php';
 if (str_contains($prevPage, 'detail-transaksi.php')) {
@@ -40,7 +40,7 @@ $qeury = "
   LEFT JOIN metode_pembayaran ON transaksi.metode_pembayaran_id = metode_pembayaran.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
   LEFT JOIN denda ON transaksi.denda_id = denda.id
-  WHERE transaksi.id = $id AND transaksi.agen_id = {$_SESSION['user']['agen_id']}
+  WHERE transaksi.id = $id AND transaksi.user_id = {$_SESSION['user']['id']}
 ";
 
 $result = mysqli_query($conn, $qeury);

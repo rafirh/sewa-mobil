@@ -4,7 +4,7 @@ $title = 'Detail Transaksi';
 
 include('partials/header.php');
 
-$prevPage = $_SERVER['HTTP_REFERER'];
+$prevPage = $_SERVER['HTTP_REFERER'] ?? 'menunggu-pengiriman.php';
 if (str_contains($prevPage, 'detail-transaksi.php')) {
   $prevPage = 'menunggu-pengiriman.php';
 }
@@ -14,7 +14,6 @@ if (!isParamsExist(['id'])) {
 }
 
 $id = $_GET['id'];
-
 
 $qeury = "
   SELECT transaksi.*,
