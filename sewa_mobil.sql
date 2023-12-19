@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2023 at 02:50 PM
+-- Generation Time: Dec 19, 2023 at 02:48 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -481,10 +481,10 @@ CREATE TABLE `transaksi` (
 
 INSERT INTO `transaksi` (`id`, `mobil_id`, `user_id`, `agen_id`, `metode_pembayaran_id`, `status_pembayaran_id`, `status_pengiriman_id`, `status_pengembalian_id`, `jasa_kirim_id`, `denda_id`, `kode_transaksi`, `nama_penerima`, `alamat_penerima`, `no_hp_penerima`, `tanggal_sewa`, `tanggal_pemesanan`, `tanggal_pengembalian`, `jumlah_hari`, `total_harga`, `diskon`, `persentase_dp`, `jumlah_dp`, `bukti_dp`, `tanggal_dp`, `jumlah_bayar_lunas`, `bukti_bayar_lunas`, `tanggal_bayar_lunas`) VALUES
 (5, 1, 2, 1, 1, 5, 3, 2, 2, NULL, 'TRX1217114846135', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:48:46', '2023-12-17 12:03:55', 3, 180000, NULL, 100, 180000, 'images/bukti/657ed25427ec8.jpg', '2023-12-17 11:49:56', NULL, NULL, NULL),
-(6, 6, 2, 2, 1, 4, 3, 2, 1, NULL, 'TRX1217115335379', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:53:35', '2023-12-18 10:07:34', 5, 500000, NULL, 50, 250000, 'images/bukti/657ed3774e71d.jpg', '2023-12-17 11:54:47', 250000, 'images/bukti/65800c0fa3ddf.jpg', '2023-12-18 10:08:31'),
-(7, 12, 2, 3, 1, 2, 1, 1, 1, NULL, 'TRX1217115357995', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-30 00:00:00', '2023-12-17 11:53:57', NULL, 3, 300000, NULL, 75, 225000, 'images/bukti/657ed367bf14b.jpg', '2023-12-17 11:54:31', NULL, NULL, NULL),
+(6, 6, 2, 2, 1, 4, 3, 2, 1, NULL, 'TRX1217115335379', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:53:35', '2023-12-18 10:07:34', 5, 500000, NULL, 50, 250000, 'images/bukti/657ed3774e71d.jpg', '2023-12-17 11:54:47', NULL, NULL, NULL),
+(7, 12, 2, 3, 1, 4, 1, 1, 1, NULL, 'TRX1217115357995', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-30 00:00:00', '2023-12-17 11:53:57', NULL, 3, 300000, NULL, 75, 225000, 'images/bukti/657ed367bf14b.jpg', '2023-12-17 11:54:31', NULL, NULL, NULL),
 (8, 3, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217153516755', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-31 00:00:00', '2023-12-17 15:35:16', '2023-12-17 16:11:24', 2, 200000, NULL, 50, 100000, 'images/bukti/657f074d05f18.jpg', '2023-12-17 15:35:57', 100000, 'images/bukti/657ff9b9acbcb.jpg', '2023-12-18 08:50:17'),
-(9, 1, 2, 1, 1, 4, 3, 2, 2, NULL, 'TRX1217165850181', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-18 00:00:00', '2023-12-17 16:58:50', '2023-12-18 09:28:57', 2, 130000, NULL, 25, 32500, 'images/bukti/657ff185d39f5.jpg', '2023-12-18 08:15:17', 97500, 'images/bukti/65800c08530a6.jpg', '2023-12-18 10:08:24'),
+(9, 1, 2, 1, 1, 5, 3, 2, 2, NULL, 'TRX1217165850181', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-18 00:00:00', '2023-12-17 16:58:50', '2023-12-18 09:28:57', 2, 130000, NULL, 25, 32500, 'images/bukti/657ff185d39f5.jpg', '2023-12-18 08:15:17', 97500, 'images/bukti/65800c08530a6.jpg', '2023-12-18 10:08:24'),
 (11, 5, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217170009505', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-27 00:00:00', '2023-12-17 17:00:09', '2023-12-18 08:17:10', 1, 120000, NULL, 50, 60000, 'images/bukti/657ff13d7f5a7.jpg', '2023-12-18 08:14:05', 60000, 'images/bukti/658000a61a087.jpg', '2023-12-18 09:19:50');
 
 -- --------------------------------------------------------
