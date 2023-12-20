@@ -10,17 +10,14 @@ $query = "
   mobil.plat_nomor AS plat_nomor,
   agen.nama AS nama_agen,
   agen.telepon AS telepon_agen,
-  jasa_kirim.nama AS nama_jasa_kirim,
   status_pembayaran.status_pembayaran AS status_pembayaran
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN agen ON transaksi.agen_id = agen.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
   WHERE transaksi.user_id = {$_SESSION['user']['id']}
     AND transaksi.status_pembayaran_id = 5
-    AND transaksi.status_pengiriman_id = 3
-    AND transaksi.status_pengembalian_id = 2
+    AND transaksi.status_pengembalian_id = 3
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
@@ -53,7 +50,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Pesanan Terkirim / Belum Dikembalikan
+          Riwayat Pesanan
         </h3>
       </div>
     </div>

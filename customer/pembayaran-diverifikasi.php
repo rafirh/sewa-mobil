@@ -52,7 +52,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Pembayaran Sedaang Diverifikasi
+          Pembayaran Sedang Diverifikasi
         </h3>
       </div>
     </div>

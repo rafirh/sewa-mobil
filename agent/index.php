@@ -15,35 +15,30 @@ $jumlah_mobil_disewa = countAll($conn, "mobil", "status = 'unavailable' AND agen
 $jumlah_transaksi = countAll($conn, "transaksi", "agen_id = {$_SESSION['user']['agen_id']}");
 $belum_dibayar = countAll($conn, "transaksi", "(status_pembayaran_id = 1 OR status_pembayaran_id = 3) AND agen_id = {$_SESSION['user']['agen_id']}");
 $belum_diverifikasi = countAll($conn, "transaksi", "status_pembayaran_id = 2 AND agen_id = {$_SESSION['user']['agen_id']}");
-$menunggu_pengiriman = countAll(
+$belum_diambil = countAll(
   $conn,
   "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 1"
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengembalian_id = 1"
 );
-$sedang_dikirim = countAll(
+$sedang_disewa = countAll(
   $conn,
   "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 2"
-);
-$pesanan_terkirim = countAll(
-  $conn,
-  "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 1"
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengembalian_id = 2"
 );
 $belum_lunas = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NULL"
+  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengembalian_id = 3 AND bukti_bayar_lunas IS NULL"
 );
 $pelunasan_belum_diverifikasi = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NOT NULL"
+  "status_pembayaran_id = 4 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengembalian_id = 3 AND bukti_bayar_lunas IS NOT NULL"
 );
 $pesanan_selesai = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 5 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2"
+  "status_pembayaran_id = 5 AND agen_id = {$_SESSION['user']['agen_id']} AND transaksi.status_pengembalian_id = 3"
 );
 ?>
 
@@ -249,33 +244,6 @@ $pesanan_selesai = countAll(
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-auto">
-                <span class="bg-cyan text-white avatar">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-pause" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M20.942 13.018a9 9 0 1 0 -7.909 7.922" />
-                    <path d="M12 7v5l2 2" />
-                    <path d="M17 17v5" />
-                    <path d="M21 17v5" />
-                  </svg>
-                </span>
-              </div>
-              <div class="col">
-                <div class="fw-bold">
-                  <?= $menunggu_pengiriman ?>
-                </div>
-                <div class="text-muted">
-                  menunggu pengiriman
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-4 mb-3">
-        <div class="card card-sm">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
                 <span class="bg-teal text-white avatar">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -288,10 +256,10 @@ $pesanan_selesai = countAll(
               </div>
               <div class="col">
                 <div class="fw-bold">
-                  <?= $sedang_dikirim ?>
+                  <?= $sedang_disewa ?>
                 </div>
                 <div class="text-muted">
-                  sedang dikirim
+                  belum diambil
                 </div>
               </div>
             </div>
@@ -303,20 +271,21 @@ $pesanan_selesai = countAll(
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-auto">
-                <span class="bg-success text-white avatar">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <span class="bg-teal text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M9 12l2 2l4 -4" />
+                    <path d="M20.942 13.021a9 9 0 1 0 -9.407 7.967" />
+                    <path d="M12 7v5l3 3" />
+                    <path d="M15 19l2 2l4 -4" />
                   </svg>
                 </span>
               </div>
               <div class="col">
                 <div class="fw-bold">
-                  <?= $pesanan_terkirim ?>
+                  <?= $sedang_disewa ?>
                 </div>
                 <div class="text-muted">
-                  terkirim / belum dikembalikan
+                  sedang disewa
                 </div>
               </div>
             </div>

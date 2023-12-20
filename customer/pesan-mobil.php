@@ -25,7 +25,7 @@ $warna = getAll($conn, 'warna', 'id', 'ASC');
 $cc = getAll($conn, 'cc', 'id', 'ASC');
 $agen = getAll($conn, 'agen', 'id', 'ASC');
 $tipe = getAll($conn, 'tipe_mobil', 'id', 'ASC');
-$jasa_kirim = getAll($conn, 'jasa_kirim', 'id', 'ASC');
+$jaminan = getAll($conn, 'jaminan', 'id', 'ASC');
 
 $query = "
   SELECT
@@ -450,12 +450,12 @@ $order_id = $_GET['order_id'] ?? null;
           </div>
           <div class="row">
             <div class="col mb-3">
-              <div class="form-label">Jasa Kirim</div>
-              <select class="form-select" name="jasa_kirim_id" required>
+              <div class="form-label">Jaminan</div>
+              <select class="form-select" name="jaminan_id" required>
                 <option value="" disabled selected>Pilih</option>
-                <?php foreach ($jasa_kirim as $item) : ?>
+                <?php foreach ($jaminan as $item) : ?>
                   <option value="<?= $item['id'] ?>">
-                    <?= $item['nama'] ?> (<?= format_rupiah($item['harga']) ?>)
+                    <?= $item['nama'] ?>
                   </option>
                 <?php endforeach ?>
               </select>
@@ -554,14 +554,12 @@ $order_id = $_GET['order_id'] ?? null;
     $persentase_dp = $_POST['jumlah_dp'];
 
     $mobil = getById($conn, 'mobil', $mobii_id);
-    $jasa_kirim = getById($conn, 'jasa_kirim', $jasa_kirim_id);
 
-    $total_harga = $mobil['harga'] * $jumlah_hari + $jasa_kirim['harga'];
+    $total_harga = $mobil['harga'] * $jumlah_hari;
     $jumlah_dp = $total_harga * $persentase_dp / 100;
     $status_pembayaran_id = 1;
-    $status_pengiriman_id = 1;
     $status_pengembalian_id = 1;
-    $jasa_kirim_id = $jasa_kirim['id'];
+    $jaminan_id = $_POST['jaminan_id'];
     $user_id = $_SESSION['user']['id'];
     $agen_id = $mobil['agen_id'];
     $mobil_id = $mobil['id'];
@@ -574,9 +572,8 @@ $order_id = $_GET['order_id'] ?? null;
         user_id,
         agen_id,
         status_pembayaran_id,
-        status_pengiriman_id,
         status_pengembalian_id,
-        jasa_kirim_id,
+        jaminan_id,
         nama_penerima,
         alamat_penerima,
         no_hp_penerima,
@@ -592,9 +589,8 @@ $order_id = $_GET['order_id'] ?? null;
         $user_id,
         $agen_id,
         $status_pembayaran_id,
-        $status_pengiriman_id,
         $status_pengembalian_id,
-        $jasa_kirim_id,
+        $jaminan_id,
         '$nama_penerima',
         '$alamat_penerima',
         '$no_hp_penerima',

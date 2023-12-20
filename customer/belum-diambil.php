@@ -1,6 +1,6 @@
 <?php
-$active = 'menunggu-pengiriman';
-$title = 'Menunggu Pengiriman';
+$active = 'belum-diambil';
+$title = 'belum-diambil';
 
 include('partials/header.php');
 
@@ -8,17 +8,15 @@ $query = "
   SELECT transaksi.*,
   mobil.nama AS nama_mobil,
   mobil.plat_nomor AS plat_nomor,
-  jasa_kirim.nama AS nama_jasa_kirim,
   agen.nama AS nama_agen,
   agen.alamat AS alamat_agen,
   agen.telepon AS telepon_agen
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN agen ON transaksi.agen_id = agen.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   WHERE transaksi.user_id = {$_SESSION['user']['id']}
     AND (transaksi.status_pembayaran_id = 4 OR transaksi.status_pembayaran_id = 5)
-    AND transaksi.status_pengiriman_id = 1
+    AND transaksi.status_pengembalian_id = 1
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
@@ -51,7 +49,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Menunggu Pengiriman
+          Pesanan Belum Diambil
         </h3>
       </div>
     </div>
@@ -70,12 +68,11 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <tr>
                   <th>No.</th>
                   <th>Kode Transaksi</th>
+                  <th>Ambil Pada</th>
                   <th>Mobil</th>
                   <th>Agen</th>
                   <th>Alamat Agen</th>
-                  <th>Tanggal Sewa</th>
                   <th>Lama Sewa</th>
-                  <th>Jasa Kirim</th>
                   <th>Total Harga</th>
                   <th class="text-center">Opsi</th>
                 </tr>
@@ -88,6 +85,9 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </td>
                     <td>
                       <?= $item['kode_transaksi'] ?>
+                    </td>
+                    <td>
+                      <?= date('d M Y', strtotime($item['tanggal_sewa'])) ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['nama_mobil'], 24) ?>>
@@ -109,15 +109,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
                       </span>
                     </td>
                     <td>
-                      <?= date('d M Y', strtotime($item['tanggal_sewa'])) ?>
-                    </td>
-                    <td>
                       <?= $item['jumlah_hari'] ?> hari
-                    </td>
-                    <td>
-                      <span <?= add_title_tooltip($item['nama_jasa_kirim'], 24) ?>>
-                        <?= mb_strimwidth($item['nama_jasa_kirim'], 0, 24, '...') ?>
-                      </span>
                     </td>
                     <td>
                       <?= format_rupiah($item['total_harga']) ?>

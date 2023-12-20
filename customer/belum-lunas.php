@@ -14,17 +14,14 @@ $query = "
   agen.bank AS bank_agen,
   agen.no_rekening AS no_rekening_agen,
   agen.atas_nama AS atas_nama_agen,
-  jasa_kirim.nama AS nama_jasa_kirim,
   status_pembayaran.status_pembayaran AS status_pembayaran
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN agen ON transaksi.agen_id = agen.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
   WHERE transaksi.user_id = {$_SESSION['user']['id']} 
     AND transaksi.status_pembayaran_id = 4
-    AND transaksi.status_pengiriman_id = 3
-    AND transaksi.status_pengembalian_id = 2
+    AND transaksi.status_pengembalian_id = 3
     AND transaksi.bukti_bayar_lunas IS NULL
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";

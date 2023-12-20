@@ -21,8 +21,6 @@ $qeury = "
     mobil.plat_nomor AS plat_nomor_mobil,
     mobil.kapasitas AS kapasitas_mobil,
     mobil.foto AS foto_mobil,
-    jasa_kirim.nama AS nama_jasa_kirim,
-    jasa_kirim.harga AS harga_jasa_kirim,
     agen.nama AS nama_agen,
     agen.alamat AS alamat_agen,
     agen.telepon AS telepon_agen,
@@ -31,18 +29,17 @@ $qeury = "
     agen.atas_nama AS atas_nama_agen,
     metode_pembayaran.nama AS nama_metode_pembayaran,
     status_pembayaran.status_pembayaran AS nama_status_pembayaran,
-    status_pengiriman.status_pengiriman AS nama_status_pengiriman,
     status_pengembalian.status_pengembalian AS nama_status_pengembalian,
+    jaminan.nama AS nama_jaminan,
     denda.nama AS nama_denda,
     denda.tarif AS tarif_denda
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN agen ON transaksi.agen_id = agen.id
   LEFT JOIN metode_pembayaran ON transaksi.metode_pembayaran_id = metode_pembayaran.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
-  JOIN status_pengiriman ON transaksi.status_pengiriman_id = status_pengiriman.id
   JOIN status_pengembalian ON transaksi.status_pengembalian_id = status_pengembalian.id
+  JOIN jaminan ON transaksi.jaminan_id = jaminan.id
   LEFT JOIN denda ON transaksi.denda_id = denda.id
   WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']} AND transaksi.id = $id
 ";
@@ -257,16 +254,6 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
               </div>
               <div class="col-md-4 col-6">
                 <div class="mb-3">
-                  <label class="form-label">Jasa Kirim</label>
-                  <div class="form-control-plaintext">
-                    <div class="text-muted mb-1">
-                      <?= $transaksi['nama_jasa_kirim'] ?> (<?= format_rupiah($transaksi['harga_jasa_kirim']) ?>)
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-6">
-                <div class="mb-3">
                   <label class="form-label">Jumlah DP</label>
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
@@ -375,28 +362,6 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
                       <?php elseif ($transaksi['status_pembayaran_id'] == 5): ?>
                         <span class="badge badge-outline text-success">
                           <?= $transaksi['nama_status_pembayaran'] ?>
-                        </span>
-                      <?php endif ?>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-6">
-                <div class="mb-3">
-                  <label class="form-label">Status Pengiriman</label>
-                  <div class="form-control-plaintext">
-                    <div class="text-muted mb-1">
-                      <?php if ($transaksi['status_pengiriman_id'] == 1): ?>
-                        <span class="badge badge-outline text-yellow">
-                          <?= $transaksi['nama_status_pengiriman'] ?>
-                        </span>
-                      <?php elseif ($transaksi['status_pengiriman_id'] == 2): ?>
-                        <span class="badge badge-outline text-primary">
-                          <?= $transaksi['nama_status_pengiriman'] ?>
-                        </span>
-                      <?php elseif ($transaksi['status_pengiriman_id'] == 3): ?>
-                        <span class="badge badge-outline text-success">
-                          <?= $transaksi['nama_status_pengiriman'] ?>
                         </span>
                       <?php endif ?>
                     </div>

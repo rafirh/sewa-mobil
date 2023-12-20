@@ -26,15 +26,13 @@ $query = "
     a.telepon AS telepon_agen,
     ua.email AS email_agen,
     uc.email AS email_penerima,
-    uc.no_hp AS telepon_penerima,
-    jasa_kirim.harga AS harga_pengiriman
+    uc.no_hp AS telepon_penerima
   FROM transaksi
   JOIN mobil ON mobil.id = transaksi.mobil_id
   JOIN agen a ON a.id = mobil.agen_id
   JOIN user ua ON ua.id = a.user_id
   JOIN user uc ON uc.id = transaksi.user_id
   JOIN cc ON cc.id = mobil.cc_id
-  JOIN jasa_kirim ON jasa_kirim.id = transaksi.jasa_kirim_id
   WHERE transaksi.id = $id
 ";
 
@@ -118,7 +116,7 @@ if (!$transaksi || $transaksi['user_id'] != $_SESSION['user']['id']) {
           <thead>
             <tr>
               <th class="text-center" style="width: 1%"></th>
-              <th>Product</th>
+              <th>Mobil</th>
               <th class="text-center" style="width: 1%">Hari</th>
               <th class="text-end" style="width: 1%">Harga</th>
               <th class="text-end" style="width: 1%">Total</th>
@@ -140,10 +138,6 @@ if (!$transaksi || $transaksi['user_id'] != $_SESSION['user']['id']) {
             <tr>
               <td colspan="4" class="strong text-end">Subtotal</td>
               <td class="text-end"><?= format_rupiah($transaksi['harga_mobil'] * $transaksi['jumlah_hari']) ?></td>
-            </tr>
-            <tr>
-              <td colspan="4" class="strong text-end">Pengiriman</td>
-              <td class="text-end"><?= format_rupiah($transaksi['harga_pengiriman']) ?></td>
             </tr>
             <tr>
               <td colspan="4" class="strong text-end">Diskon</td>
