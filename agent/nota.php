@@ -20,8 +20,6 @@ $qeury = "
     mobil.nama AS nama_mobil,
     mobil.harga AS harga_mobil,
     merk_mobil.nama AS merk_mobil,
-    jasa_kirim.nama AS nama_jasa_kirim,
-    jasa_kirim.harga AS harga_jasa_kirim,
     agen.nama AS nama_agen,
     agen.alamat AS alamat_agen,
     agen.telepon AS telepon_agen,
@@ -34,7 +32,6 @@ $qeury = "
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN merk_mobil ON mobil.merk_id = merk_mobil.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN agen ON transaksi.agen_id = agen.id
   JOIN user ON transaksi.user_id = user.id
   LEFT JOIN metode_pembayaran ON transaksi.metode_pembayaran_id = metode_pembayaran.id
@@ -178,11 +175,6 @@ $transaksi = mysqli_fetch_assoc($result);
         <td><?= format_rupiah($transaksi['harga_mobil'] * $transaksi['jumlah_hari']) ?></td>
       </tr>
       <tr class="total">
-        <td></td>
-        <td colspan="2">Jasa Kirim</td>
-        <td><?= format_rupiah($transaksi['harga_jasa_kirim'] ?? 0) ?></td>
-      </tr>
-      <tr>
         <td></td>
         <td colspan="2">Diskon</td>
         <td>- Rp 0</td>

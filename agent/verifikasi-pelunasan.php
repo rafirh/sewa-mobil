@@ -11,40 +11,19 @@ $query = "
   user.nama AS nama_customer,
   user.no_hp AS telepon_customer,
   user.alamat AS alamat_customer, 
-  jasa_kirim.nama AS nama_jasa_kirim,
   status_pembayaran.status_pembayaran AS status_pembayaran
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN user ON transaksi.user_id = user.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   JOIN status_pembayaran ON transaksi.status_pembayaran_id = status_pembayaran.id
   WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']} 
     AND transaksi.status_pembayaran_id = 4
-    AND transaksi.status_pengiriman_id = 3
-    AND transaksi.status_pengembalian_id = 2
+    AND transaksi.status_pengembalian_id = 3
     AND transaksi.bukti_bayar_lunas IS NOT NULL
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
 $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $id = $_POST['id'];
-  $status_pengembalian_id = 2;
-
-  $query = "UPDATE transaksi SET status_pengembalian_id = $status_pengembalian_id WHERE id = $id";
-  $result = mysqli_query($conn, $query);
-
-  if ($result) {
-    setFlashMessage('success', 'Pesanan berhasil diperbarui!');
-    redirectJs('verifikasi-pelunasan.php');
-    exit;
-  } else {
-    setFlashMessage('error', 'Pesanan gagal diperbarui!');
-    redirectJs('verifikasi-pelunasan.php');
-    exit;
-  }
-}
 ?>
 
 <style>
@@ -154,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
-                        <!-- <button class="btn btn-icon btn-pill bg-success-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalAccept">
+                        <button class="btn btn-icon btn-pill bg-success-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalAccept">
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M5 12l5 5l10 -10" />
@@ -166,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <path d="M18 6l-12 12" />
                             <path d="M6 6l12 12" />
                           </svg>
-                        </button> -->
+                        </button>
                         <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

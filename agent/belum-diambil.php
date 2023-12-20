@@ -1,6 +1,6 @@
 <?php
-$active = 'menunggu-pengiriman';
-$title = 'Menunggu Pengiriman';
+$active = 'belum-diambil';
+$title = 'Belum Diambil';
 
 include('partials/header.php');
 
@@ -10,15 +10,13 @@ $query = "
   mobil.plat_nomor AS plat_nomor,
   user.nama AS nama_customer,
   user.no_hp AS telepon_customer,
-  user.alamat AS alamat_customer, 
-  jasa_kirim.nama AS nama_jasa_kirim
+  user.alamat AS alamat_customer
   FROM transaksi
   JOIN mobil ON transaksi.mobil_id = mobil.id
   JOIN user ON transaksi.user_id = user.id
-  JOIN jasa_kirim ON transaksi.jasa_kirim_id = jasa_kirim.id
   WHERE transaksi.agen_id = {$_SESSION['user']['agen_id']}
     AND (transaksi.status_pembayaran_id = 4 OR transaksi.status_pembayaran_id = 5)
-    AND transaksi.status_pengiriman_id = 1
+    AND transaksi.status_pengembalian_id = 1
   ORDER BY transaksi.tanggal_pemesanan DESC
 ";
 $result = mysqli_query($conn, $query);
@@ -26,14 +24,14 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $id = $_POST['id'];
-  $status_pengiriman_id = 2;
+  $status_pengembalian_id = 2;
 
   $query = "SELECT * FROM transaksi WHERE id = $id";
   $transaksi = mysqli_fetch_assoc(mysqli_query($conn, $query));
 
   if (!$transaksi || $transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
     setFlashMessage('error', 'Pesanan tidak ditemukan');
-    redirectJs('menunggu-pengiriman.php');
+    redirectJs('belum-diambil.php');
   }
 
   $query = "SELECT * FROM mobil WHERE id = {$transaksi['mobil_id']}";
@@ -41,22 +39,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if (!$mobil || $mobil['status'] == 'unavailable') {
     setFlashMessage('error', 'Mobil tidak tersedia');
-    redirectJs('menunggu-pengiriman.php');
+    redirectJs('belum-diambil.php');
   }
 
   $query = "UPDATE mobil SET status = 'unavailable' WHERE id = {$transaksi['mobil_id']}";
   $result = mysqli_query($conn, $query);
 
-  $query = "UPDATE transaksi SET status_pengiriman_id = $status_pengiriman_id WHERE id = $id";
+  $query = "UPDATE transaksi SET status_pengembalian_id = $status_pengembalian_id WHERE id = $id";
   $result = mysqli_query($conn, $query);
 
   if ($result) {
     setFlashMessage('success', 'Pesanan berhasil diperbarui!');
-    redirectJs('menunggu-pengiriman.php');
+    redirectJs('belum-diambil.php');
     exit;
   } else {
     setFlashMessage('error', 'Pesanan gagal diperbarui!');
-    redirectJs('menunggu-pengiriman.php');
+    redirectJs('belum-diambil.php');
     exit;
   }
 }
@@ -88,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Menunggu Pengiriman
+          Pesanan Belum Diambil
         </h3>
       </div>
     </div>
@@ -107,12 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <tr>
                   <th>No.</th>
                   <th>Kode Transaksi</th>
+                  <th>Tanggal Sewa</th>
                   <th>Mobil</th>
                   <th>Pelanggan</th>
                   <th>Alamat</th>
-                  <th>Tanggal Sewa</th>
                   <th>Lama Sewa</th>
-                  <th>Jasa Kirim</th>
                   <th>Total Harga</th>
                   <th class="text-center">Opsi</th>
                 </tr>
@@ -125,6 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </td>
                     <td>
                       <?= $item['kode_transaksi'] ?>
+                    </td>
+                    <td>
+                      <?= date('d M Y', strtotime($item['tanggal_sewa'])) ?>
                     </td>
                     <td>
                       <span <?= add_title_tooltip($item['nama_mobil'], 24) ?>>
@@ -146,22 +146,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                       </span>
                     </td>
                     <td>
-                      <?= date('d M Y', strtotime($item['tanggal_sewa'])) ?>
-                    </td>
-                    <td>
                       <?= $item['jumlah_hari'] ?> hari
-                    </td>
-                    <td>
-                      <span <?= add_title_tooltip($item['nama_jasa_kirim'], 24) ?>>
-                        <?= mb_strimwidth($item['nama_jasa_kirim'], 0, 24, '...') ?>
-                      </span>
                     </td>
                     <td>
                       <?= format_rupiah($item['total_harga']) ?>
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
-                        <button class="btn btn-icon btn-pill bg-primary-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeliver">
+                        <button class="btn btn-pill bg-primary-lt me-1" data-id="<?= $item['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeliver">
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -169,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
                             <path d="M3 9l4 0" />
                           </svg>
+                          Diambil
                         </button>
                         <button class="btn btn-icon btn-pill bg-muted-lt" data-bs-toggle="dropdown" aria-expanded="false" title="Lainnya">
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -249,8 +242,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <path d="M12 9v2m0 4v.01" />
           <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
         </svg>
-        <h3>Apakah anda yakin pesanan ini sedang dikirim?</h3>
-        <div class="text-muted">Pesanan yang sudah dikirim tidak dapat dibatalkan.</div>
+        <h3>Apakah anda yakin pesanan ini sudah diambil?</h3>
+        <div class="text-muted">Aksi ini tidak dapat dibatalkan.</div>
       </div>
       <div class="modal-footer">
         <div class="w-100">

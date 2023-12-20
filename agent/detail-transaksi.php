@@ -4,9 +4,9 @@ $title = 'Detail Transaksi';
 
 include('partials/header.php');
 
-$prevPage = $_SERVER['HTTP_REFERER'] ?? 'menunggu-pengiriman.php';
+$prevPage = $_SERVER['HTTP_REFERER'] ?? 'belum-diambil.php';
 if (str_contains($prevPage, 'detail-transaksi.php')) {
-  $prevPage = 'menunggu-pengiriman.php';
+  $prevPage = 'belum-diambil.php';
 }
 
 if (!isParamsExist(['id'])) {
@@ -103,15 +103,6 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
         <div class="card">
           <div class="card-header">
             <h3 class="card-title"><?= $transaksi['kode_transaksi'] ?></h3>
-            <div class="card-actions">
-              <a class="btn btn-outline-primary w-100" href="faktur.php?id=<?= $transaksi['id'] ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2" />
-                </svg>
-                Faktur
-              </a>
-            </div>
           </div>
           <div class="px-sm-5 py-3 py-sm-4 w-75 mx-auto">
             <a data-fslightbox="gallery<?= $index ?>" href="<?= asset($transaksi['foto_mobil'] != '' ? $transaksi['foto_mobil'] : 'images/default.png') ?>">
@@ -336,6 +327,28 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
               </div>
               <div class="col-md-4 col-6">
                 <div class="mb-3">
+                  <label class="form-label">Status Mobil</label>
+                  <div class="form-control-plaintext">
+                    <div class="text-muted mb-1">
+                        <?php if ($transaksi['status_pengembalian_id'] == 1): ?>
+                          <span class="badge badge-outline text-primary">
+                            <?= $transaksi['nama_status_pengembalian'] ?>
+                          </span>
+                        <?php elseif ($transaksi['status_pengembalian_id'] == 2): ?>
+                          <span class="badge badge-outline text-orange">
+                            <?= $transaksi['nama_status_pengembalian'] ?>
+                          </span>
+                        <?php elseif ($transaksi['status_pengembalian_id'] == 3): ?>
+                          <span class="badge badge-outline text-success">
+                            <?= $transaksi['nama_status_pengembalian'] ?>
+                          </span>
+                        <?php endif ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-6">
+                <div class="mb-3">
                   <label class="form-label">Status Pembayaran</label>
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
@@ -370,22 +383,10 @@ if ($transaksi['agen_id'] != $_SESSION['user']['agen_id']) {
               </div>
               <div class="col-md-4 col-6">
                 <div class="mb-3">
-                  <label class="form-label">Status Pengembalian</label>
+                  <label class="form-label">Jaminan</label>
                   <div class="form-control-plaintext">
                     <div class="text-muted mb-1">
-                      <?php if ($transaksi['status_pengiriman_id'] == 3): ?>
-                        <?php if ($transaksi['status_pengembalian_id'] == 1): ?>
-                          <span class="badge badge-outline text-danger">
-                            <?= $transaksi['nama_status_pengembalian'] ?>
-                          </span>
-                        <?php elseif ($transaksi['status_pengembalian_id'] == 2): ?>
-                          <span class="badge badge-outline text-success">
-                            <?= $transaksi['nama_status_pengembalian'] ?>
-                          </span>
-                        <?php endif ?>
-                      <?php else: ?>
-                        -
-                      <?php endif ?>
+                      <?= $transaksi['nama_jaminan'] ?>
                     </div>
                   </div>
                 </div>

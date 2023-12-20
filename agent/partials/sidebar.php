@@ -106,24 +106,8 @@
             </span>
           </a>
         </li>
-        <li class="nav-item <?= $active == 'menunggu-pengiriman' ? 'active' : '' ?>">
-          <a class="nav-link" href="menunggu-pengiriman.php">
-            <span class="nav-link-icon d-lg-inline-block">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-pause" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M20.942 13.018a9 9 0 1 0 -7.909 7.922" />
-                <path d="M12 7v5l2 2" />
-                <path d="M17 17v5" />
-                <path d="M21 17v5" />
-              </svg>
-            </span>
-            <span class="nav-link-title">
-              Menunggu Pengiriman
-            </span>
-          </a>
-        </li>
-        <li class="nav-item <?= $active == 'sedang-dikirim' ? 'active' : '' ?>">
-          <a class="nav-link" href="sedang-dikirim.php">
+        <li class="nav-item <?= $active == 'belum-diambil' ? 'active' : '' ?>">
+          <a class="nav-link" href="belum-diambil.php">
             <span class="nav-link-icon d-lg-inline-block">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -134,21 +118,23 @@
               </svg>
             </span>
             <span class="nav-link-title">
-              Sedang Dikirim
+              Belum Diambil
             </span>
           </a>
         </li>
-        <li class="nav-item <?= $active == 'pesanan-terkirim' ? 'active' : '' ?>">
-          <a class="nav-link" href="pesanan-terkirim.php">
+        <li class="nav-item <?= $active == 'sedang-disewa' ? 'active' : '' ?>">
+          <a class="nav-link" href="sedang-disewa.php">
             <span class="nav-link-icon d-lg-inline-block">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-pause" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M9 12l2 2l4 -4" />
+                <path d="M20.942 13.018a9 9 0 1 0 -7.909 7.922" />
+                <path d="M12 7v5l2 2" />
+                <path d="M17 17v5" />
+                <path d="M21 17v5" />
               </svg>
             </span>
             <span class="nav-link-title">
-              Pesanan Terkirim
+              Sedang Disewa
             </span>
           </a>
         </li>
