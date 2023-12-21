@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 19, 2023 at 02:48 AM
+-- Generation Time: Dec 21, 2023 at 05:49 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -126,22 +126,23 @@ INSERT INTO `denda` (`id`, `nama`, `tarif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jasa_kirim`
+-- Table structure for table `jaminan`
 --
 
-CREATE TABLE `jasa_kirim` (
+CREATE TABLE `jaminan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `harga` int(11) NOT NULL
+  `nama` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `jasa_kirim`
+-- Dumping data for table `jaminan`
 --
 
-INSERT INTO `jasa_kirim` (`id`, `nama`, `harga`) VALUES
-(1, 'Ambil di Agen', 0),
-(2, 'Supir Agen', 30000);
+INSERT INTO `jaminan` (`id`, `nama`) VALUES
+(1, 'KTP'),
+(2, 'KK'),
+(3, 'NPWP'),
+(4, 'Perhiasan');
 
 -- --------------------------------------------------------
 
@@ -259,7 +260,7 @@ CREATE TABLE `metode_pembayaran` (
 
 INSERT INTO `metode_pembayaran` (`id`, `nama`) VALUES
 (1, 'Transfer Bank'),
-(2, 'COD');
+(2, 'Tunai');
 
 -- --------------------------------------------------------
 
@@ -280,21 +281,20 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(3, '2023_11_22_062725_tipe_mobi', 1),
-(4, '2023_11_23_053535_cc', 1),
-(5, '2023_11_23_145803_agen', 1),
-(6, '2023_11_23_150759_warna', 1),
-(7, '2023_11_23_151055_transmisi', 1),
-(8, '2023_11_23_151832_jenis__mobil', 1),
-(9, '2023_11_23_152134_merk_mobil', 1),
-(10, '2023_11_23_152650_mobil', 1),
-(11, '2023_11_30_045924_status_pembayaran', 1),
-(12, '2023_11_30_053815_status_pengembalian', 1),
-(13, '2023_11_30_054015_jasa_kirim', 1),
-(14, '2023_11_30_054423_status_pengiriman', 1),
-(15, '2023_11_30_055138_metode_pembayaran', 1),
-(16, '2023_11_30_055444_denda', 1),
-(17, '2023_11_30_060007_transaksi', 1);
+(3, '2023_11_20_001442_jaminan', 1),
+(4, '2023_11_22_062725_tipe_mobi', 1),
+(5, '2023_11_23_053535_cc', 1),
+(6, '2023_11_23_145803_agen', 1),
+(7, '2023_11_23_150759_warna', 1),
+(8, '2023_11_23_151055_transmisi', 1),
+(9, '2023_11_23_151832_jenis__mobil', 1),
+(10, '2023_11_23_152134_merk_mobil', 1),
+(11, '2023_11_23_152650_mobil', 1),
+(12, '2023_11_30_045924_status_pembayaran', 1),
+(13, '2023_11_30_053815_status_pengembalian', 1),
+(14, '2023_11_30_055138_metode_pembayaran', 1),
+(15, '2023_11_30_055444_denda', 1),
+(16, '2023_11_30_060007_transaksi', 1);
 
 -- --------------------------------------------------------
 
@@ -325,19 +325,20 @@ CREATE TABLE `mobil` (
 --
 
 INSERT INTO `mobil` (`id`, `agen_id`, `merk_id`, `jenis_id`, `transmisi_id`, `warna_id`, `cc_id`, `tipe_id`, `nama`, `plat_nomor`, `tahun`, `harga`, `kapasitas`, `foto`, `status`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 2, 'Avanza', 'N 2234 ABC', '2019', 50000, 8, NULL, 'available'),
-(2, 1, 2, 2, 2, 2, 2, 2, 'Xenia', 'B 1321 AG', '2018', 70000, 8, NULL, 'available'),
-(3, 1, 3, 1, 2, 3, 3, 2, 'Terios', 'L 543 AB', '2022', 100000, 6, NULL, 'available'),
-(4, 1, 4, 2, 1, 4, 4, 1, 'Ertiga', 'B 134 ABC', '2019', 60000, 8, NULL, 'available'),
-(5, 1, 5, 1, 2, 5, 5, 1, 'Xpander', 'B 234 AG', '2018', 120000, 8, NULL, 'available'),
-(6, 2, 6, 2, 1, 6, 6, 1, 'Livina', 'A 7454 AB', '2022', 100000, 6, NULL, 'available'),
-(8, 2, 8, 2, 1, 8, 8, 2, 'BRV', 'AG 2411 AG', '2018', 70000, 8, NULL, 'available'),
-(9, 2, 9, 1, 2, 9, 9, 2, 'Rush', 'B 2344 AB', '2022', 100000, 6, NULL, 'available'),
+(1, 1, 1, 1, 1, 1, 1, 2, 'Avanza', 'B 1234 ABC', '2019', 50000, 8, NULL, 'available'),
+(2, 1, 2, 2, 2, 2, 2, 2, 'Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
+(3, 1, 3, 1, 2, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
+(4, 1, 4, 2, 1, 4, 4, 1, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
+(5, 1, 5, 1, 2, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available'),
+(6, 2, 6, 2, 1, 6, 6, 1, 'Livina', 'L 7454 AB', '2022', 100000, 6, NULL, 'available'),
+(7, 2, 7, 1, 2, 7, 7, 2, 'Mobilio', 'B 1255 ABC', '2019', 80000, 8, NULL, 'available'),
+(8, 2, 8, 2, 1, 8, 8, 2, 'BRV', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
+(9, 2, 9, 1, 2, 9, 9, 2, 'Rush', 'L 2132 AB', '2022', 100000, 6, NULL, 'available'),
 (10, 3, 1, 2, 1, 1, 1, 1, 'Grand Livina', 'B 1212 BG', '2019', 50000, 8, NULL, 'available'),
 (11, 3, 2, 1, 2, 2, 2, 1, 'Grand Xenia', 'B 1411 AG', '2018', 70000, 8, NULL, 'available'),
 (12, 3, 3, 2, 1, 3, 3, 2, 'Terios', 'L 121 AB', '2022', 100000, 6, NULL, 'available'),
 (13, 3, 4, 1, 2, 4, 4, 2, 'Ertiga', 'B 1234 ABC', '2019', 60000, 8, NULL, 'available'),
-(14, 3, 5, 2, 1, 3, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, '', 'available');
+(14, 3, 5, 2, 1, 5, 5, 1, 'Xpander', 'B 6511 AG', '2018', 120000, 8, NULL, 'available');
 
 -- --------------------------------------------------------
 
@@ -396,28 +397,9 @@ CREATE TABLE `status_pengembalian` (
 --
 
 INSERT INTO `status_pengembalian` (`id`, `status_pengembalian`) VALUES
-(1, 'Belum Dikembalikan'),
-(2, 'Sudah Dikembalikan');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `status_pengiriman`
---
-
-CREATE TABLE `status_pengiriman` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `status_pengiriman` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `status_pengiriman`
---
-
-INSERT INTO `status_pengiriman` (`id`, `status_pengiriman`) VALUES
-(1, 'Belum Dikirim'),
-(2, 'Sedang Dikirim'),
-(3, 'Sudah Dikirim');
+(1, 'Belum Diambil'),
+(2, 'Sedang Disewa'),
+(3, 'Sudah Dikembalikan');
 
 -- --------------------------------------------------------
 
@@ -452,9 +434,8 @@ CREATE TABLE `transaksi` (
   `agen_id` bigint(20) UNSIGNED NOT NULL,
   `metode_pembayaran_id` bigint(20) UNSIGNED DEFAULT NULL,
   `status_pembayaran_id` bigint(20) UNSIGNED NOT NULL,
-  `status_pengiriman_id` bigint(20) UNSIGNED NOT NULL,
   `status_pengembalian_id` bigint(20) UNSIGNED NOT NULL,
-  `jasa_kirim_id` bigint(20) UNSIGNED NOT NULL,
+  `jaminan_id` bigint(20) UNSIGNED NOT NULL,
   `denda_id` bigint(20) UNSIGNED DEFAULT NULL,
   `kode_transaksi` varchar(255) NOT NULL,
   `nama_penerima` varchar(255) NOT NULL,
@@ -479,13 +460,13 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id`, `mobil_id`, `user_id`, `agen_id`, `metode_pembayaran_id`, `status_pembayaran_id`, `status_pengiriman_id`, `status_pengembalian_id`, `jasa_kirim_id`, `denda_id`, `kode_transaksi`, `nama_penerima`, `alamat_penerima`, `no_hp_penerima`, `tanggal_sewa`, `tanggal_pemesanan`, `tanggal_pengembalian`, `jumlah_hari`, `total_harga`, `diskon`, `persentase_dp`, `jumlah_dp`, `bukti_dp`, `tanggal_dp`, `jumlah_bayar_lunas`, `bukti_bayar_lunas`, `tanggal_bayar_lunas`) VALUES
-(5, 1, 2, 1, 1, 5, 3, 2, 2, NULL, 'TRX1217114846135', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:48:46', '2023-12-17 12:03:55', 3, 180000, NULL, 100, 180000, 'images/bukti/657ed25427ec8.jpg', '2023-12-17 11:49:56', NULL, NULL, NULL),
-(6, 6, 2, 2, 1, 4, 3, 2, 1, NULL, 'TRX1217115335379', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-17 00:00:00', '2023-12-17 11:53:35', '2023-12-18 10:07:34', 5, 500000, NULL, 50, 250000, 'images/bukti/657ed3774e71d.jpg', '2023-12-17 11:54:47', NULL, NULL, NULL),
-(7, 12, 2, 3, 1, 4, 1, 1, 1, NULL, 'TRX1217115357995', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-30 00:00:00', '2023-12-17 11:53:57', NULL, 3, 300000, NULL, 75, 225000, 'images/bukti/657ed367bf14b.jpg', '2023-12-17 11:54:31', NULL, NULL, NULL),
-(8, 3, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217153516755', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-31 00:00:00', '2023-12-17 15:35:16', '2023-12-17 16:11:24', 2, 200000, NULL, 50, 100000, 'images/bukti/657f074d05f18.jpg', '2023-12-17 15:35:57', 100000, 'images/bukti/657ff9b9acbcb.jpg', '2023-12-18 08:50:17'),
-(9, 1, 2, 1, 1, 5, 3, 2, 2, NULL, 'TRX1217165850181', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-18 00:00:00', '2023-12-17 16:58:50', '2023-12-18 09:28:57', 2, 130000, NULL, 25, 32500, 'images/bukti/657ff185d39f5.jpg', '2023-12-18 08:15:17', 97500, 'images/bukti/65800c08530a6.jpg', '2023-12-18 10:08:24'),
-(11, 5, 2, 1, 1, 5, 3, 2, 1, NULL, 'TRX1217170009505', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-27 00:00:00', '2023-12-17 17:00:09', '2023-12-18 08:17:10', 1, 120000, NULL, 50, 60000, 'images/bukti/657ff13d7f5a7.jpg', '2023-12-18 08:14:05', 60000, 'images/bukti/658000a61a087.jpg', '2023-12-18 09:19:50');
+INSERT INTO `transaksi` (`id`, `mobil_id`, `user_id`, `agen_id`, `metode_pembayaran_id`, `status_pembayaran_id`, `status_pengembalian_id`, `jaminan_id`, `denda_id`, `kode_transaksi`, `nama_penerima`, `alamat_penerima`, `no_hp_penerima`, `tanggal_sewa`, `tanggal_pemesanan`, `tanggal_pengembalian`, `jumlah_hari`, `total_harga`, `diskon`, `persentase_dp`, `jumlah_dp`, `bukti_dp`, `tanggal_dp`, `jumlah_bayar_lunas`, `bukti_bayar_lunas`, `tanggal_bayar_lunas`) VALUES
+(1, 1, 2, 1, 1, 5, 3, 1, NULL, 'TRX1221053441496', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-21 00:00:00', '2023-12-21 05:34:41', '2023-12-21 05:44:38', 3, 150000, NULL, 50, 75000, 'images/bukti/6583c0aa197d4.jpg', '2023-12-21 05:35:54', 75000, 'images/bukti/6583c30a2c622.jpg', '2023-12-21 05:46:02'),
+(2, 6, 2, 2, 1, 5, 3, 2, NULL, 'TRX1221053456943', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-21 00:00:00', '2023-12-21 05:34:56', '2023-12-21 05:41:56', 2, 200000, NULL, 50, 100000, 'images/bukti/6583c0a2c0ebc.jpg', '2023-12-21 05:35:46', 100000, 'images/bukti/6583c30418752.jpg', '2023-12-21 05:45:56'),
+(3, 11, 2, 3, 1, 5, 3, 3, NULL, 'TRX1221053519475', 'John Doe', 'Jl. Mawar', '08123456789', '2023-12-21 00:00:00', '2023-12-21 05:35:19', '2023-12-21 05:42:39', 5, 350000, NULL, 100, 350000, 'images/bukti/6583c09b8b620.jpg', '2023-12-21 05:35:39', NULL, NULL, NULL),
+(4, 14, 6, 3, 1, 5, 3, 1, NULL, 'TRX1221053739934', 'Joko Widodo', 'Jalan Soekarno Hatta No. 123 Jakarta Pusat', '088127182381', '2023-12-25 00:00:00', '2023-12-21 05:37:39', '2023-12-21 05:45:03', 2, 240000, NULL, 25, 60000, 'images/bukti/6583c139f2414.jpg', '2023-12-21 05:38:17', 180000, 'images/bukti/6583c328c3993.jpg', '2023-12-21 05:46:32'),
+(5, 10, 6, 3, 1, 5, 3, 3, NULL, 'TRX1221053802847', 'Joko Widodo', 'Jalan Soekarno Hatta No. 123 Jakarta Pusat', '088127182381', '2023-12-24 00:00:00', '2023-12-21 05:38:02', '2023-12-21 05:45:01', 2, 100000, NULL, 50, 50000, 'images/bukti/6583c132e6a96.jpg', '2023-12-21 05:38:10', 50000, 'images/bukti/6583c322b5013.jpg', '2023-12-21 05:46:26'),
+(6, 9, 6, 2, 1, 5, 3, 1, NULL, 'TRX1221053842506', 'Joko Widodo', 'Jalan Soekarno Hatta No. 123 Jakarta Pusat', '088127182381', '2023-12-31 00:00:00', '2023-12-21 05:38:42', '2023-12-21 05:45:25', 10, 1000000, NULL, 50, 500000, 'images/bukti/6583c1601f44b.jpg', '2023-12-21 05:38:56', 500000, 'images/bukti/6583c31bf3b5f.jpg', '2023-12-21 05:46:19');
 
 -- --------------------------------------------------------
 
@@ -532,12 +513,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `password`, `alamat`, `no_hp`, `foto`, `role`) VALUES
-(1, 'Administator', 'admin@gmail.com', '$2y$12$l1n1qGlGhnZ66Bi8e.pG1OSSdy44rkKY4m.v1oTwvniL3HqY4d7K6', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
-(2, 'John Doe', 'customer@gmail.com', '$2y$12$7YvXZXH7sEvVoes.knWH3eNWmW783GQZpFpuq6EzkZMTFDWjfTq4y', 'Jl. Mawar', '08123456789', NULL, 'customer'),
-(3, 'Agent Sumber Jaya', 'sumberjaya@gmail.com', '$2y$12$OdEXTKn1d3QOPfBglFPveOawkyr2b1LZU58gXYJx6JA2tlVD181Ry', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(4, 'Agen Joyo Makmur', 'joyomakmur@gmail.com', '$2y$12$d34JUpNKuKtV6RQA.yEdJeAXIHR.eCD3k169iJZI0jXWn85fOvByS', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(5, 'Agen Sumber Rejeki', 'sumberrejeki@gmail.com', '$2y$12$CEmUSNcGfax2eB47Fl1RRO3q3bZjTCpQDXnGMzphfevnZbxgouIJy', 'Jl. Melati', '0812345678', NULL, 'agent'),
-(10, 'Admin 2', 'admin2@gmail.com', '$2y$10$4FYmgEv54sCmtQnZWVEMMeE0KHhkvHrpcJWXzTE9h5QRsukzGrvoi', 'Jalan Soekarno Hatta No. 1 Kota Denpasar', '08885477865', 'images/user/657a818e450cd.jpeg', 'administrator');
+(1, 'Administator', 'admin@gmail.com', '$2y$12$OPoJ1D4HGBFa/Yz6nSP1teqLtG3bBn3HSa4cApy4oQzeJzt6qFdmW', 'Jl. Raya Cikarang', '081234567890', NULL, 'administrator'),
+(2, 'John Doe', 'customer@gmail.com', '$2y$12$4UO4Nei/BrFEEDky8uUzneFWtgYj.wJwT3EZGe48sPi/yPRqNwxzq', 'Jl. Mawar', '08123456789', NULL, 'customer'),
+(3, 'Agent Sumber Jaya', 'sumberjaya@gmail.com', '$2y$12$WcMSeIPojZX0IRCK0DfVqeWvErSuql56RsZNonGujtOBPXcQapJfS', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(4, 'Agen Joyo Makmur', 'joyomakmur@gmail.com', '$2y$12$gC0zOqjpry7dJKorERsyYOXkj0wf.hl/K.HLgu2zsgce72Wz7MbkG', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(5, 'Agen Sumber Rejeki', 'sumberrejeki@gmail.com', '$2y$12$SVqVWXbathOuoSquS4IPwuxT8L2n450fxjk84pDncv53kfm87TRFe', 'Jl. Melati', '0812345678', NULL, 'agent'),
+(6, 'Joko Widodo', 'joko@gmail.com', '$2y$10$CYA6hHa8KGEUyZHx2bIBI.AQoxGDKcpfgvvwwOGwQM32IwbbxHzvi', 'Jalan Soekarno Hatta No. 123 Jakarta Pusat', '088127182381', NULL, 'customer');
 
 -- --------------------------------------------------------
 
@@ -562,6 +543,7 @@ INSERT INTO `warna` (`id`, `nama`, `kode`) VALUES
 (4, 'Biru', '#0000ff'),
 (5, 'Hijau', '#00ff00'),
 (6, 'Kuning', '#ffff00'),
+(7, 'Abu-abu', '#808080'),
 (8, 'Coklat', '#a52a2a'),
 (9, 'Navy', '#000080'),
 (10, 'Olive', '#808000'),
@@ -603,9 +585,9 @@ ALTER TABLE `denda`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `jasa_kirim`
+-- Indexes for table `jaminan`
 --
-ALTER TABLE `jasa_kirim`
+ALTER TABLE `jaminan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -666,12 +648,6 @@ ALTER TABLE `status_pengembalian`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `status_pengiriman`
---
-ALTER TABLE `status_pengiriman`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `tipe_mobil`
 --
 ALTER TABLE `tipe_mobil`
@@ -687,9 +663,8 @@ ALTER TABLE `transaksi`
   ADD KEY `transaksi_agen_id_foreign` (`agen_id`),
   ADD KEY `transaksi_metode_pembayaran_id_foreign` (`metode_pembayaran_id`),
   ADD KEY `transaksi_status_pembayaran_id_foreign` (`status_pembayaran_id`),
-  ADD KEY `transaksi_status_pengiriman_id_foreign` (`status_pengiriman_id`),
   ADD KEY `transaksi_status_pengembalian_id_foreign` (`status_pengembalian_id`),
-  ADD KEY `transaksi_jasa_kirim_id_foreign` (`jasa_kirim_id`),
+  ADD KEY `transaksi_jaminan_id_foreign` (`jaminan_id`),
   ADD KEY `transaksi_denda_id_foreign` (`denda_id`);
 
 --
@@ -725,31 +700,31 @@ ALTER TABLE `agen`
 -- AUTO_INCREMENT for table `cc`
 --
 ALTER TABLE `cc`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `denda`
 --
 ALTER TABLE `denda`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `jasa_kirim`
+-- AUTO_INCREMENT for table `jaminan`
 --
-ALTER TABLE `jasa_kirim`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `jaminan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `jenis_mobil`
 --
 ALTER TABLE `jenis_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `merk_mobil`
 --
 ALTER TABLE `merk_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `metode_pembayaran`
@@ -761,13 +736,13 @@ ALTER TABLE `metode_pembayaran`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `mobil`
 --
 ALTER TABLE `mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -785,43 +760,37 @@ ALTER TABLE `status_pembayaran`
 -- AUTO_INCREMENT for table `status_pengembalian`
 --
 ALTER TABLE `status_pengembalian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `status_pengiriman`
---
-ALTER TABLE `status_pengiriman`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tipe_mobil`
 --
 ALTER TABLE `tipe_mobil`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `transmisi`
 --
 ALTER TABLE `transmisi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `warna`
 --
 ALTER TABLE `warna`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
@@ -851,12 +820,11 @@ ALTER TABLE `mobil`
 ALTER TABLE `transaksi`
   ADD CONSTRAINT `transaksi_agen_id_foreign` FOREIGN KEY (`agen_id`) REFERENCES `agen` (`id`),
   ADD CONSTRAINT `transaksi_denda_id_foreign` FOREIGN KEY (`denda_id`) REFERENCES `denda` (`id`),
-  ADD CONSTRAINT `transaksi_jasa_kirim_id_foreign` FOREIGN KEY (`jasa_kirim_id`) REFERENCES `jasa_kirim` (`id`),
+  ADD CONSTRAINT `transaksi_jaminan_id_foreign` FOREIGN KEY (`jaminan_id`) REFERENCES `jaminan` (`id`),
   ADD CONSTRAINT `transaksi_metode_pembayaran_id_foreign` FOREIGN KEY (`metode_pembayaran_id`) REFERENCES `metode_pembayaran` (`id`),
   ADD CONSTRAINT `transaksi_mobil_id_foreign` FOREIGN KEY (`mobil_id`) REFERENCES `mobil` (`id`),
   ADD CONSTRAINT `transaksi_status_pembayaran_id_foreign` FOREIGN KEY (`status_pembayaran_id`) REFERENCES `status_pembayaran` (`id`),
   ADD CONSTRAINT `transaksi_status_pengembalian_id_foreign` FOREIGN KEY (`status_pengembalian_id`) REFERENCES `status_pengembalian` (`id`),
-  ADD CONSTRAINT `transaksi_status_pengiriman_id_foreign` FOREIGN KEY (`status_pengiriman_id`) REFERENCES `status_pengiriman` (`id`),
   ADD CONSTRAINT `transaksi_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 COMMIT;
 
