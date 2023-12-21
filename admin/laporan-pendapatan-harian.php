@@ -30,7 +30,7 @@ if (isParamsExist(['agen_id'])) {
 
 $query .= "
   GROUP BY DATE(transaksi.tanggal_pemesanan)
-  ORDER BY transaksi.tanggal_pemesanan DESC
+  ORDER BY transaksi.tanggal_pemesanan DESC, total_pendapatan DESC
 ";
 
 $result = mysqli_query($conn, $query);

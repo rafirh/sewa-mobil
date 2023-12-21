@@ -26,7 +26,7 @@ if (isParamsExist(['end_date'])) {
 
 $query .= "
   GROUP BY jaminan.id
-  ORDER BY total_transaksi DESC
+  ORDER BY total_transaksi DESC, total_pendapatan DESC
 ";
 
 $result = mysqli_query($conn, $query);
