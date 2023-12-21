@@ -42,7 +42,7 @@ if (isParamsExist(['merk_id'])) {
 
 $query .= "
   GROUP BY mobil.id
-  ORDER BY total_transaksi DESC
+  ORDER BY total_transaksi DESC, total_pendapatan DESC
 ";
 
 $result = mysqli_query($conn, $query);
