@@ -1,15 +1,14 @@
 <?php
-$active = 'jasa-kirim';
-$title = 'Jasa Kirim';
+$active = 'jaminan';
+$title = 'Jaminan';
 
 include('partials/header.php');
 
 $sortables = [
   'nama' => 'Nama',
-  'harga' => 'Harga',
 ];
 
-$query = "SELECT * FROM jasa_kirim WHERE nama != 'Lainnya'";
+$query = "SELECT * FROM jaminan WHERE nama != 'Lainnya'";
 
 if (isParamsExist(['q'])) {
   $q = htmlspecialchars($_GET['q']);
@@ -30,7 +29,7 @@ if (isParamsExist(['sortby'])) {
 }
 
 $result = $conn->query($query);
-$jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
+$jaminan = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -57,20 +56,20 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Jasa Kirim
+          Jaminan
         </h3>
       </div>
       <div class="col-auto ms-auto d-print-none mt-3">
         <div class="btn-list d-flex">
-          <a href="tambah-jasa-kirim.php" class="btn btn-primary d-none d-sm-inline-block" id="btnAdd">
+          <a href="tambah-jaminan.php" class="btn btn-primary d-none d-sm-inline-block" id="btnAdd">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M12 5l0 14"></path>
               <path d="M5 12l14 0"></path>
             </svg>
-            Tambah Jasa Kirim
+            Tambah Jaminan
           </a>
-          <a href="tambah-jasa-kirim.php" class="btn btn-primary d-sm-none btn-icon" data-bs-tooltip="Tambah Jasa Kirim" data-bs-placement="left">
+          <a href="tambah-jaminan.php" class="btn btn-primary d-sm-none btn-icon" data-bs-tooltip="Tambah Jasa Kirim" data-bs-placement="left">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M12 5l0 14"></path>
@@ -101,7 +100,7 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
       </div>
       <?php if (isParamsExist(['q', 'sortby', 'order'])) : ?>
         <div class="col-auto mt-3">
-          <a href="jasa-kirim.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
+          <a href="jaminan.php" class="btn btn-outline-danger btn-icon" data-bs-toggle="tooltip" data-bs-original-title="Clear filter" data-bs-placement="bottom">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M4 7h16"></path>
@@ -128,12 +127,11 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                 <tr>
                   <th>No.</th>
                   <th>Nama</th>
-                  <th>Harga</th>
                   <th class="text-center">Opsi</th>
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($jasa_kirim as $index => $item) : ?>
+                <?php foreach ($jaminan as $index => $item) : ?>
                   <tr class="text-muted">
                     <td>
                       <?= $index + 1 ?>
@@ -142,9 +140,6 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                       <span <?= add_title_tooltip($item['nama'], 24) ?>>
                         <?= mb_strimwidth($item['nama'], 0, 24, '...') ?>
                       </span>
-                    </td>
-                    <td>
-                      <?= format_rupiah($item['harga']) ?>
                     </td>
                     <td>
                       <div class="d-flex justify-content-center">
@@ -160,7 +155,7 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                           </svg>
                         </button>
                         <div class="text-muted dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item" href="ubah-jasa-kirim.php?id=<?= $item['id'] ?>">
+                          <a class="dropdown-item" href="ubah-jaminan.php?id=<?= $item['id'] ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                               <path stroke="none" d="M0 0h24v24H0z" fill="none">
                               </path>
@@ -188,7 +183,7 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                     </td>
                   </tr>
                 <?php endforeach ?>
-                <?php if (count($jasa_kirim) == 0) : ?>
+                <?php if (count($jaminan) == 0) : ?>
                   <tr class="text-center">
                     <td colspan="99">
                       <div class="empty bg-transparent" style="height: 500px;">
@@ -199,7 +194,7 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                           Coba sesuaikan pencarian atau filter untuk menemukan apa yang anda cari.
                         </p>
                         <div class="empty-action">
-                          <a href="jasa-kirim.php" class="btn btn-outline-danger">
+                          <a href="jaminan.php" class="btn btn-outline-danger">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                               <path stroke="none" d="M0 0h24v24H0z" fill="none">
                               </path>
@@ -310,7 +305,7 @@ $jasa_kirim = $result->fetch_all(MYSQLI_ASSOC);
                 Batal
               </a></div>
             <div class="col">
-              <form method="post" id="formDelete" action="hapus-jasa-kirim.php">
+              <form method="post" id="formDelete" action="hapus-jaminan.php">
                 <input type="hidden" name="id" value="" id="inputDeleteId">
                 <button type="submit" class="btn btn-danger w-100" id="btnDelete">
                   Ya, hapus

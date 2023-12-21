@@ -5,14 +5,14 @@ $title = 'Faktur';
 include('partials/header.php');
 
 if (!isset($_GET['id'])) {
-  redirectJs('belum-bayar.php');
+  redirectJs('verifikasi-pembayaran.php');
 }
 
 $id = $_GET['id'];
 
-$prev = $_SERVER['HTTP_REFERER'] ?? 'belum-bayar.php';
+$prev = $_SERVER['HTTP_REFERER'] ?? 'verifikasi-pembayaran.php';
 if (str_contains($prev, 'faktur.php')) {
-  $prev = 'belum-bayar.php';
+  $prev = 'verifikasi-pembayaran.php';
 }
 
 $query = "
@@ -26,25 +26,18 @@ $query = "
     a.telepon AS telepon_agen,
     ua.email AS email_agen,
     uc.email AS email_penerima,
-    uc.no_hp AS telepon_penerima,
-    jasa_kirim.harga AS harga_pengiriman
+    uc.no_hp AS telepon_penerima
   FROM transaksi
   JOIN mobil ON mobil.id = transaksi.mobil_id
   JOIN agen a ON a.id = mobil.agen_id
   JOIN user ua ON ua.id = a.user_id
   JOIN user uc ON uc.id = transaksi.user_id
   JOIN cc ON cc.id = mobil.cc_id
-  JOIN jasa_kirim ON jasa_kirim.id = transaksi.jasa_kirim_id
   WHERE transaksi.id = $id
 ";
 
 $result = mysqli_query($conn, $query);
 $transaksi = mysqli_fetch_assoc($result);
-
-if (!$transaksi) {
-  setFlashMessage('error', 'Transaksi tidak ditemukan');
-  redirectJs('belum-bayar.php');
-}
 ?>
 
 <div class="page-header d-print-none">
@@ -76,7 +69,7 @@ if (!$transaksi) {
           </svg>
           Kembali
         </a>
-        <a href="belum-bayar.php" class="btn btn-outline-primary d-sm-none btn-icon ms-2" aria-label="Kembali">
+        <a href="verifikasi-pembayaran.php" class="btn btn-outline-primary d-sm-none btn-icon ms-2" aria-label="Kembali">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M5 12l14 0"></path>
@@ -118,7 +111,7 @@ if (!$transaksi) {
           <thead>
             <tr>
               <th class="text-center" style="width: 1%"></th>
-              <th>Product</th>
+              <th>Mobil</th>
               <th class="text-center" style="width: 1%">Hari</th>
               <th class="text-end" style="width: 1%">Harga</th>
               <th class="text-end" style="width: 1%">Total</th>
@@ -140,10 +133,6 @@ if (!$transaksi) {
             <tr>
               <td colspan="4" class="strong text-end">Subtotal</td>
               <td class="text-end"><?= format_rupiah($transaksi['harga_mobil'] * $transaksi['jumlah_hari']) ?></td>
-            </tr>
-            <tr>
-              <td colspan="4" class="strong text-end">Pengiriman</td>
-              <td class="text-end"><?= format_rupiah($transaksi['harga_pengiriman']) ?></td>
             </tr>
             <tr>
               <td colspan="4" class="strong text-end">Diskon</td>

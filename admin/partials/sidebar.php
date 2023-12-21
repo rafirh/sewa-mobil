@@ -88,6 +88,70 @@
             </span>
           </a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
+                <path d="M18 14v4h4" />
+                <path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" />
+                <path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                <path d="M8 11h4" />
+                <path d="M8 15h3" />
+              </svg>  
+            </span>
+            <span class="nav-link-title">
+              Laporan
+            </span>
+          </a>
+          <div class="dropdown-menu">
+            <div class="dropdown-menu-columns">
+              <div class="dropdown-menu-column">
+                <a class="dropdown-item" href="laporan-transaksi.php">
+                  Transaksi
+                </a>
+                <a class="dropdown-item" href="laporan-pendapatan-harian.php">
+                  Pendapatan Harian
+                </a> 
+                <a class="dropdown-item" href="laporan-agen-terlaris.php">
+                  Agen Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-mobil-terlaris.php">
+                  Mobil Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-pelanggan-teraktif.php">
+                  Pelanggan Teraktif
+                </a>
+                <a class="dropdown-item" href="laporan-merk-terlaris.php">
+                  Merk Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-warna-terlaris.php">
+                  Warna Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-transmisi-terlaris.php">
+                  Transmisi Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-jenis-terlaris.php">
+                  Jenis Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-tipe-terlaris.php">
+                  Tipe Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-cc-terlaris.php">
+                  CC Terlaris
+                </a>
+                <a class="dropdown-item" href="laporan-jaminan-terbanyak.php">
+                  Jaminan Terbanyak
+                </a>
+                <a class="dropdown-item" href="laporan-metode-pembayaran-terbanyak.php">
+                  Metode Pembayaran
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
         <li class="nav-item <?= $active == 'pengguna' ? 'active' : '' ?>">
           <a class="nav-link" href="pengguna.php">
             <span class="nav-link-icon d-lg-inline-block">
@@ -212,19 +276,19 @@
             </span>
           </a>
         </li>
-        <li class="nav-item <?= $active == 'jasa-kirim' ? 'active' : '' ?>">
-          <a class="nav-link" href="jasa-kirim.php">
+        <li class="nav-item <?= $active == 'jaminan' ? 'active' : '' ?>">
+          <a class="nav-link" href="jaminan.php">
             <span class="nav-link-icon d-lg-inline-block">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-credit-card" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
-                <path d="M3 9l4 0" />
+                <path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                <path d="M3 10l18 0" />
+                <path d="M7 15l.01 0" />
+                <path d="M11 15l2 0" />
               </svg>
             </span>
             <span class="nav-link-title">
-              Jasa Kirim
+              Jaminan
             </span>
           </a>
         </li>

@@ -8,6 +8,10 @@ $pendapatan_lunas = sumAll($conn, "transaksi", "total_harga", "status_pembayaran
 $pendapatan_dp = sumAll($conn, "transaksi", "jumlah_dp", "status_pembayaran_id = 4");
 $total_pendapatan = $pendapatan_lunas + $pendapatan_dp;
 
+$pendapatan_lunas_hari_ini = sumAll($conn, "transaksi", "total_harga", "status_pembayaran_id = 5 AND DATE(tanggal_bayar_lunas) = CURDATE()");
+$pendapatan_dp_hari_ini = sumAll($conn, "transaksi", "jumlah_dp", "status_pembayaran_id = 4 AND DATE(tanggal_dp) = CURDATE()");
+$total_pendapatan_hari_ini = $pendapatan_lunas_hari_ini + $pendapatan_dp_hari_ini;
+
 $jumlah_pelanggan = countAll($conn, 'user', 'role', 'customer');
 $jumlah_agen = countAll($conn, 'user', "role = 'agent'");
 $jumlah_mobil = countAll($conn, 'mobil');
@@ -16,35 +20,30 @@ $jumlah_mobil_disewa = countAll($conn, "mobil", "status = 'unavailable'");
 $jumlah_transaksi = countAll($conn, 'transaksi');
 $belum_dibayar = countAll($conn, "transaksi", "(status_pembayaran_id = 1 OR status_pembayaran_id = 3)");
 $belum_diverifikasi = countAll($conn, "transaksi", "status_pembayaran_id = 2");
-$menunggu_pengiriman = countAll(
+$belum_diambil = countAll(
   $conn,
   "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND transaksi.status_pengiriman_id = 1"
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND transaksi.status_pengembalian_id = 1"
 );
-$sedang_dikirim = countAll(
+$sedang_disewa = countAll(
   $conn,
   "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND transaksi.status_pengiriman_id = 2"
-);
-$pesanan_terkirim = countAll(
-  $conn,
-  "transaksi",
-  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 1"
+  "(status_pembayaran_id = 4 OR status_pembayaran_id = 5) AND transaksi.status_pengembalian_id = 2"
 );
 $belum_lunas = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 4 AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NULL"
+  "status_pembayaran_id = 4 AND transaksi.status_pengembalian_id = 3 AND bukti_bayar_lunas IS NULL"
 );
 $pelunasan_belum_diverifikasi = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 4 AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2 AND bukti_bayar_lunas IS NOT NULL"
+  "status_pembayaran_id = 4 AND transaksi.status_pengembalian_id = 3 AND bukti_bayar_lunas IS NOT NULL"
 );
 $pesanan_selesai = countAll(
   $conn,
   "transaksi",
-  "status_pembayaran_id = 5 AND transaksi.status_pengiriman_id = 3 AND transaksi.status_pengembalian_id = 2"
+  "status_pembayaran_id = 5 AND transaksi.status_pengembalian_id = 3"
 );
 
 $query_mobil_terlaris = "
@@ -116,6 +115,35 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </div>
                 <div class="text-muted">
                   volume pendapatan
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4 mb-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-primary text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                    <path d="M16 3v4" />
+                    <path d="M8 3v4" />
+                    <path d="M4 11h16" />
+                    <path d="M11 15h1" />
+                    <path d="M12 15v3" />
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-bold">
+                  <?= format_rupiah($total_pendapatan_hari_ini) ?>
+                </div>
+                <div class="text-muted">
+                  volume pendapatan hari ini
                 </div>
               </div>
             </div>
@@ -338,33 +366,6 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-auto">
-                <span class="bg-cyan text-white avatar">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-pause" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M20.942 13.018a9 9 0 1 0 -7.909 7.922" />
-                    <path d="M12 7v5l2 2" />
-                    <path d="M17 17v5" />
-                    <path d="M21 17v5" />
-                  </svg>
-                </span>
-              </div>
-              <div class="col">
-                <div class="fw-bold">
-                  <?= $menunggu_pengiriman ?>
-                </div>
-                <div class="text-muted">
-                  menunggu pengiriman
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-4 mb-3">
-        <div class="card card-sm">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
                 <span class="bg-teal text-white avatar">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -377,10 +378,10 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
               </div>
               <div class="col">
                 <div class="fw-bold">
-                  <?= $sedang_dikirim ?>
+                  <?= $sedang_disewa ?>
                 </div>
                 <div class="text-muted">
-                  sedang dikirim
+                  belum diambil
                 </div>
               </div>
             </div>
@@ -392,20 +393,21 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-auto">
-                <span class="bg-success text-white avatar">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <span class="bg-teal text-white avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M9 12l2 2l4 -4" />
+                    <path d="M20.942 13.021a9 9 0 1 0 -9.407 7.967" />
+                    <path d="M12 7v5l3 3" />
+                    <path d="M15 19l2 2l4 -4" />
                   </svg>
                 </span>
               </div>
               <div class="col">
                 <div class="fw-bold">
-                  <?= $pesanan_terkirim ?>
+                  <?= $sedang_disewa ?>
                 </div>
                 <div class="text-muted">
-                  terkirim / belum dikembalikan
+                  sedang disewa
                 </div>
               </div>
             </div>
@@ -505,14 +507,14 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </tr>
               </thead>
               <tbody>
-                <?php foreach($mobil_terlaris as $index => $mobil) : ?>
+                <?php foreach ($mobil_terlaris as $index => $mobil) : ?>
                   <tr>
                     <td><?= $index + 1 ?></td>
                     <td><?= $mobil['nama'] ?> (<?= $mobil['nama_merk_mobil'] ?>)</td>
                     <td><?= $mobil['nama_cc'] ?> cc</td>
                     <td><?= $mobil['jumlah_transaksi'] ?></td>
                   </tr>
-                <?php endforeach ?> 
+                <?php endforeach ?>
               </tbody>
             </table>
           </div>
@@ -534,14 +536,14 @@ $agen_terbaik = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </tr>
               </thead>
               <tbody>
-                <?php foreach($agen_terbaik as $index => $item) : ?>
+                <?php foreach ($agen_terbaik as $index => $item) : ?>
                   <tr>
                     <td><?= $index + 1 ?></td>
                     <td><?= $item['nama'] ?></td>
                     <td><?= $item['jumlah_transaksi'] ?></td>
                     <td><?= format_rupiah($item['total_pendapatan']) ?></td>
                   </tr>
-                <?php endforeach ?> 
+                <?php endforeach ?>
               </tbody>
             </table>
           </div>

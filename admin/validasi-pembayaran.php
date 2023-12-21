@@ -17,13 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   $status_pembayaran_id = $is_valid ? 4 : 3;
-  $status_pengiriman_id = 1;
+  $status_pengembalian_id = 1;
 
   if ($is_valid && $transaksi['jumlah_dp'] == $transaksi['total_harga']) {
     $status_pembayaran_id = 5;
   }
 
-  $query = "UPDATE transaksi SET status_pembayaran_id = $status_pembayaran_id, status_pengiriman_id = $status_pengiriman_id";
+  $query = "UPDATE transaksi SET status_pembayaran_id = $status_pembayaran_id, status_pengembalian_id = $status_pengembalian_id";
 
   if (!$is_valid) {
     deleteFile($transaksi['bukti_dp']);
