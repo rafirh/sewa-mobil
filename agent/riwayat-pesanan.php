@@ -51,7 +51,7 @@ $transaksi = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="row g-2 align-items-center">
       <div class="col">
         <h3 class="page-title">
-          Pesanan Terkirim / Belum Dikembalikan
+          Riwayat Pesanan
         </h3>
       </div>
     </div>
