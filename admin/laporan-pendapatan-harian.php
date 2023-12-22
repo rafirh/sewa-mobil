@@ -107,7 +107,7 @@ $agens = getAll($conn, 'agen');
                 <tr>
                   <th>No.</th>
                   <th>Tanggal</th>
-                  <th>Total Pesananan</th>
+                  <th>Total Pesanan</th>
                   <th>Total Pendapatan</th>
                 </tr>
               </thead>
